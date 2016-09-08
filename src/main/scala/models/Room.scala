@@ -1,5 +1,5 @@
 package models
 
-case class Room(id: Id) {
+case class Room(id: Id, desc: Option[String] = None) {
 
 }
