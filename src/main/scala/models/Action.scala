@@ -1,3 +1,3 @@
 package models
 
-class Action
+case class Action(id: Id) extends HasId

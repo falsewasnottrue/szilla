@@ -1,6 +1,6 @@
 package models
 
-case class Room(id: Id, desc: Option[String] = None) {
+case class Room(id: Id, desc: Option[String] = None) extends HasId {
 
   def north: Exit = NExit
   def south: Exit = NExit
