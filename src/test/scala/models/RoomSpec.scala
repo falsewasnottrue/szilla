@@ -22,4 +22,10 @@ class RoomSpec extends FlatSpec with Matchers {
     room.up should be(NExit)
     room.down should be(NExit)
   }
+
+  it should "have an optional (?) Action" in {
+    val room = Room(id = "LIVING-ROOM")
+
+    room.action should be(None)
+  }
 }

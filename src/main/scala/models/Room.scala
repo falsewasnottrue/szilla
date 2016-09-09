@@ -8,4 +8,6 @@ case class Room(id: Id, desc: Option[String] = None) {
   def east: Exit = NExit
   def up: Exit = NExit
   def down: Exit = NExit
+
+  def action: Option[Action] = None
 }
