@@ -11,4 +11,15 @@ class RoomSpec extends FlatSpec with Matchers {
   it should "have a description" in {
     Room(id = "LIVING-ROOM", desc = Some("Living Room")).desc should be(Some("Living Room"))
   }
+
+  it should "allow to query for Exits" in {
+    val room = Room(id = "LIVING-ROOM")
+
+    room.north should be(NExit)
+    room.south should be(NExit)
+    room.west should be(NExit)
+    room.east should be(NExit)
+    room.up should be(NExit)
+    room.down should be(NExit)
+  }
 }
