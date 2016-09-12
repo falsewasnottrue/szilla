@@ -13,3 +13,9 @@ case class Room(id: Id, desc: Option[String] = None) extends HasId with HasLocat
 
   val location = Rooms
 }
+
+object Room {
+  // parse & serialize
+
+
+}
