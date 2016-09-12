@@ -1,5 +1,5 @@
 package models
 
-trait Location
+class Location
 
 object Rooms extends Location
