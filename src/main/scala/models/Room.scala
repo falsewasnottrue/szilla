@@ -1,6 +1,6 @@
 package models
 
-case class Room(id: Id, desc: Option[String] = None) extends HasId {
+case class Room(id: Id, desc: Option[String] = None) extends HasId with HasLocation {
 
   def north: Exit = NExit
   def south: Exit = NExit
@@ -10,4 +10,6 @@ case class Room(id: Id, desc: Option[String] = None) extends HasId {
   def down: Exit = NExit
 
   def action: Option[Action] = None
+
+  val location = Rooms
 }

@@ -28,4 +28,9 @@ class RoomSpec extends FlatSpec with Matchers {
 
     room.action should be(None)
   }
+
+  it should "be in the rooms location" in {
+    val room = Room(id = "LIVING-ROOM")
+    room.location should be(Rooms)
+  }
 }
