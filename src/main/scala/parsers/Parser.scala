@@ -22,27 +22,4 @@ object Parser {
       case _ => throw new IllegalArgumentException
     }
   }
-
-
-//  def parse(tokens: Seq[String]): Tree = tokens match {
-//    case Nil => Node(Seq())
-//    case "<" +: rest :+ ">" => Node(Seq())
-//    case "<" +: rest => throw new IllegalArgumentException
-//    case rest :+ ">" => throw new IllegalArgumentException
-//    case "(" +: rest :+ ")" => Node(Seq())
-//    case "(" +: rest => throw new IllegalArgumentException
-//    case rest :+ ")" => throw new IllegalArgumentException
-//    case a +: rest => Leaf(a) +: parse(rest)
-//  }
-
-//  tokens should be(Seq("<", "ROOM", "LIVING-ROOM", "(", "THINGS", "<", ">", "NAILS", "NAILS-PSEUDO", ")", ">"))
-//  tokens should be(Seq("ROOM", "LIVING-ROOM", "(", "THINGS", "<", ">", "NAILS", "NAILS-PSEUDO", ")"))
-
-//  def parse(tokens: Seq[String]): Tree = {
-//
-//     acc = (index, seq)
-//
-//    def parseWithAcc(acc: (Int, Seq[]))
-
-//  }
 }
