@@ -68,57 +68,120 @@ class InstructionParserSpec extends FlatSpec with Matchers {
   it should "parse equal? operations" in {
     val text = "<EQUAL? ,HERE ,OVAL-OFFICE ,ROSE-GARDEN ,PORTICO>"
     val res = Instruction.parser.parse(text)
-    res.opcode should be(EQUAL)
+    res.opcode should be(EQUAL_Q)
     res.operands should be(Seq(",HERE", ",OVAL-OFFICE", ",ROSE-GARDEN", ",PORTICO"))
   }
 
   it should "parse zero? operations" in {
     val text = "<ZERO? ,FUEL-LEVEL>"
     val res = Instruction.parser.parse(text)
-    res.opcode should be(ZERO)
+    res.opcode should be(ZERO_Q)
     res.operands should be(Seq(",FUEL-LEVEL"))
   }
 
   it should "parse less? operations" in {
     val text = "<LESS? ,AIR-PRESSURE 4>"
     val res = Instruction.parser.parse(text)
-    res.opcode should be(LESS)
+    res.opcode should be(LESS_Q)
     res.operands should be(Seq(",AIR-PRESSURE", "4"))
   }
 
   it should "parse l? operations" in {
     val text = "<L? ,AIR-PRESSURE 4>"
     val res = Instruction.parser.parse(text)
-    res.opcode should be(LESS)
+    res.opcode should be(LESS_Q)
     res.operands should be(Seq(",AIR-PRESSURE", "4"))
   }
 
   it should "parse grtr? operations" in {
     val text = "<GRTR? ,GONDOLA-WEIGHT ,BALLOON-LIFTING-CAPACITY>"
     val res = Instruction.parser.parse(text)
-    res.opcode should be(GRTR)
+    res.opcode should be(GRTR_Q)
     res.operands should be(Seq(",GONDOLA-WEIGHT", ",BALLOON-LIFTING-CAPACITY"))
   }
 
   it should "parse g? operations" in {
     val text = "<G? ,GONDOLA-WEIGHT ,BALLOON-LIFTING-CAPACITY>"
     val res = Instruction.parser.parse(text)
-    res.opcode should be(GRTR)
+    res.opcode should be(GRTR_Q)
     res.operands should be(Seq(",GONDOLA-WEIGHT", ",BALLOON-LIFTING-CAPACITY"))
   }
 
   it should "parse fset? operations" in {
     val text = "<FSET? ,BRASS-LAMP ,ONBIT>"
     val res = Instruction.parser.parse(text)
-    res.opcode should be(FSET)
+    res.opcode should be(FSET_Q)
     res.operands should be(Seq(",BRASS-LAMP", ",ONBIT"))
   }
 
   it should "parse in? operations" in {
     val text = "<IN? ,SECRET-WILL ,WALL-SAFE>"
     val res = Instruction.parser.parse(text)
-    res.opcode should be(IN)
+    res.opcode should be(IN_Q)
     res.operands should be(Seq(",SECRET-WILL", ",WALL-SAFE"))
+  }
+
+  it should "parse move operations" in {
+    val text = "<MOVE ,BREAD ,TOASTER>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(MOVE)
+    res.operands should be(Seq(",BREAD", ",TOASTER"))
+  }
+
+  it should "parse remove operations" in {
+    val text = "<REMOVE ,ICE-CUBE>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(REMOVE)
+    res.operands should be(Seq(",ICE-CUBE"))
+  }
+
+  it should "parse loc operations" in {
+    val text = "<LOC ,SMOKING-GUN>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(LOC)
+    res.operands should be(Seq(",SMOKING-GUN"))
+  }
+
+  it should "parse first? operations" in {
+    val text = "<FIRST? ,REFRIGERATOR>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(FIRST_Q)
+    res.operands should be(Seq(",REFRIGERATOR"))
+  }
+
+  it should "parse next? operations" in {
+    val text = "<NEXT? ,MAYONNAISE>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(NEXT_Q)
+    res.operands should be(Seq(",MAYONNAISE"))
+  }
+
+  it should "parse fset operations" in {
+    val text = "<FSET ,OILY-TORCH ,FLAMEBIT>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(FSET)
+    res.operands should be(Seq(",OILY-TORCH", ",FLAMEBIT"))
+  }
+
+  it should "parse fclear operations" in {
+    val text = "<FCLEAR ,GUARDED-DIAMOND ,TRYTAKEBIT>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(FCLEAR)
+    res.operands should be(Seq(",GUARDED-DIAMOND", ",TRYTAKEBIT"))
+  }
+
+  it should "parse getp operations" in {
+    val text = "<GETP ,HERE ,P?LDESC>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(GETP)
+    res.operands should be(Seq(",HERE", ",P?LDESC"))
+  }
+
+  it should "parse putp operations" in {
+    val text = "<PUTP ,ROTTING-TOMATO ,P?SDESC \"rotten tomato\">"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(PUTP)
+    res.operands should be(Seq(",ROTTING-TOMATO", ",P?SDESC", "rotten tomato"))
   }
 
   // ...

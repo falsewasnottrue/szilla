@@ -13,14 +13,24 @@ case object MOD extends OpCode
 case object RANDOM extends OpCode
 
 // predicate instructions
-case object EQUAL extends OpCode
-case object ZERO extends OpCode
-case object LESS extends OpCode
-case object GRTR extends OpCode
-case object FSET extends OpCode
-case object IN extends OpCode
+case object EQUAL_Q extends OpCode
+case object ZERO_Q extends OpCode
+case object LESS_Q extends OpCode
+case object GRTR_Q extends OpCode
+case object FSET_Q extends OpCode
+case object IN_Q extends OpCode
 
-// TODO object operations
+// object operations
+case object MOVE extends OpCode
+case object REMOVE extends OpCode
+case object LOC extends OpCode
+case object FIRST_Q extends OpCode
+case object NEXT_Q extends OpCode
+case object FSET extends OpCode
+case object FCLEAR extends OpCode
+case object GETP extends OpCode
+case object PUTP extends OpCode
+
 // TODO table operations
 // TODO input operations
 // TODO output operations
@@ -38,12 +48,22 @@ object OpCode {
     case "MOD" => Some(MOD)
     case "RANDOM" => Some(RANDOM)
 
-    case "EQUAL?" => Some(EQUAL)
-    case "ZERO?" => Some(ZERO)
-    case "L?" | "LESS?" => Some(LESS)
-    case "G?" | "GRTR?" => Some(GRTR)
-    case "FSET?" => Some(FSET)
-    case "IN?" => Some(IN)
+    case "EQUAL?" => Some(EQUAL_Q)
+    case "ZERO?" => Some(ZERO_Q)
+    case "L?" | "LESS?" => Some(LESS_Q)
+    case "G?" | "GRTR?" => Some(GRTR_Q)
+    case "FSET?" => Some(FSET_Q)
+    case "IN?" => Some(IN_Q)
+
+    case "MOVE" => Some(MOVE)
+    case "REMOVE" => Some(REMOVE)
+    case "LOC" => Some(LOC)
+    case "FIRST?" => Some(FIRST_Q)
+    case "NEXT?" => Some(NEXT_Q)
+    case "FSET" => Some(FSET)
+    case "FCLEAR" => Some(FCLEAR)
+    case "GETP" => Some(GETP)
+    case "PUTP" => Some(PUTP)
 
     case _ => None
   }
