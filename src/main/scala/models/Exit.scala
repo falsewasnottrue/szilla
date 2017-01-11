@@ -10,3 +10,5 @@ case class UExit(roomId: Id) extends Exit
 case class CExit(roomId: Id) extends Exit
 // Function exit
 case class FExit(exitId: Id) extends Exit
+
+// TODO DExit (door exit)

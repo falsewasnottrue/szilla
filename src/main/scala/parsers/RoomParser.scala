@@ -13,7 +13,9 @@ object RoomParser {
       case Node(Seq(Leaf(Direction(dir)), Leaf(PER), Leaf(exitId))) => room.withExit(dir, FExit(exitId))
       // TODO conditional exit
 
-      // TODO action
+      // action
+      case Node(Seq(Leaf(ACTION), Leaf(actionId))) => room.withAction(Action(actionId))
+
       // TODO global
       // TODO flags
       // TODO things

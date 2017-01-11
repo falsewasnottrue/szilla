@@ -13,7 +13,7 @@ class RoomParserSpec extends FlatSpec with Matchers {
                  |(WEST TO STRANGE-PASSAGE IF CYCLOPS-FLED ELSE
                  |"The wooden door is nailed shut.")
                  |(DOWN PER TRAP-DOOR-EXIT)
-                 |(ACTION LIVING ROOM-F)
+                 |(ACTION LIVING-ROOM-F)
                  |(FLAGS RLANDBIT ONBIT SACREDBIT)
                  |(GLOBAL STAIRS)
                  |(THINGS <> NAILS NAILS-PSEUDO)>""".stripMargin
@@ -28,5 +28,7 @@ class RoomParserSpec extends FlatSpec with Matchers {
 
     room.east should be(UExit("KITCHEN"))
     room.down should be(FExit("TRAP-DOOR-EXIT"))
+
+    room.action should be(Some(Action("LIVING-ROOM-F")))
   }
 }

@@ -41,6 +41,13 @@ class RoomSpec extends FlatSpec with Matchers {
     r.desc should be(Some("this is the description"))
   }
 
+  it should "allow to add an action" in {
+    val room = Room(id = "LIVING-ROOM")
+    room.action should be(None)
+    val r = room.withAction(Action("LIVING-ROOM-F"))
+    r.action should be(Some(Action("LIVING-ROOM-F")))
+  }
+
   it should "allow to add exits" in {
     val room = Room(id = "LIVING-ROOM")
     room.east should be(NoExit)
