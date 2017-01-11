@@ -1,5 +1,6 @@
 package models
 
-class Exit
+sealed trait Exit
 
-object NExit extends Exit
+case object NoExit extends Exit
+case class ExitTo(roomId: Id) extends Exit

@@ -1,5 +1,6 @@
 package parsers
 
+import models._
 import org.scalatest.{FlatSpec, Matchers}
 
 class RoomParserSpec extends FlatSpec with Matchers {
@@ -22,5 +23,10 @@ class RoomParserSpec extends FlatSpec with Matchers {
     val room = RoomParser.parse(text)
 
     room.id should be("LIVING-ROOM")
+    room.location should be(Rooms)
+
+    // TODO desc
+    room.east should be(ExitTo("KITCHEN"))
+    // TODO ExitPer
   }
 }
