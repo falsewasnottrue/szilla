@@ -17,6 +17,8 @@ object KeyWords {
   val LDESC = "LDESC"
   val SIZE = "SIZE"
 
+  val ROUTINE = "ROUTINE"
+
   val TO = "TO"
   val PER = "PER"
 }
