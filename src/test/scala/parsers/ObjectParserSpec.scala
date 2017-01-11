@@ -19,7 +19,7 @@ class ObjectParserSpec extends FlatSpec with Matchers {
   }
 
   "Object Parser" should "parse a well-formed object text" in new Env {
-    val obj = ObjectParser.parse(text)
+    val obj = Object.parser.parse(text)
 
     obj.id should be("LANTERN")
     obj.location should be(RoomLocation("LIVING-ROOM"))

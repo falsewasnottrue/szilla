@@ -10,17 +10,30 @@ class RoomParserSpec extends FlatSpec with Matchers {
                  |(LOC ROOMS)
                  |(DESC "This is the living Room")
                  |(EAST TO KITCHEN)
-                 |(WEST TO STRANGE-PASSAGE IF CYCLOPS-FLED ELSE
-                 |"The wooden door is nailed shut.")
                  |(DOWN PER TRAP-DOOR-EXIT)
                  |(ACTION LIVING-ROOM-F)
                  |(FLAGS RLANDBIT ONBIT SACREDBIT)
                  |(GLOBAL STAIRS)
                  |(THINGS <> NAILS NAILS-PSEUDO)>""".stripMargin
+
+    // complete
+    /*
+    """<ROOM LIVING-ROOM
+      |(LOC ROOMS)
+      |(DESC "This is the living Room")
+      |(EAST TO KITCHEN)
+      |(WEST TO STRANGE-PASSAGE IF CYCLOPS-FLED ELSE
+      |"The wooden door is nailed shut.")
+      |(DOWN PER TRAP-DOOR-EXIT)
+      |(ACTION LIVING-ROOM-F)
+      |(FLAGS RLANDBIT ONBIT SACREDBIT)
+      |(GLOBAL STAIRS)
+      |(THINGS <> NAILS NAILS-PSEUDO)>""".
+      */
   }
 
   "RoomParser" should "parse a well-form room text" in new Env {
-    val room = RoomParser.parse(text)
+    val room = Room.parser.parse(text)
 
     room.id should be("LIVING-ROOM")
     room.location should be(Rooms)

@@ -31,3 +31,22 @@ case class Object(
 
   def withSize(size: Int) = copy(size = size)
 }
+
+object Object {
+  import parsers.KeyWords._
+  import parsers.ZParser._
+  import parsers.ZParser
+
+  val parser = ZParser[Object](zero(OBJECT, Object(_)))(Seq(
+      point(LOC, (o, id) => o.withLocation(RoomLocation(id))),
+      points(SYNONYM, (o, synonym) => o.withSynonym(synonym)),
+      points(ADJECTIVE, (o, adjective) => o.withAdjective(adjective)),
+      point(DESC, (o, desc) => o.withDesc(desc)),
+      points(FLAGS, (o, flag) => o.withFlag(Flag(flag))),
+      point(ACTION, (o, action) => o.withAction(Action(action))),
+      point(FDESC, (o, fdesc) => o.withFDesc(fdesc)),
+      point(LDESC, (o, ldesc) => o.withLDesc(ldesc)),
+      point(SIZE, (o, size) => o.withSize(size.toInt))
+    )
+  )
+}

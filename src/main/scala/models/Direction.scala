@@ -24,7 +24,7 @@ case object Down extends Direction {
 }
 
 object Direction {
-  def unapply(a: Any): Option[Direction] = a match {
+  def unapply(name: String): Option[Direction] = name match {
     case North.name => Some(North)
     case South.name => Some(South)
     case West.name => Some(West)
