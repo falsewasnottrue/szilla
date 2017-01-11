@@ -12,12 +12,14 @@ object RoomParser {
       case Node(Seq(Leaf(Direction(dir)), Leaf(TO), Leaf(roomId))) => room.withExit(dir, UExit(roomId))
       case Node(Seq(Leaf(Direction(dir)), Leaf(PER), Leaf(exitId))) => room.withExit(dir, FExit(exitId))
       // TODO conditional exit
-
       // action
       case Node(Seq(Leaf(ACTION), Leaf(actionId))) => room.withAction(Action(actionId))
-
+      // flags
+      case Node(Leaf(FLAGS) +: flags) => flags.foldLeft(room) {
+        case (r, Leaf(flagId)) => r.withFlag(Flag(flagId))
+        case (_, f) => throw new IllegalArgumentException(s"illegal flag: $f")
+      }
       // TODO global
-      // TODO flags
       // TODO things
       case _ => room // TODO exception when all other cases are implemented
     }

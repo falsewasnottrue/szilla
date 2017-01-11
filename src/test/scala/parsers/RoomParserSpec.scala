@@ -30,5 +30,6 @@ class RoomParserSpec extends FlatSpec with Matchers {
     room.down should be(FExit("TRAP-DOOR-EXIT"))
 
     room.action should be(Some(Action("LIVING-ROOM-F")))
+    room.flags should be(Seq(Flag("RLANDBIT"), Flag("ONBIT"), Flag("SACREDBIT")))
   }
 }

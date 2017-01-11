@@ -54,4 +54,15 @@ class RoomSpec extends FlatSpec with Matchers {
     val r = room.withExit(East, UExit("KITCHEN"))
     r.east should be(UExit("KITCHEN"))
   }
+
+  it should "allow to add flags" in {
+    val r = Room(id = "LIVING-ROOM")
+    r.flags should be(Nil)
+    val r2 = r.withFlag(Flag("ONBIT"))
+    r2.flags should be(Seq(Flag("ONBIT")))
+
+    val r3 = r2.withFlag(Flag("SACREDBIT"))
+    r2.flags should be(Seq(Flag("ONBIT")))
+    r3.flags should be(Seq(Flag("ONBIT"), Flag("SACREDBIT")))
+  }
 }
