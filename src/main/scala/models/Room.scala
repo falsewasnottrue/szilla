@@ -13,6 +13,9 @@ case class Room(id: Id, desc: Option[String] = None, exits: Map[Direction, Exit]
 
   def action: Option[Action] = None
 
+  def withDesc(desc: String): Room =
+    copy(desc = Some(desc))
+
   def withExit(direction: Direction, exit: Exit): Room =
     copy(exits = exits + (direction -> exit))
 }

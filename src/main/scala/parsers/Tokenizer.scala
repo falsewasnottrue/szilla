@@ -4,15 +4,32 @@ import scala.collection.:+
 
 object Tokenizer {
 
-  def tokenize(text: String): Seq[String] = text.foldLeft(Seq.empty[String]) {
-    case (result, c) if c.isWhitespace => result :+ ""
-    case (result, c) if Seq('<', '>', '(', ')') contains c => result :+ normalize(c)
+  def tokenize(text: String): Seq[String] = text.foldLeft((Seq.empty[String], false)) {
+    // open quote
+    case ((result, false), '\"') =>
+      (result :+ "", true)
 
-    case (result, c) if result == Seq.empty[String] => Seq(c.toString)
+    // close quote
+    case ((result, true), '\"') =>
+      (result :+ "", false)
 
-    case (result :+ last , c) if Seq("<", ">", "(", ")") contains last => (result :+ last) :+ normalize(c)
-    case (result :+ last , c)  => result :+ (last + c)
-  }.filter(_ != "")
+    // inside quote
+    case ((result :+ last, true), c) =>
+      (result :+ (last + c), true)
+
+    case ((result, inQuote), c) if c.isWhitespace =>
+      (result :+ "", inQuote)
+    case ((result, inQuote), c) if Seq('<', '>', '(', ')') contains c =>
+      (result :+ normalize(c), inQuote)
+
+    case ((result, inQuote), c) if result == Seq.empty[String] =>
+      (Seq(c.toString), inQuote)
+
+    case ((result :+ last, inQuote), c) if Seq("<", ">", "(", ")") contains last =>
+      ((result :+ last) :+ normalize(c), inQuote)
+    case ((result :+ last, inQuote), c)  =>
+      (result :+ (last + c), inQuote)
+  }._1.filter(_ != "")
 
   private def normalize(c: Char): String = c match {
     case '(' => "<"

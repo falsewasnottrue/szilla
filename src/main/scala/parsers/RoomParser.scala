@@ -13,7 +13,7 @@ object RoomParser {
 
     def enrichRoom(room: Room, tree: Tree): Room = tree match {
         // TODO desc
-
+      case Node(Seq(Leaf("DESC"), Leaf(desc))) => room.withDesc(desc)
         // exits
       case Node(Seq(Leaf("NORTH"), Leaf("TO"), Leaf(roomId))) => room.withExit(North, ExitTo(roomId))
       case Node(Seq(Leaf("SOUTH"), Leaf("TO"), Leaf(roomId))) => room.withExit(South, ExitTo(roomId))

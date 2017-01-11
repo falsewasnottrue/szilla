@@ -8,7 +8,7 @@ class RoomParserSpec extends FlatSpec with Matchers {
   trait Env {
     val text = """<ROOM LIVING-ROOM
                  |(LOC ROOMS)
-                 |(DESC "Living Room")
+                 |(DESC "This is the living Room")
                  |(EAST TO KITCHEN)
                  |(WEST TO STRANGE-PASSAGE IF CYCLOPS-FLED ELSE
                  |"The wooden door is nailed shut.")
@@ -24,9 +24,8 @@ class RoomParserSpec extends FlatSpec with Matchers {
 
     room.id should be("LIVING-ROOM")
     room.location should be(Rooms)
+    room.desc should be(Some("This is the living Room"))
 
-    // TODO desc
     room.east should be(ExitTo("KITCHEN"))
-    // TODO ExitPer
   }
 }

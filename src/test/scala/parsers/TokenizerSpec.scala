@@ -10,4 +10,11 @@ class TokenizerSpec extends FlatSpec with Matchers {
 
     tokens should be(Seq("<", "ROOM", "LIVING-ROOM", "<", "THINGS", "<", ">", "NAILS", "NAILS-PSEUDO", ">", ">"))
   }
+
+  it should "handle quotes" in {
+    val text = """(DESC "This is the description")"""
+    val tokens = Tokenizer.tokenize(text)
+
+    tokens should be(Seq("<", "DESC", "This is the description", ">"))
+  }
 }
