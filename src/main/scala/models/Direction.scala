@@ -1,10 +1,36 @@
 package models
 
-sealed trait Direction
+sealed trait Direction {
+  def name: String
+}
 
-object North extends Direction
-object South extends Direction
-object East extends Direction
-object West extends Direction
-object Up extends Direction
-object Down extends Direction
+case object North extends Direction {
+  val name = "NORTH"
+}
+case object South extends Direction {
+  val name = "SOUTH"
+}
+case object East extends Direction {
+  val name = "EAST"
+}
+case object West extends Direction {
+  val name = "WEST"
+}
+case object Up extends Direction {
+  val name = "UP"
+}
+case object Down extends Direction {
+  val name = "DOWN"
+}
+
+object Direction {
+  def unapply(a: Any): Option[Direction] = a match {
+    case North.name => Some(North)
+    case South.name => Some(South)
+    case West.name => Some(West)
+    case East.name => Some(East)
+    case Up.name => Some(Up)
+    case Down.name => Some(Down)
+    case _ => None
+  }
+}
