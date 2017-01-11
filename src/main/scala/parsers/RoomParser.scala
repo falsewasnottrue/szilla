@@ -28,8 +28,8 @@ object RoomParser {
     val tree = Parser.parse(tokens)
 
     tree match {
-      case Node(Leaf(ROOM) :: Leaf(id) :: rest) =>
-        rest.foldLeft(Room(id)) {
+      case Node(Leaf(ROOM) :: Leaf(id) :: clauses) =>
+        clauses.foldLeft(Room(id)) {
           case (room, clause) => enrichRoom(room, clause)
         }
       case _ => throw new IllegalArgumentException

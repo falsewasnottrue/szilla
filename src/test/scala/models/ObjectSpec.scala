@@ -5,16 +5,24 @@ import org.scalatest.{FlatSpec, Matchers}
 class ObjectSpec extends FlatSpec with Matchers {
 
   trait Env {
-    val location = new Location()
+    val location = RoomLocation("LIVING-ROOM")
     val obj = Object(id = "LANTERN", location = location)
   }
 
   "Object" should "have an Id" in {
-    Object(id = "LANTERN", location = new Location()).id should be("LANTERN")
+    Object(id = "LANTERN").id should be("LANTERN")
   }
 
   it should "have a location" in new Env {
     obj.location should be(location)
+  }
+
+  it should "allow to add a location" in {
+    val o = Object(id = "LANTERN")
+    o.location should be(Empty)
+
+    val obj = o.withLocation(Player)
+    obj.location should be(Player)
   }
 
   it should "allow to add synonyms" in new Env {

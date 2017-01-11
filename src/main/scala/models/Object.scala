@@ -1,7 +1,8 @@
 package models
 
 case class Object(
-                 id: Id, location: Location,
+                 id: Id,
+                 location: Location = Empty,
                  synonyms: Seq[String] = Nil,
                  adjectives: Seq[String] = Nil,
                  desc: Option[String] = None,
@@ -11,6 +12,8 @@ case class Object(
                  ldesc: Option[String] = None,
                  size: Int = 0)
   extends HasId with HasLocation {
+
+  def withLocation(location: Location) = copy(location = location)
 
   def withSynonym(synonym: String) = copy(synonyms = synonyms :+ synonym)
 

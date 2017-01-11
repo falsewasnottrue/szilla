@@ -19,7 +19,7 @@ class RoomParserSpec extends FlatSpec with Matchers {
                  |(THINGS <> NAILS NAILS-PSEUDO)>""".stripMargin
   }
 
-  "RoomParser" should "parse a well-form room.zil" in new Env {
+  "RoomParser" should "parse a well-form room text" in new Env {
     val room = RoomParser.parse(text)
 
     room.id should be("LIVING-ROOM")

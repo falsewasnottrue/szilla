@@ -9,6 +9,14 @@ object KeyWords {
   val GLOBAL = "GLOBAL"
   val THINGS = "THINGS"
 
+  val OBJECT = "OBJECT"
+  val LOC = "LOC"
+  val SYNONYM = "SYNONYM"
+  val ADJECTIVE = "ADJECTIVE"
+  val FDESC = "FDESC"
+  val LDESC = "LDESC"
+  val SIZE = "SIZE"
+
   val TO = "TO"
   val PER = "PER"
 }
