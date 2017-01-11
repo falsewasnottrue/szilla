@@ -44,7 +44,7 @@ class RoomSpec extends FlatSpec with Matchers {
   it should "allow to add exits" in {
     val room = Room(id = "LIVING-ROOM")
     room.east should be(NoExit)
-    val r = room.withExit(East, ExitTo("KITCHEN"))
-    r.east should be(ExitTo("KITCHEN"))
+    val r = room.withExit(East, UExit("KITCHEN"))
+    r.east should be(UExit("KITCHEN"))
   }
 }

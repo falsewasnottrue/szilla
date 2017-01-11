@@ -26,7 +26,7 @@ class RoomParserSpec extends FlatSpec with Matchers {
     room.location should be(Rooms)
     room.desc should be(Some("This is the living Room"))
 
-    room.east should be(ExitTo("KITCHEN"))
-    room.down should be(ExitPer("TRAP-DOOR-EXIT"))
+    room.east should be(UExit("KITCHEN"))
+    room.down should be(FExit("TRAP-DOOR-EXIT"))
   }
 }

@@ -3,5 +3,10 @@ package models
 sealed trait Exit
 
 case object NoExit extends Exit
-case class ExitTo(roomId: Id) extends Exit
-case class ExitPer(exitId: Id) extends Exit
+
+// Unconditional exit
+case class UExit(roomId: Id) extends Exit
+// Conditional exit
+case class CExit(roomId: Id) extends Exit
+// Function exit
+case class FExit(exitId: Id) extends Exit
