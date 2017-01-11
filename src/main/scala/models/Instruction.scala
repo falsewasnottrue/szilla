@@ -12,7 +12,14 @@ case object DIV extends OpCode
 case object MOD extends OpCode
 case object RANDOM extends OpCode
 
-// TODO predicate instructions
+// predicate instructions
+case object EQUAL extends OpCode
+case object ZERO extends OpCode
+case object LESS extends OpCode
+case object GRTR extends OpCode
+case object FSET extends OpCode
+case object IN extends OpCode
+
 // TODO object operations
 // TODO table operations
 // TODO input operations
@@ -30,6 +37,13 @@ object OpCode {
     case "/" | "DIV" => Some(DIV)
     case "MOD" => Some(MOD)
     case "RANDOM" => Some(RANDOM)
+
+    case "EQUAL?" => Some(EQUAL)
+    case "ZERO?" => Some(ZERO)
+    case "L?" | "LESS?" => Some(LESS)
+    case "G?" | "GRTR?" => Some(GRTR)
+    case "FSET?" => Some(FSET)
+    case "IN?" => Some(IN)
 
     case _ => None
   }
