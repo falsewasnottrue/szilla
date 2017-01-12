@@ -37,7 +37,13 @@ case object PUT extends OpCode
 case object INTBL_Q extends OpCode
 case object COPYT extends OpCode
 
-// TODO input operations
+// input operations
+case object READ extends OpCode
+case object INPUT extends OpCode
+case object MOUSE_INFO extends OpCode
+case object MOUSE_LIMIT extends OpCode
+case object MENU extends OpCode
+
 // TODO output operations
 // TODO window operations
 // TODO pictures and sounds
@@ -74,6 +80,12 @@ object OpCode {
     case "PUT" => Some(PUT)
     case "INTBL?" => Some(INTBL_Q)
     case "COPYT" => Some(COPYT)
+
+    case "READ" => Some(READ)
+    case "INPUT" => Some(INPUT)
+    case "MOUSE-INFO" => Some(MOUSE_INFO)
+    case "MOUSE-LIMIT" => Some(MOUSE_LIMIT)
+    case "MENU" => Some(MENU)
 
     case _ => None
   }

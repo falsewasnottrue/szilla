@@ -214,5 +214,41 @@ class InstructionParserSpec extends FlatSpec with Matchers {
     res.operands should be(Seq(",CURRENT-MOVE-TBL", ",OLD-MOVE-TBL", ",MOVE-TBL-LEN"))
   }
 
+  it should "parse read operations" in {
+    val text = "<READ ,P-INBUF-TBL>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(READ)
+    res.operands should be(Seq(",P-INBUF-TBL"))
+  }
+
+  it should "parse input operations" in {
+    val text = "<INPUT 1>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(INPUT)
+    res.operands should be(Seq("1"))
+  }
+
+  it should "parse mouse-info operations" in {
+    val text = "<MOUSE-INFO ,MOUSE-INFO-TBL>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(MOUSE_INFO)
+    res.operands should be(Seq(",MOUSE-INFO-TBL"))
+  }
+
+  it should "parse mouse-limit operations" in {
+    val text = "<MOUSE-LIMIT 0>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(MOUSE_LIMIT)
+    res.operands should be(Seq("0"))
+  }
+
+  it should "parse menu operations" in {
+    val text = "<MENU 3 ,BATTLE-COMMANDS-TBL>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(MENU)
+    res.operands should be(Seq("3", ",BATTLE-COMMANDS-TBL"))
+  }
+
+
   // ...
 }
