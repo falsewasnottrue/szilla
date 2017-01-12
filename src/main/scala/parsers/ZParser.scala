@@ -3,13 +3,18 @@ package parsers
 case class ZParser[T](init: PartialFunction[Tree,(T, Seq[Tree])])(clauseParsers: Seq[PartialFunction[(T, Tree) ,T]]) {
 
   def parse(text: String): T = {
+    val tokens = Tokenizer.tokenize(text)
+    val tree = Parser.parse(tokens)
+
+    parse(tree: Tree)
+  }
+
+  def parse(tree: Tree): T = {
     def enrich(t: T, clause: Tree): T = clauseParsers.
       find(parser => parser.isDefinedAt((t, clause))).
       map(parser => parser.apply((t, clause))).
       getOrElse(throw new IllegalArgumentException(s"no applicable parser found for clause $clause"))
 
-    val tokens = Tokenizer.tokenize(text)
-    val tree = Parser.parse(tokens)
 
     if (init.isDefinedAt(tree)) {
       val (start, clauses) = init(tree)

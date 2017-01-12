@@ -1,5 +1,7 @@
 package models
 
+import parsers._
+
 case class Routine(
                     id: Id,
                     arguments: Seq[String] = Nil,
@@ -17,6 +19,15 @@ object Routine {
   import parsers.ZParser
 
   val parser = ZParser[Routine](zero(ROUTINE, Routine(_)))(Seq(
-    //{ case Node(Leaf(OpCode(opCode)) :: clauses) => Instruction.parser.par }
+    // instructions
+    { case (routine, line @ Node(Leaf(OpCode(_)) :: _)) =>
+        routine.withInstruction(Instruction.parser.parse(line))
+    },
+    // TODO cond et al
+    // argument list
+    { case (routine, Node(arguments)) => arguments.foldLeft(routine) {
+      case (r, Leaf(argument)) => r.withArgument(argument)
+      case _ => throw new IllegalArgumentException(s"")
+    } }
   ))
 }
