@@ -1,6 +1,6 @@
 package models
 
-import parsers.{Leaf, Node, Tree}
+import parsers._
 
 sealed trait OpCode
 
@@ -89,6 +89,7 @@ case object IRESTORE extends OpCode
 
 // special
 case object SETG extends OpCode
+case object SET extends OpCode
 case object COND extends OpCode
 case object TELL extends OpCode
 
@@ -178,6 +179,7 @@ object OpCode {
     case "IRESTORE" => Some(IRESTORE)
 
     // special
+    case "SET" => Some(SET)
     case "SETG" => Some(SETG)
     case "COND" => Some(COND)
     case "TELL" => Some(TELL)
@@ -199,13 +201,18 @@ object Instruction {
 
   def parser: ZParser[Instruction] = {
     val init: PartialFunction[Tree,(Instruction, Seq[Tree])] =
-    { case Node(Leaf(OpCode(opCode)) :: clauses) => (Instruction(opCode), clauses) }
+    { case Node(Leaf(OpCode(opCode)) :: clauses, Angle) => (Instruction(opCode), clauses) }
     val clauseParsers: Seq[PartialFunction[(Instruction, Tree), Instruction]] = Seq(
       { case (i, Leaf(varName)) => i.withOperand(Variable(varName)) },
-      { case (i, line @ Node(Leaf(OpCode(_)) :: _)) => i.withOperand(Instruction.parser.parse(line)) },
-      { case (i, Node(Seq(Leaf(cond), action @ Node(_)))) =>
+      { case (i, line @ Node(Leaf(OpCode(_)) :: _, Angle)) => i.withOperand(Instruction.parser.parse(line)) },
+      { case (i, Node(Seq(Leaf(predicate), action), Round)) =>
         i.withOperand(Condition(
-          Variable(cond),
+          Variable(predicate),
+          Instruction.parser.parse(action)
+        )) },
+      { case (i, Node(Seq(predicate, action), Round)) =>
+        i.withOperand(Condition(
+          Instruction.parser.parse(predicate),
           Instruction.parser.parse(action)
         )) }
     )

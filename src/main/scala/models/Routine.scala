@@ -20,12 +20,13 @@ object Routine {
 
   val parser = ZParser[Routine](zero(ROUTINE, Routine(_)))(Seq(
     // instructions
-    { case (routine, line @ Node(Leaf(OpCode(_)) :: _)) =>
+    { case (routine, line @ Node(Leaf(OpCode(_)) :: _, Angle)) =>
         routine.withInstruction(Instruction.parser.parse(line))
     },
     // TODO cond et al
+
     // argument list
-    { case (routine, Node(arguments)) => arguments.foldLeft(routine) {
+    { case (routine, Node(arguments, Round)) => arguments.foldLeft(routine) {
       case (r, Leaf(argument)) => r.withArgument(argument)
       case _ => throw new IllegalArgumentException(s"")
     } }

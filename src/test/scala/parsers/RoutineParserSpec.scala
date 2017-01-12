@@ -35,17 +35,28 @@ class RoutineParserSpec extends FlatSpec with Matchers {
     ))
   }
 
-//  it should "parse cond instructions" in new Env {
-//    val routine2 = Routine.parser.parse(text2)
-//    routine2.id should be("INCREMENT-SCORE")
-//    routine2.arguments should be (Seq("NUM"))
-//
-//    routine2.instructions should be(Seq(
-//      Instruction(SETG, )
-////      <SETG SCORE <+ ,SCORE .NUM>>
-////      <COND (,SCORE-NOTIFICATION-ON
-////      <TELL "[Your score has just gone up by "
-////    N .NUM ".]" CR>)>>
-//    ))
-//  }
+  it should "parse cond instructions" in new Env {
+    val routine2 = Routine.parser.parse(text2)
+    routine2.id should be("INCREMENT-SCORE")
+    routine2.arguments should be (Seq("NUM"))
+
+    routine2.instructions should be(Seq(
+      Instruction(SETG, Seq(
+        Variable("SCORE"),
+        Instruction(ADD, Seq(Variable(",SCORE"), Variable(".NUM")))
+      )),
+      Instruction(COND, Seq(
+        Condition(
+          Variable(",SCORE-NOTIFICATION-ON"),
+          Instruction(TELL, Seq(
+            Variable("[Your score has just gone up by "),
+            Variable("N"),
+            Variable(".NUM"),
+            Variable(".]"),
+            Variable("CR")
+          ))
+        )
+      ))
+    ))
+  }
 }

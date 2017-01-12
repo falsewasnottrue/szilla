@@ -545,4 +545,40 @@ class InstructionParserSpec extends FlatSpec with Matchers {
       )
     ))
   }
+
+  it should "parse cond operations with multiple cases" in {
+    val text =
+      """
+        |<COND (<IN? ,HAM-SANDWICH ,HERE>
+        |        <SET FOOD ,HAM-SANDWICH>)
+        |      (<IN? ,CANDY-BAR ,HERE>
+        |        <SET FOOD ,CANDY-BAR>)
+        |      (<IN? ,BELGIAN-ENDIVE ,HERE>
+        |        <SET FOOD ,BELGIAN-ENDIVE>)
+        |      (T
+        |        <SET FOOD NULL>)
+        |>
+      """.stripMargin
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(COND)
+
+    res.operands should be(Seq(
+      Condition(
+        Instruction(IN_Q, Seq(Variable(",HAM-SANDWICH"), Variable(",HERE"))),
+        Instruction(SET, Seq(Variable("FOOD"), Variable(",HAM-SANDWICH")))
+      ),
+      Condition(
+        Instruction(IN_Q, Seq(Variable(",CANDY-BAR"), Variable(",HERE"))),
+        Instruction(SET, Seq(Variable("FOOD"), Variable(",CANDY-BAR")))
+      ),
+      Condition(
+        Instruction(IN_Q, Seq(Variable(",BELGIAN-ENDIVE"), Variable(",HERE"))),
+        Instruction(SET, Seq(Variable("FOOD"), Variable(",BELGIAN-ENDIVE")))
+      ),
+      Condition(
+        Variable("T"),
+        Instruction(SET, Seq(Variable("FOOD"), Variable("NULL")))
+      )
+    ))
+  }
 }

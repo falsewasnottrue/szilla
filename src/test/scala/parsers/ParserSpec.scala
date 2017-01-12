@@ -13,7 +13,7 @@ class ParserSpec extends FlatSpec with Matchers {
   }
 
   it should "build a map" in {
-    val tokens = Seq("<", "ROOM", "LIVING-ROOM", "<", "THINGS", "<", ">", "NAILS", "NAILS-PSEUDO", ">", ">")
+    val tokens = Seq("<", "ROOM", "LIVING-ROOM", "(", "THINGS", "<", ">", "NAILS", "NAILS-PSEUDO", ")", ">")
     val result = Parser.parse(tokens)
 
     result should be(
@@ -25,7 +25,7 @@ class ParserSpec extends FlatSpec with Matchers {
           Node(Seq()),
           Leaf("NAILS"),
           Leaf("NAILS-PSEUDO")
-        ))
+        ), Round)
       ))
     )
   }
