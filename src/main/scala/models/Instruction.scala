@@ -63,6 +63,10 @@ case object RESTORE extends OpCode
 case object ISAVE extends OpCode
 case object IRESTORE extends OpCode
 
+// special
+case object SETG extends OpCode
+case object COND extends OpCode
+
 object OpCode {
   def unapply(a: Any): Option[OpCode] = a match {
     case "+" | "ADD" => Some(ADD)
@@ -113,22 +117,29 @@ object OpCode {
     case "ISAVE" => Some(ISAVE)
     case "IRESTORE" => Some(IRESTORE)
 
+    case "SETG" => Some(SETG)
+    case "COND" => Some(COND)
+
     case _ => None
   }
 }
 
-case class Instruction(opcode: OpCode, operands: Seq[String] = Nil) {
-  def withOperand(operand: String) = copy(operands = operands :+ operand)
+sealed trait Operand
+case class Variable(name: String) extends Operand
+
+case class Instruction(opcode: OpCode, operands: Seq[Operand] = Nil) extends Operand {
+  def withOperand(operand: Operand) = copy(operands = operands :+ operand)
 }
 
 object Instruction {
   import parsers.ZParser
 
-  def parser = {
+  def parser: ZParser[Instruction] = {
     val init: PartialFunction[Tree,(Instruction, Seq[Tree])] =
     { case Node(Leaf(OpCode(opCode)) :: clauses) => (Instruction(opCode), clauses) }
     val clauseParsers: Seq[PartialFunction[(Instruction, Tree), Instruction]] = Seq(
-      { case (i, Leaf(op)) => i.withOperand(op) }
+      { case (i, Leaf(varName)) => i.withOperand(Variable(varName)) },
+      { case (i, line @ Node(Leaf(OpCode(_)) :: _)) => i.withOperand(Instruction.parser.parse(line)) }
     )
 
     ZParser[Instruction](init)(clauseParsers)

@@ -8,9 +8,9 @@ class InstructionSpec extends FlatSpec with Matchers {
     val i = Instruction(ADD)
     i.operands should be(Nil)
 
-    val i2 = i.withOperand(",a")
-    i2.operands should be(Seq(",a"))
-    val i3 = i2.withOperand(",b")
-    i3.operands should be(Seq(",a", ",b"))
+    val i2 = i.withOperand(Variable(",a"))
+    i2.operands should be(Seq(Variable(",a")))
+    val i3 = i2.withOperand(Variable(",b"))
+    i3.operands should be(Seq(Variable(",a"), Variable(",b")))
   }
 }
