@@ -47,8 +47,14 @@ case object MENU extends OpCode
 // TODO output operations
 // TODO window operations
 // TODO pictures and sounds
-// TODO control operations
-// TODO game command
+
+// control operations
+case object CALL extends OpCode
+case object RETURN extends OpCode
+case object RTRUE extends OpCode
+case object RFALSE extends OpCode
+
+// game command
 case object QUIT extends OpCode
 case object RESTART extends OpCode
 case object VERIFY extends OpCode
@@ -93,6 +99,11 @@ object OpCode {
     case "MOUSE-INFO" => Some(MOUSE_INFO)
     case "MOUSE-LIMIT" => Some(MOUSE_LIMIT)
     case "MENU" => Some(MENU)
+
+    case "CALL" => Some(CALL)
+    case "RETURN" => Some(RETURN)
+    case "RTRUE" => Some(RTRUE)
+    case "RFALSE" => Some(RFALSE)
 
     case "QUIT" => Some(QUIT)
     case "RESTART" => Some(RESTART)

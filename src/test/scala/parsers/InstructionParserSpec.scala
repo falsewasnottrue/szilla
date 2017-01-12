@@ -249,6 +249,36 @@ class InstructionParserSpec extends FlatSpec with Matchers {
     res.operands should be(Seq("3", ",BATTLE-COMMANDS-TBL"))
   }
 
+  // control operations
+
+  it should "parse call operations" in {
+    val text = "<CALL routine1 arg1 arg2 arg3>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(CALL)
+    res.operands should be(Seq("routine1", "arg1", "arg2", "arg3"))
+  }
+
+  it should "parse return operations" in {
+    val text = "<RETURN .COUNT>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(RETURN)
+    res.operands should be(Seq(".COUNT"))
+  }
+
+  it should "parse rtrue operations" in {
+    val text = "<RTRUE>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(RTRUE)
+    res.operands should be(Nil)
+  }
+
+  it should "parse rfalse operations" in {
+    val text = "<RFALSE>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(RFALSE)
+    res.operands should be(Nil)
+  }
+
   // game operations
 
   it should "parse quit operations" in {
