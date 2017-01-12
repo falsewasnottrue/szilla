@@ -331,11 +331,7 @@ class InstructionParserSpec extends FlatSpec with Matchers {
   }
 
   // special
-  /*
-          <COND (,SCORE-NOTIFICATION-ON
-               <TELL "[Your score has just gone up by "
-                    N .NUM ".]" CR>)>>
-   */
+
   it should "parse setg operations" in {
     val text = "<SETG SCORE <+ ,SCORE .NUM>>"
     val res = Instruction.parser.parse(text)
@@ -344,6 +340,38 @@ class InstructionParserSpec extends FlatSpec with Matchers {
     res.operands should be(Seq(
       Variable("SCORE"),
       Instruction(ADD, Seq(Variable(",SCORE"), Variable(".NUM")))
+    ))
+  }
+
+  it should "parse tell operations" in {
+    val text = "<TELL \"[Your score has just gone up by \" N .NUM \".]\" CR>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(TELL)
+    res.operands should be(Seq(
+      Variable("[Your score has just gone up by "),
+      Variable("N"),
+      Variable(".NUM"),
+      Variable(".]"),
+      Variable("CR")
+    ))
+  }
+
+  it should "parse cond operations" in {
+    val text = "<COND (,SCORE-NOTIFICATION-ON <TELL \"[Your score has just gone up by \" N .NUM \".]\" CR>)>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(COND)
+
+    res.operands should be(Seq(
+      Condition(
+        Variable(",SCORE-NOTIFICATION-ON"),
+        Instruction(TELL, Seq(
+          Variable("[Your score has just gone up by "),
+          Variable("N"),
+          Variable(".NUM"),
+          Variable(".]"),
+          Variable("CR")
+        ))
+      )
     ))
   }
 }

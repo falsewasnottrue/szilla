@@ -66,6 +66,7 @@ case object IRESTORE extends OpCode
 // special
 case object SETG extends OpCode
 case object COND extends OpCode
+case object TELL extends OpCode
 
 object OpCode {
   def unapply(a: Any): Option[OpCode] = a match {
@@ -119,6 +120,7 @@ object OpCode {
 
     case "SETG" => Some(SETG)
     case "COND" => Some(COND)
+    case "TELL" => Some(TELL)
 
     case _ => None
   }
@@ -126,6 +128,7 @@ object OpCode {
 
 sealed trait Operand
 case class Variable(name: String) extends Operand
+case class Condition(cond: Operand, action: Operand) extends Operand
 
 case class Instruction(opcode: OpCode, operands: Seq[Operand] = Nil) extends Operand {
   def withOperand(operand: Operand) = copy(operands = operands :+ operand)
@@ -139,7 +142,12 @@ object Instruction {
     { case Node(Leaf(OpCode(opCode)) :: clauses) => (Instruction(opCode), clauses) }
     val clauseParsers: Seq[PartialFunction[(Instruction, Tree), Instruction]] = Seq(
       { case (i, Leaf(varName)) => i.withOperand(Variable(varName)) },
-      { case (i, line @ Node(Leaf(OpCode(_)) :: _)) => i.withOperand(Instruction.parser.parse(line)) }
+      { case (i, line @ Node(Leaf(OpCode(_)) :: _)) => i.withOperand(Instruction.parser.parse(line)) },
+      { case (i, Node(Seq(Leaf(cond), action @ Node(_)))) =>
+        i.withOperand(Condition(
+          Variable(cond),
+          Instruction.parser.parse(action)
+        )) }
     )
 
     ZParser[Instruction](init)(clauseParsers)
