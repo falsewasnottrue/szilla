@@ -1,9 +1,14 @@
 package models
 
 case class Routine(
-                    id: Id)
-  extends HasId {
+                    id: Id,
+                    arguments: Seq[String] = Nil,
+                    instructions: Seq[Instruction] = Nil
+                  ) extends HasId {
 
+  def withArgument(argument: String) = copy(arguments = arguments :+ argument)
+
+  def withInstruction(instruction: Instruction) = copy(instructions = instructions :+ instruction)
 }
 
 object Routine {
@@ -12,6 +17,6 @@ object Routine {
   import parsers.ZParser
 
   val parser = ZParser[Routine](zero(ROUTINE, Routine(_)))(Seq(
-    // TODO
+    //{ case Node(Leaf(OpCode(opCode)) :: clauses) => Instruction.parser.par }
   ))
 }
