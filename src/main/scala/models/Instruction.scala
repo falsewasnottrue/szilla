@@ -48,7 +48,14 @@ case object MENU extends OpCode
 // TODO window operations
 // TODO pictures and sounds
 // TODO control operations
-// TODO game commands
+// TODO game command
+case object QUIT extends OpCode
+case object RESTART extends OpCode
+case object VERIFY extends OpCode
+case object SAVE extends OpCode
+case object RESTORE extends OpCode
+case object ISAVE extends OpCode
+case object IRESTORE extends OpCode
 
 object OpCode {
   def unapply(a: Any): Option[OpCode] = a match {
@@ -86,6 +93,14 @@ object OpCode {
     case "MOUSE-INFO" => Some(MOUSE_INFO)
     case "MOUSE-LIMIT" => Some(MOUSE_LIMIT)
     case "MENU" => Some(MENU)
+
+    case "QUIT" => Some(QUIT)
+    case "RESTART" => Some(RESTART)
+    case "VERIFY" => Some(VERIFY)
+    case "SAVE" => Some(SAVE)
+    case "RESTORE" => Some(RESTORE)
+    case "ISAVE" => Some(ISAVE)
+    case "IRESTORE" => Some(IRESTORE)
 
     case _ => None
   }

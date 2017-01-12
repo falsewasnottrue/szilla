@@ -249,6 +249,56 @@ class InstructionParserSpec extends FlatSpec with Matchers {
     res.operands should be(Seq("3", ",BATTLE-COMMANDS-TBL"))
   }
 
+  // game operations
+
+  it should "parse quit operations" in {
+    val text = "<QUIT>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(QUIT)
+    res.operands should be(Nil)
+  }
+
+  it should "parse restart operations" in {
+    val text = "<RESTART>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(RESTART)
+    res.operands should be(Nil)
+  }
+
+  it should "parse verify operations" in {
+    val text = "<VERIFY>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(VERIFY)
+    res.operands should be(Nil)
+  }
+
+  it should "parse save operations" in {
+    val text = "<SAVE>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(SAVE)
+    res.operands should be(Nil)
+  }
+
+  it should "parse restore operations" in {
+    val text = "<RESTORE>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(RESTORE)
+    res.operands should be(Nil)
+  }
+
+  it should "parse isave operations" in {
+    val text = "<ISAVE>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(ISAVE)
+    res.operands should be(Nil)
+  }
+
+  it should "parse irestore operations" in {
+    val text = "<IRESTORE>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(IRESTORE)
+    res.operands should be(Nil)
+  }
 
   // ...
 }
