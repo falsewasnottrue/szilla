@@ -184,5 +184,35 @@ class InstructionParserSpec extends FlatSpec with Matchers {
     res.operands should be(Seq(",ROTTING-TOMATO", ",P?SDESC", "rotten tomato"))
   }
 
+  //
+
+  it should "parse get operations" in {
+    val text = "<GET ,LATITUDE-TABLE 30>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(GET)
+    res.operands should be(Seq(",LATITUDE-TABLE", "30"))
+  }
+
+  it should "parse put operations" in {
+    val text = "<PUT ,SUSPECTS-TABLE ,SUSPECTS-POINTER ,BUTLER>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(PUT)
+    res.operands should be(Seq(",SUSPECTS-TABLE", ",SUSPECTS-POINTER", ",BUTLER"))
+  }
+
+  it should "parse intbl? operations" in {
+    val text = "<INTBL? ,RUDOLPH ,REINDEER-TABLE 8>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(INTBL_Q)
+    res.operands should be(Seq(",RUDOLPH", ",REINDEER-TABLE", "8"))
+  }
+
+  it should "parse copyt operations" in {
+    val text = "<COPYT ,CURRENT-MOVE-TBL ,OLD-MOVE-TBL ,MOVE-TBL-LEN>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(COPYT)
+    res.operands should be(Seq(",CURRENT-MOVE-TBL", ",OLD-MOVE-TBL", ",MOVE-TBL-LEN"))
+  }
+
   // ...
 }

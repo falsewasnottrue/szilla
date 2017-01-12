@@ -31,7 +31,12 @@ case object FCLEAR extends OpCode
 case object GETP extends OpCode
 case object PUTP extends OpCode
 
-// TODO table operations
+// table operations
+case object GET extends OpCode
+case object PUT extends OpCode
+case object INTBL_Q extends OpCode
+case object COPYT extends OpCode
+
 // TODO input operations
 // TODO output operations
 // TODO window operations
@@ -64,6 +69,11 @@ object OpCode {
     case "FCLEAR" => Some(FCLEAR)
     case "GETP" => Some(GETP)
     case "PUTP" => Some(PUTP)
+
+    case "GET" => Some(GET)
+    case "PUT" => Some(PUT)
+    case "INTBL?" => Some(INTBL_Q)
+    case "COPYT" => Some(COPYT)
 
     case _ => None
   }
