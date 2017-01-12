@@ -45,7 +45,19 @@ case object MOUSE_LIMIT extends OpCode
 case object MENU extends OpCode
 
 // TODO output operations
-// TODO window operations
+
+// window operations
+case object CURSET extends OpCode
+case object CURGET extends OpCode
+case object SCREEN extends OpCode
+case object CLEAR extends OpCode
+case object WINPOS extends OpCode
+case object WINSIZE extends OpCode
+case object WINATTR extends OpCode
+case object SPLIT extends OpCode
+case object MARGIN extends OpCode
+case object SCROLL extends OpCode
+
 // pictures and sounds
 case object DISPLAY extends OpCode
 case object PICINF extends OpCode
@@ -57,7 +69,7 @@ case object RETURN extends OpCode
 case object RTRUE extends OpCode
 case object RFALSE extends OpCode
 
-// game command
+// game commands
 case object QUIT extends OpCode
 case object RESTART extends OpCode
 case object VERIFY extends OpCode
@@ -107,6 +119,17 @@ object OpCode {
     case "MOUSE-INFO" => Some(MOUSE_INFO)
     case "MOUSE-LIMIT" => Some(MOUSE_LIMIT)
     case "MENU" => Some(MENU)
+
+    case "CURSET" => Some(CURSET)
+    case "CURGET" => Some(CURGET)
+    case "SCREEN" => Some(SCREEN)
+    case "CLEAR" => Some(CLEAR)
+    case "WINPOS" => Some(WINPOS)
+    case "WINSIZE" => Some(WINSIZE)
+    case "WINATTR" => Some(WINATTR)
+    case "SPLIT" => Some(SPLIT)
+    case "MARGIN" => Some(MARGIN)
+    case "SCROLL" => Some(SCROLL)
 
     case "DISPLAY" => Some(DISPLAY)
     case "PICINF" => Some(PICINF)

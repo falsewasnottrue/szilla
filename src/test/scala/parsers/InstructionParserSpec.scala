@@ -5,6 +5,8 @@ import org.scalatest.{FlatSpec, Matchers}
 
 class InstructionParserSpec extends FlatSpec with Matchers {
 
+  // arithmetic instructions
+
   "Instruction parser" should "parse add operations" in {
     val res1 = Instruction.parser.parse("<ADD ,FRONT-SEAT-PASSENGERS ,BACK-SEAT-PASSENGERS>")
     res1.opcode should be(ADD)
@@ -65,6 +67,8 @@ class InstructionParserSpec extends FlatSpec with Matchers {
     res1.operands should be(Seq(Variable("17")))
   }
 
+  // predicate instructions
+
   it should "parse equal? operations" in {
     val text = "<EQUAL? ,HERE ,OVAL-OFFICE ,ROSE-GARDEN ,PORTICO>"
     val res = Instruction.parser.parse(text)
@@ -120,6 +124,8 @@ class InstructionParserSpec extends FlatSpec with Matchers {
     res.opcode should be(IN_Q)
     res.operands should be(Seq(Variable(",SECRET-WILL"), Variable(",WALL-SAFE")))
   }
+
+  // object operations
 
   it should "parse move operations" in {
     val text = "<MOVE ,BREAD ,TOASTER>"
@@ -184,7 +190,7 @@ class InstructionParserSpec extends FlatSpec with Matchers {
     res.operands should be(Seq(Variable(",ROTTING-TOMATO"), Variable(",P?SDESC"), Variable("rotten tomato")))
   }
 
-  //
+  // table operations
 
   it should "parse get operations" in {
     val text = "<GET ,LATITUDE-TABLE 30>"
@@ -213,6 +219,8 @@ class InstructionParserSpec extends FlatSpec with Matchers {
     res.opcode should be(COPYT)
     res.operands should be(Seq(Variable(",CURRENT-MOVE-TBL"), Variable(",OLD-MOVE-TBL"), Variable(",MOVE-TBL-LEN")))
   }
+
+  // input operations
 
   it should "parse read operations" in {
     val text = "<READ ,P-INBUF-TBL>"
@@ -247,6 +255,81 @@ class InstructionParserSpec extends FlatSpec with Matchers {
     val res = Instruction.parser.parse(text)
     res.opcode should be(MENU)
     res.operands should be(Seq(Variable("3"), Variable(",BATTLE-COMMANDS-TBL")))
+  }
+
+  // windows operations
+
+  it should "parse curset operations" in {
+    val text = "<CURSET 1 </ ,WIDTH 2>>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(CURSET)
+    res.operands should be(Seq(
+      Variable("1"),
+      Instruction(DIV, Seq(Variable(",WIDTH"), Variable("2")))
+    ))
+  }
+
+  it should "parse curget operations" in {
+    val text = "<CURGET ,CURSOR-LOC-TBL>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(CURGET)
+    res.operands should be(Seq(Variable(",CURSOR-LOC-TBL")))
+  }
+
+  it should "parse screen operations" in {
+    val text = "<SCREEN 2>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(SCREEN)
+    res.operands should be(Seq(Variable("2")))
+  }
+
+  it should "parse clear operations" in {
+    val text = "<CLEAR ,S-TEXT>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(CLEAR)
+    res.operands should be(Seq(Variable(",S-TEXT")))
+  }
+
+  it should "parse winpos operations" in {
+    val text = "<WINPOS ,FOOTNOTE-WINDOW 33 12>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(WINPOS)
+    res.operands should be(Seq(Variable(",FOOTNOTE-WINDOW"), Variable("33"), Variable("12")))
+  }
+
+  it should "parse winsize operations" in {
+    val text = "<WINSIZE 0 ,TEXT-WINDOW-HEIGHT ,TEXT-WINDOW-WIDTH>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(WINSIZE)
+    res.operands should be(Seq(Variable("0"), Variable(",TEXT-WINDOW-HEIGHT"), Variable(",TEXT-WINDOW-WIDTH")))
+  }
+
+  it should "parse winattr operations" in {
+    val text = "<WINATTR ,TEXT-WINDOW 15>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(WINATTR)
+    res.operands should be(Seq(Variable(",TEXT-WINDOW"), Variable("15")))
+  }
+
+  it should "parse split operations" in {
+    val text = "<SPLIT 2>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(SPLIT)
+    res.operands should be(Seq(Variable("2")))
+  }
+
+  it should "parse margin operations" in {
+    val text = "<MARGIN 20 20>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(MARGIN)
+    res.operands should be(Seq(Variable("20"), Variable("20")))
+  }
+
+  it should "parse scroll operations" in {
+    val text = "<SCROLL ,S-TEXT 4>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(SCROLL)
+    res.operands should be(Seq(Variable(",S-TEXT"), Variable("4")))
   }
 
   // pictures and sound
@@ -302,7 +385,7 @@ class InstructionParserSpec extends FlatSpec with Matchers {
     res.operands should be(Nil)
   }
 
-  // game operations
+  // game commands
 
   it should "parse quit operations" in {
     val text = "<QUIT>"
