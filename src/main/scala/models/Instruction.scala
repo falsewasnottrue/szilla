@@ -44,7 +44,16 @@ case object MOUSE_INFO extends OpCode
 case object MOUSE_LIMIT extends OpCode
 case object MENU extends OpCode
 
-// TODO output operations
+// output operations
+case object PRINT extends OpCode
+case object PRINTD extends OpCode
+case object PRINTN extends OpCode
+case object BUFOUT extends OpCode
+case object CRLF extends OpCode
+case object HLIGHT extends OpCode
+case object COLOR extends OpCode
+case object DIROUT extends OpCode
+case object DIRIN extends OpCode
 
 // window operations
 case object CURSET extends OpCode
@@ -85,6 +94,7 @@ case object TELL extends OpCode
 
 object OpCode {
   def unapply(a: Any): Option[OpCode] = a match {
+    // arithmetic instructions
     case "+" | "ADD" => Some(ADD)
     case "-" | "SUB" => Some(SUB)
     case "*" | "MUL" => Some(MUL)
@@ -92,6 +102,7 @@ object OpCode {
     case "MOD" => Some(MOD)
     case "RANDOM" => Some(RANDOM)
 
+    // predicate instructions
     case "EQUAL?" => Some(EQUAL_Q)
     case "ZERO?" => Some(ZERO_Q)
     case "L?" | "LESS?" => Some(LESS_Q)
@@ -99,6 +110,7 @@ object OpCode {
     case "FSET?" => Some(FSET_Q)
     case "IN?" => Some(IN_Q)
 
+    // object operations
     case "MOVE" => Some(MOVE)
     case "REMOVE" => Some(REMOVE)
     case "LOC" => Some(LOC)
@@ -109,17 +121,31 @@ object OpCode {
     case "GETP" => Some(GETP)
     case "PUTP" => Some(PUTP)
 
+    // table operations
     case "GET" => Some(GET)
     case "PUT" => Some(PUT)
     case "INTBL?" => Some(INTBL_Q)
     case "COPYT" => Some(COPYT)
 
+    // input operations
     case "READ" => Some(READ)
     case "INPUT" => Some(INPUT)
     case "MOUSE-INFO" => Some(MOUSE_INFO)
     case "MOUSE-LIMIT" => Some(MOUSE_LIMIT)
     case "MENU" => Some(MENU)
 
+    // output operations
+    case "PRINT" => Some(PRINT)
+    case "PRINTD" => Some(PRINTD)
+    case "PRINTN" => Some(PRINTN)
+    case "BUFOUT" => Some(BUFOUT)
+    case "CRLF" => Some(CRLF)
+    case "HLIGHT" => Some(HLIGHT)
+    case "COLOR" => Some(COLOR)
+    case "DIROUT" => Some(DIROUT)
+    case "DIRIN" => Some(DIRIN)
+
+    // window operations
     case "CURSET" => Some(CURSET)
     case "CURGET" => Some(CURGET)
     case "SCREEN" => Some(SCREEN)
@@ -131,15 +157,18 @@ object OpCode {
     case "MARGIN" => Some(MARGIN)
     case "SCROLL" => Some(SCROLL)
 
+    // pictures and sounds
     case "DISPLAY" => Some(DISPLAY)
     case "PICINF" => Some(PICINF)
     case "SOUND" => Some(SOUND)
 
+    // control operations
     case "CALL" => Some(CALL)
     case "RETURN" => Some(RETURN)
     case "RTRUE" => Some(RTRUE)
     case "RFALSE" => Some(RFALSE)
 
+    // game commands
     case "QUIT" => Some(QUIT)
     case "RESTART" => Some(RESTART)
     case "VERIFY" => Some(VERIFY)
@@ -148,6 +177,7 @@ object OpCode {
     case "ISAVE" => Some(ISAVE)
     case "IRESTORE" => Some(IRESTORE)
 
+    // special
     case "SETG" => Some(SETG)
     case "COND" => Some(COND)
     case "TELL" => Some(TELL)

@@ -257,6 +257,71 @@ class InstructionParserSpec extends FlatSpec with Matchers {
     res.operands should be(Seq(Variable("3"), Variable(",BATTLE-COMMANDS-TBL")))
   }
 
+  // output operations
+
+  it should "parse print operations" in {
+    val text = "<PRINT \"Not bloody likely.\">"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(PRINT)
+    res.operands should be(Seq(Variable("Not bloody likely.")))
+  }
+
+  it should "parse printd operations" in {
+    val text = "<PRINTD ,WICKER-BASKET>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(PRINTD)
+    res.operands should be(Seq(Variable(",WICKER-BASKET")))
+  }
+
+  it should "parse printn operations" in {
+    val text = "<PRINTN ,DIAL-SETTING>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(PRINTN)
+    res.operands should be(Seq(Variable(",DIAL-SETTING")))
+  }
+
+  it should "parse bufout operations" in {
+    val text = "<BUFOUT 0>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(BUFOUT)
+    res.operands should be(Seq(Variable("0")))
+  }
+
+  it should "parse crlf operations" in {
+    val text = "<CRLF>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(CRLF)
+    res.operands should be(Nil)
+  }
+
+  it should "parse hlight operations" in {
+    val text = "<HLIGHT ,H-BOLD>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(HLIGHT)
+    res.operands should be(Seq(Variable(",H-BOLD")))
+  }
+
+  it should "parse color operations" in {
+    val text = "<COLOR 0 ,FANUCCI-BACKGROUND>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(COLOR)
+    res.operands should be(Seq(Variable("0"), Variable(",FANUCCI-BACKGROUND")))
+  }
+
+  it should "parse dirout operations" in {
+    val text = "<DIROUT ,D-PRINTER-ON>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(DIROUT)
+    res.operands should be(Seq(Variable(",D-PRINTER-ON")))
+  }
+
+  it should "parse dirin operations" in {
+    val text = "<DIRIN 1>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(DIRIN)
+    res.operands should be(Seq(Variable("1")))
+  }
+
   // windows operations
 
   it should "parse curset operations" in {
