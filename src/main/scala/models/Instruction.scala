@@ -46,7 +46,10 @@ case object MENU extends OpCode
 
 // TODO output operations
 // TODO window operations
-// TODO pictures and sounds
+// pictures and sounds
+case object DISPLAY extends OpCode
+case object PICINF extends OpCode
+case object SOUND extends OpCode
 
 // control operations
 case object CALL extends OpCode
@@ -104,6 +107,10 @@ object OpCode {
     case "MOUSE-INFO" => Some(MOUSE_INFO)
     case "MOUSE-LIMIT" => Some(MOUSE_LIMIT)
     case "MENU" => Some(MENU)
+
+    case "DISPLAY" => Some(DISPLAY)
+    case "PICINF" => Some(PICINF)
+    case "SOUND" => Some(SOUND)
 
     case "CALL" => Some(CALL)
     case "RETURN" => Some(RETURN)

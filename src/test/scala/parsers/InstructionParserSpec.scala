@@ -249,6 +249,29 @@ class InstructionParserSpec extends FlatSpec with Matchers {
     res.operands should be(Seq(Variable("3"), Variable(",BATTLE-COMMANDS-TBL")))
   }
 
+  // pictures and sound
+
+  it should "parse display operations" in {
+    val text = "<DISPLAY ,P-TITLE 1 1>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(DISPLAY)
+    res.operands should be(Seq(Variable(",P-TITLE"), Variable("1"), Variable("1")))
+  }
+
+  it should "parse picinf operations" in {
+    val text = "<PICINF ,WATERFALL-PIC ,PICINF-TBL>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(PICINF)
+    res.operands should be(Seq(Variable(",WATERFALL-PIC"), Variable(",PICINF-TBL")))
+  }
+
+  it should "parse sound operations" in {
+    val text = "<SOUND ,CAR-BACKFIRE 2 5 2>"
+    val res = Instruction.parser.parse(text)
+    res.opcode should be(SOUND)
+    res.operands should be(Seq(Variable(",CAR-BACKFIRE"), Variable("2"), Variable("5"), Variable("2")))
+  }
+
   // control operations
 
   it should "parse call operations" in {
