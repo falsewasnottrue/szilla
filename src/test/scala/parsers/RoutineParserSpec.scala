@@ -72,22 +72,4 @@ class RoutineParserSpec extends FlatSpec with Matchers {
       SimpleArgument("F")
     ))
   }
-
-    // TODOs
-    // T guard
-    // Return-VALUE
-
-//    """
-//      |<ROUTINE FIND-FOOD ("AUX" FOOD)
-//      |          <COND (<IN? ,HAM-SANDWICH ,HERE>
-//      |                 <SET FOOD ,HAM-SANDWICH>)
-//      |                (<IN? ,CANDY-BAR ,HERE>
-//      |                 <SET FOOD ,CANDY-BAR>)
-//      |                (<IN? ,BELGIAN-ENDIVE ,HERE>
-//      |                 <SET FOOD ,BELGIAN-ENDIVE>)
-//      |                (T
-//      |                 <SET FOOD <>)>
-//      |.FOOD>
-//    """.stripMargin
-
 }

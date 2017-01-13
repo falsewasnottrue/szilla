@@ -92,6 +92,7 @@ case object SETG extends OpCode
 case object SET extends OpCode
 case object COND extends OpCode
 case object TELL extends OpCode
+case object REPEAT extends OpCode
 
 object OpCode {
   def unapply(a: Any): Option[OpCode] = a match {
@@ -183,6 +184,7 @@ object OpCode {
     case "SETG" => Some(SETG)
     case "COND" => Some(COND)
     case "TELL" => Some(TELL)
+    case "REPEAT" => Some(REPEAT)
 
     case _ => None
   }
@@ -192,7 +194,7 @@ sealed trait Operand
 case class Variable(name: String) extends Operand
 case class Condition(cond: Operand, action: Operand) extends Operand
 
-case class Instruction(opcode: OpCode, operands: Seq[Operand] = Nil) extends Operand {
+case class Instruction(opCode: OpCode, operands: Seq[Operand] = Nil) extends Operand {
   def withOperand(operand: Operand) = copy(operands = operands :+ operand)
 }
 
@@ -201,15 +203,21 @@ object Instruction {
 
   def parser: ZParser[Instruction] = {
     val init: PartialFunction[Tree,(Instruction, Seq[Tree])] =
-    { case Node(Leaf(OpCode(opCode)) :: clauses, Angle) => (Instruction(opCode), clauses) }
+    {
+      // TODO args
+      case Node(Leaf("REPEAT") :: Node(args, Round) :: clauses, Angle) => (Instruction(REPEAT), clauses)
+      case Node(Leaf(OpCode(opCode)) :: clauses, Angle) => (Instruction(opCode), clauses)
+    }
     val clauseParsers: Seq[PartialFunction[(Instruction, Tree), Instruction]] = Seq(
       { case (i, Leaf(varName)) => i.withOperand(Variable(varName)) },
       { case (i, line @ Node(Leaf(OpCode(_)) :: _, Angle)) => i.withOperand(Instruction.parser.parse(line)) },
+      // cond 1
       { case (i, Node(Seq(Leaf(predicate), action), Round)) =>
         i.withOperand(Condition(
           Variable(predicate),
           Instruction.parser.parse(action)
         )) },
+      // cond n
       { case (i, Node(Seq(predicate, action), Round)) =>
         i.withOperand(Condition(
           Instruction.parser.parse(predicate),
