@@ -8,10 +8,12 @@ class RoutineSpec extends FlatSpec with Matchers {
     val r = Routine("ROUTINE-A")
     r.arguments should be(Nil)
 
-    val r1 = r.withArgument("A")
-    r1.arguments should be(Seq("A"))
-    val r2 = r1.withArgument("B")
-    r2.arguments should be(Seq("A", "B"))
+    val r1 = r.withArgument(SimpleArgument("A"))
+    r1.arguments should be(Seq(SimpleArgument("A")))
+    val r2 = r1.withArgument(AuxArgument("B"))
+    r2.arguments should be(Seq(SimpleArgument("A"), AuxArgument("B")))
+    val r3 = r2.withArgument(OptArgument("C"))
+    r3.arguments should be(Seq(SimpleArgument("A"), AuxArgument("B"), OptArgument("C")))
   }
 
   it should "allow to add instructions" in {
