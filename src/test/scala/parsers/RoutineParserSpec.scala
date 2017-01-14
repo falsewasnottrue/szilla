@@ -72,4 +72,38 @@ class RoutineParserSpec extends FlatSpec with Matchers {
       OptArgument("F")
     ))
   }
+
+  /*
+  <ROUTINE AVOCADO-F ()
+          <COND (<VERB? EAT>
+                 <COND (,AVOCADO-POISONED
+                        <SETG PLAYER-POISONED T>
+                        <REMOVE ,AVOCADO>
+                        <TELL "You begin to feel sick." CR>)
+                       (<AND <EQUAL? ,HERE ,GARDEN-OF-EDEN>
+                           <IN? ,SNAKE ,TREE-OF-KNOWLEDGE>>
+Page 17
+Learning ZIL 2/25/2002
+                        <MOVE ,APPLE ,HERE>
+                        <TELL "The avocado is so
+     unappetizing. Suddenly, a seductive voice beckons from
+     the tree. A moment later, a succulent apple lands at
+     your feet." CR>)
+                       (T
+                        <REMOVE ,AVOCADO>
+                        <MOVE ,AVOCADO-PIT ,PLAYER>
+                        <TELL "You eat the entire avocado.
+     It was filling, if not tasty." CR>)>)
+                (<AND <VERB? THROW>
+                      <EQUAL? ,HERE ,MIDWAY>
+                      <NOT ,BALLOON-POPPED>
+                      <HAWKER-AT-CIRCUS>>
+                 <MOVE ,AVOCADO ,MIDWAY-BOOTH>
+<TELL "The avocado bounces off the balloon. The hawker sneers. \"You'd have more luck with a dart, kiddo! Only two bits!\"" CR>)
+                (<AND <VERB? COOK>
+                      <OR <NOT <EQUAL? ,HERE ,KITCHEN>>
+                          <NOT <IN? ,COOKPOT ,OVEN>>>>
+                 <TELL "Even a master chef couldn't cook an
+     avocado with what you've got!" CR>)>>
+   */
 }

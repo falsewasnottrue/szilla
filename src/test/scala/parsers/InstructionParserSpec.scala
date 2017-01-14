@@ -582,6 +582,32 @@ class InstructionParserSpec extends FlatSpec with Matchers {
     ))
   }
 
+  it should "parse cond operation with multiple instructions" in {
+    val text =
+      """
+        |<COND (,AVOCADO-POISONED
+        |       <SETG PLAYER-POISONED T>
+        |       <REMOVE ,AVOCADO>
+        |       <TELL "You begin to feel sick." CR>)>
+      """.stripMargin
+    val res = Instruction.parser.parse(text)
+    res.opCode should be(COND)
+
+    res.operands should be(Seq(
+      Condition(
+        Variable(",AVOCADO-POISONED"),
+        Instruction(SETG, Seq(Variable("PLAYER-POISONED"), Variable("T"))),
+        Instruction(REMOVE, Seq(Variable(",AVOCADO"))),
+        Instruction(TELL, Seq(Variable("You begin to feel sick."), Variable("CR")))
+      )
+    ))
+    /*
+    <COND (,AVOCADO-POISONED
+      <SETG PLAYER-POISONED T>
+    <REMOVE ,AVOCADO>
+      <TELL "You begin to feel sick." CR>)
+    */
+  }
   it should "parse repeat blocks" in {
     val text =
       """

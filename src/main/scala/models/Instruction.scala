@@ -192,7 +192,7 @@ object OpCode {
 
 sealed trait Operand
 case class Variable(name: String) extends Operand
-case class Condition(cond: Operand, action: Operand) extends Operand
+case class Condition(cond: Operand, action: Operand*) extends Operand
 
 case class Instruction(opCode: OpCode, operands: Seq[Operand] = Nil) extends Operand {
   def withOperand(operand: Operand) = copy(operands = operands :+ operand)
@@ -213,16 +213,16 @@ object Instruction {
       { case (i, Leaf(varName)) => i.withOperand(Variable(varName)) },
       { case (i, line @ Node(Leaf(OpCode(_)) :: _, Angle)) => i.withOperand(Instruction.parser.parse(line)) },
       // cond 1
-      { case (i, Node(Seq(Leaf(predicate), action), Round)) =>
+      { case (i, Node(Leaf(predicate) :: actions, Round)) =>
         i.withOperand(Condition(
           Variable(predicate),
-          Instruction.parser.parse(action)
+          actions.map(Instruction.parser.parse):_*
         )) },
       // cond n
-      { case (i, Node(Seq(predicate, action), Round)) =>
+      { case (i, Node(predicate :: actions, Round)) =>
         i.withOperand(Condition(
           Instruction.parser.parse(predicate),
-          Instruction.parser.parse(action)
+          actions.map(Instruction.parser.parse):_*
         )) }
     )
 
