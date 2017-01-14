@@ -204,6 +204,8 @@ object Instruction {
   def parser: ZParser[Instruction] = {
     val init: PartialFunction[Tree,(Instruction, Seq[Tree])] =
     {
+      // TODO Routine IS Instruction
+      // TODO Routine CALL IS Instruction
       // TODO args
       case Node(Leaf("REPEAT") :: Node(args, Round) :: clauses, Angle) => (Instruction(REPEAT), clauses)
       case Node(Leaf(OpCode(opCode)) :: clauses, Angle) => (Instruction(opCode), clauses)
