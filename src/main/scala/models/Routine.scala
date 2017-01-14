@@ -29,21 +29,15 @@ object Routine {
         routine.withInstruction(Instruction.parser.parse(line))
     },
     // argument list
-    { case (routine, Node(arguments, Round)) => arguments match {
-      case Nil => routine
-      case args :+ l => (l +: args).zip(arguments).foldLeft(routine) {
-        case (r, (_, Leaf(arg))) if arg == "AUX" || arg == "OPT" => r
-        case (r, (Leaf("AUX"), Leaf(arg))) => r.withArgument(AuxArgument(arg))
-        case (r, (Leaf("OPT"), Leaf(arg))) => r.withArgument(OptArgument(arg))
-        case (r, (Leaf(_), Leaf(arg))) => r.withArgument(SimpleArgument(arg))
-        case _ => throw new IllegalArgumentException(s"TODO")
-      }
-    }
+    { case (routine, Node(arguments, Round)) =>
+        arguments.foldLeft((routine, 0 /* 0=None, 1=Aux, 2=Opt*/)) {
+          case ((r, _), Leaf("AUX")) => (r, 1)
+          case ((r, _), Leaf("OPT")) => (r, 2)
+          case ((r,0), Leaf(argument)) => (r.withArgument(SimpleArgument(argument)), 0)
+          case ((r,1), Leaf(argument)) => (r.withArgument(AuxArgument(argument)), 1)
+          case ((r,2), Leaf(argument)) => (r.withArgument(OptArgument(argument)), 2)
+          case _ => throw new IllegalArgumentException(s"unexpected argument $arguments")
+        }._1
     }
   ))
 }
-
-//arguments..zip(arguments.drop(1)).foldLeft(routine) {
-//  case (r, Leaf(argument)) => r.withArgument(SimpleArgument(argument))
-//
-//} }

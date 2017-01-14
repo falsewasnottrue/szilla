@@ -67,9 +67,9 @@ class RoutineParserSpec extends FlatSpec with Matchers {
       SimpleArgument("A"),
       SimpleArgument("B"),
       AuxArgument("C"),
-      SimpleArgument("D"),
+      AuxArgument("D"),
       OptArgument("E"),
-      SimpleArgument("F")
+      OptArgument("F")
     ))
   }
 }
