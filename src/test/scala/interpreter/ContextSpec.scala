@@ -7,15 +7,21 @@ class ContextSpec extends FlatSpec with Matchers {
 
   trait Env {
     val ctx = Context()
+    val v = IntValue(42)
   }
 
   "Context" should "store variables" in new Env {
     val x = Variable("x")
     ctx.get(x) should be(None)
 
-    val v = new Value
-    val c = ctx.set(x, v)
-    c.get(x) should be(Some(v))
-    c.parent should be(Some(ctx))
+    ctx.set(x, v)
+    ctx.get(x) should be(Some(v))
+  }
+
+  it should "manage stack" in new Env {
+    ctx.pop should be(None)
+    ctx.push(v)
+    ctx.pop should be(Some(v))
+    ctx.pop should be(None)
   }
 }

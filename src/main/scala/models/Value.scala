@@ -1,13 +1,6 @@
 package models
 
-sealed trait _Type
-case object IntType extends _Type
-case object StringType extends _Type
-case object BoolType extends _Type
-// ...
-
-case class Value(_type: _Type, v: Any) {
-
-  def intValue = if (_type == IntType) v.asInstanceOf[Int] else throw new IllegalArgumentException
-
-}
+sealed trait Value
+case class IntValue(v: Int) extends Value
+case class StringValue(v: Int) extends Value
+case class BoolValue(v: Boolean) extends Value
