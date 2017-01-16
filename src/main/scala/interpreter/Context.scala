@@ -12,7 +12,10 @@ case class Context(parent: Option[Context] = None) {
 
   def set(variable: Variable, value: Value): Unit = values.put(variable, value)
 
-  def push(value: Value): Unit = stack.push(value)
+  def push(value: Value): Context = {
+    stack.push(value)
+    this
+  }
 
   def pop: Option[Value] = if (stack.isEmpty) None else Some(stack.pop)
 
