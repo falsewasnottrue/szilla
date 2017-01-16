@@ -15,12 +15,6 @@ class InterpreterSpec extends FlatSpec with Matchers {
     c.pop should be(Some(IntValue(42)))
   }
 
-  it should "evaluate double variables" in new Env {
-    val dVar = Variable("3.14")
-    val c = Interpreter.evaluate(ctx)(dVar)
-    c.pop should be(Some(DoubleValue(3.14)))
-  }
-
   it should "evaluate string variables" in new Env {
     val sVar = Variable("this is a string")
     val c = Interpreter.evaluate(ctx)(sVar)

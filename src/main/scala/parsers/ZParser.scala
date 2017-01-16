@@ -30,18 +30,18 @@ case class ZParser[T](init: PartialFunction[Tree,(T, Seq[Tree])])(clauseParsers:
 object ZParser {
 
   def zero[T](keyword: String, make: String => T): PartialFunction[Tree, (T, Seq[Tree])] =
-    { case Node(Leaf(`keyword`) :: Leaf(id) :: clauses) => (make(id), clauses) }
+    { case Node(Leaf(`keyword`) :: Leaf(id) :: clauses, _) => (make(id), clauses) }
 
   def point[T](keyword: String, step: (T, String) => T): PartialFunction[(T, Tree), T] =
-    { case (t, Node(Seq(Leaf(`keyword`), Leaf(id)))) => step(t, id) }
+    { case (t, Node(Seq(Leaf(`keyword`), Leaf(id)), _)) => step(t, id) }
 
   def point2[T](keyword: String, step: (T, String, String) => T): PartialFunction[(T, Tree), T] =
-  { case (t, Node(Seq(Leaf(dir), Leaf(`keyword`), Leaf(id)))) => step(t, dir, id) }
+  { case (t, Node(Seq(Leaf(dir), Leaf(`keyword`), Leaf(id)), _)) => step(t, dir, id) }
 
   def points[T](keyword: String, step: (T, String) => T): PartialFunction[(T, Tree), T] =
-    {case (obj, Node(Leaf(`keyword`) +: clauses)) => clauses.foldLeft(obj) {
+    {case (obj, Node(Leaf(`keyword`) +: clauses, _)) => clauses.foldLeft(obj) {
       case (o, Leaf(clause)) => step(o, clause)
-      case (o, Node(_)) => o // ignore
+      case (o, Node(_, _)) => o // ignore
       case s => throw new IllegalArgumentException(s"illegal clause $keyword: $s")
     }}
 }

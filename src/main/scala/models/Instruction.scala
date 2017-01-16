@@ -185,6 +185,8 @@ object OpCode {
     case "COND" => Some(COND)
     case "TELL" => Some(TELL)
     case "REPEAT" => Some(REPEAT)
+    // TODO GLOBAL
+    // TODO QUEUE
 
     case _ => None
   }

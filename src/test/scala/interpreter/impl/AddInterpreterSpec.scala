@@ -16,20 +16,14 @@ class AddInterpreterSpec extends FlatSpec with Matchers {
     res.pop should be(Some(IntValue(42)))
   }
 
-  it should "cast ints to double if necessary" in new Env {
-    val add = Instruction.parser.parse("<+ 10 3.14>")
-    val res = Interpreter.evaluate(ctx)(add)
-    res.pop should be(Some(DoubleValue(13.14)))
-  }
-
-  it should "recursively evaluate its operands" in new Env {
-    val add = Instruction.parser.parse("<+ <ADD 4 6> 3.14>")
-    val res = Interpreter.evaluate(ctx)(add)
-    res.pop should be(Some(DoubleValue(13.14)))
-  }
-
-  it should "fail if operand count is not 2" in new Env {
+  it should "add multiple integers" in new Env {
     val add = Instruction.parser.parse("<ADD 1 2 3 4>")
+    val res = Interpreter.evaluate(ctx)(add)
+    res.pop should be(Some(IntValue(10)))
+  }
+
+  it should "fail for non-int operand" in new Env {
+    val add = Instruction.parser.parse("<ADD 1 \"abc\">")
     intercept[IllegalArgumentException] {
       Interpreter.evaluate(ctx)(add)
     }

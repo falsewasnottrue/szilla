@@ -17,7 +17,6 @@ object Interpreter {
 
   private def evaluateVariable(ctx: Context)(v: Variable): Context = v match {
     case Variable(Int(i)) => ctx.push(IntValue(i))
-    case Variable(Double(d)) => ctx.push(DoubleValue(d))
     case Variable(Global(g)) => ctx.get(v) match {
       case Some(value) => ctx.push(value)
       case _ => throw new IllegalStateException(s"variable not set $v")

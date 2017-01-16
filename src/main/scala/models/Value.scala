@@ -4,9 +4,6 @@ sealed trait Value
 case class IntValue(v: Int) extends Value {
   override def toString = v.toString
 }
-case class DoubleValue(v: Double) extends Value {
-  override def toString = v.toString
-}
 case class StringValue(v: String) extends Value {
   override def toString = v.toString
 }
@@ -17,14 +14,6 @@ case class BoolValue(v: Boolean) extends Value {
 object Int {
   def unapply(s: String) : Option[Int] = try {
     Some(s.toInt)
-  } catch {
-    case _ : java.lang.NumberFormatException => None
-  }
-}
-
-object Double {
-  def unapply(s: String) : Option[Double] = try {
-    Some(s.toDouble)
   } catch {
     case _ : java.lang.NumberFormatException => None
   }
