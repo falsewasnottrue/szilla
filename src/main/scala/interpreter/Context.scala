@@ -21,6 +21,6 @@ case class Context(parent: Option[Context] = None) {
 
   def in: String = "TODO"
 
-  def out(s: String): Unit = println(s)
+  def out(s: String): Unit = print(s)
 
 }
