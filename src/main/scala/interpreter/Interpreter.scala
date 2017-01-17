@@ -14,6 +14,7 @@ object Interpreter {
     RANDOM -> RandomInterpreter,
     EQUAL_Q -> EqualQInterpreter,
     ZERO_Q -> ZeroQInterpreter,
+    LESS_Q -> LessQInterpreter,
     MOVE -> MoveInterpreter,
     CRLF -> CRLFInterpreter,
     RTRUE -> RTrueInterpreter,
