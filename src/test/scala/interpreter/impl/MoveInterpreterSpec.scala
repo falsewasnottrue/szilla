@@ -1,14 +1,10 @@
 package interpreter.impl
 
-import interpreter.{Context, Interpreter}
-import models.{Instruction, Object, ObjectValue, Variable}
-import org.scalatest.{FlatSpec, Matchers}
+import models.{Object, ObjectValue, Variable}
 
-class MoveInterpreterSpec extends FlatSpec with Matchers {
+class MoveInterpreterSpec extends BaseInterpreterSpec {
 
-  trait Env {
-    val ctx = Context()
-
+  trait Env0 extends Env {
     val breadVar = Variable(",BREAD")
     val toasterVar = Variable(",TOASTER")
     val bread = Object("bread")
@@ -18,29 +14,28 @@ class MoveInterpreterSpec extends FlatSpec with Matchers {
     ctx.set(toasterVar, ObjectValue(toaster))
   }
 
-  "MoveInterpreter" should "put an object into another" in new Env {
+  "MoveInterpreter" should "put an object into another" in new Env0 {
     toaster.contains(bread) should be(false)
-    val instruction = Instruction.parser.parse("<MOVE ,BREAD ,TOASTER>")
-    Interpreter.evaluate(ctx)(instruction)
+    run(ctx)("<MOVE ,BREAD ,TOASTER>")
 
     toaster.contains(bread) should be(true)
   }
 
-  it should "fail with too many parameters" in new Env {
+  it should "fail with too many parameters" in new Env0 {
     intercept[IllegalArgumentException] {
-      Interpreter.evaluate(ctx)(Instruction.parser.parse("<MOVE ,BREAD ,TOASTER 1>"))
+      run(ctx)("<MOVE ,BREAD ,TOASTER 1>")
     }
   }
 
-  it should "fail with too few parameters" in new Env {
+  it should "fail with too few parameters" in new Env0 {
     intercept[IllegalArgumentException] {
-      Interpreter.evaluate(ctx)(Instruction.parser.parse("<MOVE ,BREAD>"))
+      run(ctx)("<MOVE ,BREAD>")
     }
   }
 
-  it should "fail with wrong type of parameters" in new Env {
+  it should "fail with wrong type of parameters" in new Env0 {
     intercept[IllegalArgumentException] {
-      Interpreter.evaluate(ctx)(Instruction.parser.parse("<MOVE ,BREAD \"bad\">"))
+      run(ctx)("<MOVE ,BREAD \"bad\">")
     }
   }
 }

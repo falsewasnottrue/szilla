@@ -1,37 +1,30 @@
 package interpreter.impl
 
-import interpreter.{Context, Interpreter}
-import models.{Instruction, IntValue}
-import org.scalatest.{FlatSpec, Matchers}
+import models.IntValue
 
-class RandomInterpreterSpec extends FlatSpec with Matchers {
-
-  trait Env {
-    val ctx = Context()
-  }
+class RandomInterpreterSpec extends BaseInterpreterSpec {
 
   "RandomInterpreter" should "create a random number" in new Env {
-    val text = "<RANDOM 100>"
-    Interpreter.evaluate(ctx)(Instruction.parser.parse(text))
+    run(ctx)("<RANDOM 100>")
     val Some(IntValue(res)) = ctx.pop
     res should (be >= 1 and be <= 100)
   }
 
   it should "fail with more than one parameter" in new Env {
     intercept[IllegalArgumentException] {
-      Interpreter.evaluate(ctx)(Instruction.parser.parse("<RANDOM 1 2 3>"))
+      run(ctx)("<RANDOM 1 2 3>")
     }
   }
 
   it should "fail with no parameters" in new Env {
     intercept[IllegalArgumentException] {
-      Interpreter.evaluate(ctx)(Instruction.parser.parse("<RANDOM>"))
+      run(ctx)("<RANDOM>")
     }
   }
 
   it should "fail with the wrong type of parameter" in new Env {
     intercept[IllegalArgumentException] {
-      Interpreter.evaluate(ctx)(Instruction.parser.parse("<RANDOM \"bad\">"))
+      run(ctx)("<RANDOM \"bad\">")
     }
   }
 }
