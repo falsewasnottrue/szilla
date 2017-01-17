@@ -29,7 +29,14 @@ object MulInterpreter extends InsInterpreter {
     ctx.push(IntValue(res))
   }
 }
-// TODO DIV
+
+object DivInterpreter extends InsInterpreter {
+  override def apply(ctx: Context)(instruction: Instruction): Context = {
+    val Seq(IntValue(i1), IntValue(i2)) = arguments(ctx)(instruction, ValueTypes(IntType, IntType))
+    ctx.push(IntValue(i1 / i2))
+  }
+}
+
 // TODO MOD
 
 object RandomInterpreter extends InsInterpreter {

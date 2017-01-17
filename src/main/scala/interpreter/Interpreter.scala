@@ -9,6 +9,7 @@ object Interpreter {
     ADD -> AddInterpreter,
     SUB -> SubInterpreter,
     MUL -> MulInterpreter,
+    DIV -> DivInterpreter,
     RANDOM -> RandomInterpreter,
     ZERO_Q -> ZeroQInterpreter,
     TELL -> TellInterpreter
