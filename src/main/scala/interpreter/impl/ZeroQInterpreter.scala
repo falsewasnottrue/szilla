@@ -1,19 +1,12 @@
 package interpreter.impl
 
-import interpreter.{Context, Interpreter}
-import models.{BoolValue, Instruction, IntValue}
+import interpreter.Context
+import models.{BoolValue, Instruction, IntType, IntValue}
 
-object ZeroQInterpreter extends Interpreter {
-  override def apply(ctx: Context, i: Instruction): Context = {
-    if (i.operands.size != 1) {
-      throw new IllegalArgumentException(s"ZERO? needs exactly one argument")
-    }
-    Interpreter.evaluate(ctx)(i.operands.head)
-    ctx.pop match {
-      case Some(IntValue(v)) => ctx.push(BoolValue(v == 0))
-      case x => throw new IllegalArgumentException(s"wrong arguement for ZERO? $x")
-    }
+object ZeroQInterpreter extends InsInterpreter {
 
-    ctx
+  override def apply(ctx: Context)(instruction: Instruction): Context = {
+    val Seq(IntValue(value)) = arguments(ctx)(instruction, ValueTypes(IntType))
+    ctx.push(BoolValue(value == 0))
   }
 }

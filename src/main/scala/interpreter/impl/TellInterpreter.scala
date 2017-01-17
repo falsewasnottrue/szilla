@@ -1,18 +1,12 @@
 package interpreter.impl
 
-import interpreter.{Context, Interpreter}
+import interpreter.Context
 import models._
 
-object TellInterpreter extends Interpreter {
-  override def apply(ctx: Context, i: Instruction): Context = {
-    for (elem <- i.operands) {
-      Interpreter.evaluate(ctx)(elem)
-      ctx.pop match {
-        case Some(v) => ctx.out(v.toString)
-        case _ => throw new IllegalStateException(s"operand not evaluated $elem")
-      }
-    }
-
+object TellInterpreter extends InsInterpreter {
+  override def apply(ctx: Context)(instruction: Instruction): Context = {
+    val args = arguments(ctx)(instruction, ValueTypes.arbitrary)
+    args.foreach(value => ctx.out(value.toString))
     ctx
   }
 }

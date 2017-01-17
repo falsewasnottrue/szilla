@@ -5,7 +5,7 @@ import models._
 
 object Interpreter {
 
-  private val interpreters = Map[OpCode, Interpreter] (
+  private val interpreters = Map[OpCode, InsInterpreter] (
     ADD -> AddInterpreter,
     RANDOM -> RandomInterpreter,
     ZERO_Q -> ZeroQInterpreter,
@@ -15,6 +15,7 @@ object Interpreter {
   def evaluate(ctx: Context)(op: Operand): Context = op match {
     case v @ Variable(_) => evaluateVariable(ctx)(v)
     case i @ Instruction(_, _) => evaluateInstruction(ctx)(i)
+    case x => throw new IllegalArgumentException(s"unknown operand type $x")
   }
 
   private def evaluateVariable(ctx: Context)(v: Variable): Context = v match {
@@ -29,5 +30,5 @@ object Interpreter {
   }
 
   private def evaluateInstruction(ctx: Context)(i: Instruction): Context =
-    interpreters(i.opCode).apply(ctx, i)
+    interpreters(i.opCode).apply(ctx)(i)
 }

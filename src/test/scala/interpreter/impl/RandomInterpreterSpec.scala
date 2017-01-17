@@ -18,13 +18,13 @@ class RandomInterpreterSpec extends FlatSpec with Matchers {
   }
 
   it should "fail with more than one parameter" in new Env {
-    intercept[IllegalStateException] {
+    intercept[IllegalArgumentException] {
       Interpreter.evaluate(ctx)(Instruction.parser.parse("<RANDOM 1 2 3>"))
     }
   }
 
   it should "fail with no parameters" in new Env {
-    intercept[IllegalStateException] {
+    intercept[IllegalArgumentException] {
       Interpreter.evaluate(ctx)(Instruction.parser.parse("<RANDOM>"))
     }
   }

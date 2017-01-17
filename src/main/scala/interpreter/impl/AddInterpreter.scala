@@ -1,22 +1,15 @@
 package interpreter.impl
 
-import interpreter.{Context, Interpreter}
+import interpreter.Context
 import models._
 
-object AddInterpreter extends Interpreter {
+object AddInterpreter extends InsInterpreter {
 
-  override def apply(ctx: Context, ins: Instruction): Context = {
-    val res = ins.operands.foldLeft(0) {
-      case (acc, operand) => {
-        Interpreter.evaluate(ctx)(operand)
-        ctx.pop match {
-          case Some(IntValue(i)) => acc + i
-          case x => throw new IllegalArgumentException(s"cannot add $x")
-        }
-      }
+  override def apply(ctx: Context)(instruction: Instruction): Context = {
+    val args = arguments(ctx)(instruction, ValueTypes.continually(IntType))
+    val res = args.foldLeft(0) {
+      case (acc, IntValue(i)) => acc + i
     }
-
     ctx.push(IntValue(res))
   }
-
 }
