@@ -14,6 +14,7 @@ object Interpreter {
     RANDOM -> RandomInterpreter,
     ZERO_Q -> ZeroQInterpreter,
     MOVE -> MoveInterpreter,
+    CRLF -> CRLFInterpreter,
     TELL -> TellInterpreter
   )
 
