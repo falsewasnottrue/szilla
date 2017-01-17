@@ -7,6 +7,7 @@ object Interpreter {
 
   private val interpreters = Map[OpCode, Interpreter] (
     ADD -> AddInterpreter,
+    RANDOM -> RandomInterpreter,
     TELL -> TellInterpreter
   )
 
