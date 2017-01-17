@@ -15,6 +15,7 @@ object Interpreter {
     EQUAL_Q -> EqualQInterpreter,
     ZERO_Q -> ZeroQInterpreter,
     LESS_Q -> LessQInterpreter,
+    GRTR_Q -> GrtrQInterpreter,
     MOVE -> MoveInterpreter,
     CRLF -> CRLFInterpreter,
     RTRUE -> RTrueInterpreter,

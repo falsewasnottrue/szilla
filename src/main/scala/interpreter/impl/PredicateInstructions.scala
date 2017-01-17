@@ -32,6 +32,12 @@ object LessQInterpreter extends InsInterpreter {
   }
 }
 
-// TODO GRTR_Q
+object GrtrQInterpreter extends InsInterpreter {
+  override def apply(ctx: Context)(i: Instruction): Context = {
+    val Seq(IntValue(arg1), IntValue(arg2)) = arguments(ctx)(i, ValueTypes(IntType, IntType))
+    ctx.push(BoolValue(arg1 > arg2))
+  }
+}
+
 // TODO FSET_Q
 // TODO IN_Q
