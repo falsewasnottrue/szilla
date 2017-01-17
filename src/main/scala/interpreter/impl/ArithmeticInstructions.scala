@@ -8,6 +8,7 @@ object AddInterpreter extends InsInterpreter {
     val args = arguments(ctx)(instruction, ValueTypes.continually(IntType))
     val res = args.foldLeft(0) {
       case (acc, IntValue(i)) => acc + i
+      case x => throw new IllegalArgumentException(s"unexpected argument for ADD: $x")
     }
     ctx.push(IntValue(res))
   }
@@ -25,6 +26,8 @@ object MulInterpreter extends InsInterpreter {
     val args = arguments(ctx)(instruction, ValueTypes.continually(IntType))
     val res = args.foldLeft(1) {
       case (acc, IntValue(i)) => acc * i
+      case x => throw new IllegalArgumentException(s"unexpected argument for ADD: $x")
+
     }
     ctx.push(IntValue(res))
   }
@@ -37,7 +40,12 @@ object DivInterpreter extends InsInterpreter {
   }
 }
 
-// TODO MOD
+object ModInterpreter extends InsInterpreter {
+  override def apply(ctx: Context)(instruction: Instruction): Context = {
+    val Seq(IntValue(i1), IntValue(i2)) = arguments(ctx)(instruction, ValueTypes(IntType, IntType))
+    ctx.push(IntValue(i1 % i2))
+  }
+}
 
 object RandomInterpreter extends InsInterpreter {
   override def apply(ctx: Context)(i: Instruction): Context = {

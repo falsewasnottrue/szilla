@@ -10,7 +10,7 @@ class SubInterpreterSpec extends FlatSpec with Matchers {
     val ctx = Context()
   }
 
-  "SubInterpreter" should "subtract to ints" in new Env {
+  "SubInterpreter" should "subtract two ints" in new Env {
     val instruction = Instruction.parser.parse("<- 10 3>")
     Interpreter.evaluate(ctx)(instruction)
     ctx.pop should be(Some(IntValue(7)))

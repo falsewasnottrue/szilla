@@ -10,6 +10,7 @@ object Interpreter {
     SUB -> SubInterpreter,
     MUL -> MulInterpreter,
     DIV -> DivInterpreter,
+    MOD -> ModInterpreter,
     RANDOM -> RandomInterpreter,
     ZERO_Q -> ZeroQInterpreter,
     TELL -> TellInterpreter
