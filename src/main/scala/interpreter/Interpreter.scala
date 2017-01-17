@@ -5,7 +5,7 @@ import models._
 
 object Interpreter {
 
-  private val interpreters = Map[OpCode, InsInterpreter] (
+  private val interpreters = Map[OpCode, BaseInterpreter] (
     ADD -> AddInterpreter,
     SUB -> SubInterpreter,
     MUL -> MulInterpreter,
@@ -16,6 +16,7 @@ object Interpreter {
     ZERO_Q -> ZeroQInterpreter,
     LESS_Q -> LessQInterpreter,
     GRTR_Q -> GrtrQInterpreter,
+    FSET_Q -> FSetQInterpreter,
     MOVE -> MoveInterpreter,
     CRLF -> CRLFInterpreter,
     RTRUE -> RTrueInterpreter,

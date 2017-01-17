@@ -32,7 +32,7 @@ object ValueTypes {
   def fromStream(stream: Stream[ValueType]) = StreamValueType(stream)
 }
 
-abstract class InsInterpreter {
+abstract class BaseInterpreter {
 
   def arguments(ctx: Context)(instruction: Instruction, expected:ValueTypes): Seq[Value] = {
     if (expected.finite && expected.size != instruction.operands.size) {

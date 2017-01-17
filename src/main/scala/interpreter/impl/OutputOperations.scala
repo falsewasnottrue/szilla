@@ -11,7 +11,7 @@ import models.Instruction
 // TODO DIROUT
 // TODO DIRIN
 
-object CRLFInterpreter extends InsInterpreter {
+object CRLFInterpreter extends BaseInterpreter {
   override def apply(ctx: Context)(i: Instruction): Context = {
     arguments(ctx)(i, ValueTypes.empty)
     ctx.out("\n")
