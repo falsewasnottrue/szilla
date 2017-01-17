@@ -7,6 +7,7 @@ object Interpreter {
 
   private val interpreters = Map[OpCode, InsInterpreter] (
     ADD -> AddInterpreter,
+    SUB -> SubInterpreter,
     RANDOM -> RandomInterpreter,
     ZERO_Q -> ZeroQInterpreter,
     TELL -> TellInterpreter
@@ -30,5 +31,5 @@ object Interpreter {
   }
 
   private def evaluateInstruction(ctx: Context)(i: Instruction): Context =
-    interpreters(i.opCode).apply(ctx)(i)
+    interpreters(i.opCode)(ctx)(i)
 }
