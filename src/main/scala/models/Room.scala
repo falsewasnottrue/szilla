@@ -4,7 +4,7 @@ case class Room(id: Id, desc: Option[String] = None,
                 exits: Map[Direction, Exit] = Map.empty,
                 action: Option[Action] = None,
                 flags: Seq[Flag] = Nil)
-  extends HasId with HasLocation {
+  extends HasId with HasLocation with Location {
 
   val location = Rooms
 

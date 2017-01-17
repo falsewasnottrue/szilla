@@ -13,6 +13,7 @@ object Interpreter {
     MOD -> ModInterpreter,
     RANDOM -> RandomInterpreter,
     ZERO_Q -> ZeroQInterpreter,
+    MOVE -> MoveInterpreter,
     TELL -> TellInterpreter
   )
 

@@ -5,7 +5,7 @@ import org.scalatest.{FlatSpec, Matchers}
 class ObjectSpec extends FlatSpec with Matchers {
 
   trait Env {
-    val location = RoomLocation("LIVING-ROOM")
+    val location = Room("LIVING-ROOM")
     val obj = Object(id = "LANTERN", location = location)
   }
 
@@ -71,5 +71,9 @@ class ObjectSpec extends FlatSpec with Matchers {
     obj.size should be(0)
     val o = obj.withSize(15)
     o.size should be(15)
+  }
+
+  it should "allow to put one object into another" in new Env {
+
   }
 }

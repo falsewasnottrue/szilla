@@ -11,7 +11,7 @@ case class Object(
                  fdesc: Option[String] = None,
                  ldesc: Option[String] = None,
                  size: Int = 0)
-  extends HasId with HasLocation {
+  extends HasId with HasLocation with Location {
 
   def withLocation(location: Location) = copy(location = location)
 
@@ -30,6 +30,15 @@ case class Object(
   def withLDesc(ldesc: String) = copy(ldesc = Some(ldesc))
 
   def withSize(size: Int) = copy(size = size)
+
+  // TODO put into trait?
+  // TODO test
+
+  private val contained = scala.collection.mutable.ListBuffer[Object]()
+
+  def contains(other: Object): Boolean = contained.contains(other)
+
+  def insert(other: Object): Unit = contained.append(other)
 }
 
 object Object {
@@ -38,7 +47,7 @@ object Object {
   import parsers.ZParser
 
   val parser = ZParser[Object](zero(OBJECT, Object(_)))(Seq(
-      point(LOC, (o, id) => o.withLocation(RoomLocation(id))),
+      point(LOC, (o, id) => o), // o.withLocation(RoomLocation(id))),
       points(SYNONYM, (o, synonym) => o.withSynonym(synonym)),
       points(ADJECTIVE, (o, adjective) => o.withAdjective(adjective)),
       point(DESC, (o, desc) => o.withDesc(desc)),

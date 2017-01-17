@@ -22,7 +22,9 @@ class ObjectParserSpec extends FlatSpec with Matchers {
     val obj = Object.parser.parse(text)
 
     obj.id should be("LANTERN")
-    obj.location should be(RoomLocation("LIVING-ROOM"))
+    // obj.location should be(Room("LIVING-ROOM"))
+    obj.location should be(Empty)
+
     obj.synonyms should be(Seq("LAMP", "LANTERN", "LIGHT"))
     obj.adjectives should be(Seq("BRASS"))
     obj.desc should be(Some("brass lantern"))
