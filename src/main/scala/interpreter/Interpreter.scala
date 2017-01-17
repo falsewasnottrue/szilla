@@ -12,9 +12,12 @@ object Interpreter {
     DIV -> DivInterpreter,
     MOD -> ModInterpreter,
     RANDOM -> RandomInterpreter,
+    EQUAL_Q -> EqualQInterpreter,
     ZERO_Q -> ZeroQInterpreter,
     MOVE -> MoveInterpreter,
     CRLF -> CRLFInterpreter,
+    RTRUE -> RTrueInterpreter,
+    RFALSE -> RFalseInterpreter,
     TELL -> TellInterpreter
   )
 

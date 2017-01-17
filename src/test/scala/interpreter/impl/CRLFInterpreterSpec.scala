@@ -1,7 +1,7 @@
 package interpreter.impl
 
 import interpreter.{Context, Interpreter}
-import models.{Instruction, IntValue}
+import models.Instruction
 import org.mockito.Mockito
 import org.scalatest.{FlatSpec, Matchers}
 
