@@ -10,7 +10,7 @@ object CallInterpreter extends BaseInterpreter {
       throw new IllegalArgumentException(s"CALL needs a routine name")
     }
     val StringValue(routineName) = args.head
-    val routine = Global.loadRoutine(routineName)
+    val Some(routine) = Global.loadRoutine(routineName)
     val instructionPointer = Ip(routine, 0)
     val context = Context(instructionPointer, Some(ctx))
 

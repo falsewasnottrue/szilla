@@ -1,22 +1,16 @@
 package interpreter.impl
 
+import interpreter.Global
 import models.{BoolValue, Object, ObjectValue, Variable}
 
 class InQInterpreterSpec extends BaseInterpreterSpec{
 
   trait Env0 extends Env {
-    val willVar = Variable(",SECRET-WILL")
-    val will = Object("SECRET-WILL")
-    ctx.set(willVar, ObjectValue(will))
+    val will = createObject(ctx)("SECRET-WILL")
+    val safe = createObject(ctx)("WALL-SAFE")
+    val desk = createObject(ctx)("DESK")
 
-    val safeVar = Variable(",WALL-SAFE")
-    val safe = Object("WALL-SAFE")
     safe.insert(will)
-    ctx.set(safeVar, ObjectValue(safe))
-
-    val deskVar = Variable(",DESK")
-    val desk = Object("DESK")
-    ctx.set(deskVar, ObjectValue(desk))
   }
 
   "InQInterpreter" should "returns true if object2 is the LOC of object1" in new Env0 {

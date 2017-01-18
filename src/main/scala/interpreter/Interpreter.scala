@@ -19,6 +19,7 @@ object Interpreter {
     FSET_Q -> FSetQInterpreter,
     IN_Q -> InQInterpreter,
     MOVE -> MoveInterpreter,
+    REMOVE -> RemoveInterpreter,
     CRLF -> CRLFInterpreter,
     CALL -> CallInterpreter,
     RETURN -> ReturnInterpreter,

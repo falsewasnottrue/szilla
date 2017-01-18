@@ -1,6 +1,6 @@
 package interpreter
 
-import models.{Routine, Value, Variable}
+import models._
 
 sealed trait InstructionPointer
 case class Ip(routine: Routine, line: Int) extends InstructionPointer
@@ -9,6 +9,8 @@ case object NoIp extends InstructionPointer
 object Global {
   private val routines = scala.collection.mutable.Map[String, Routine]()
   private val globalVariables = scala.collection.mutable.Map[Variable, Value]()
+  private val rooms = scala.collection.mutable.Map[Id, Room]()
+  private val objects = scala.collection.mutable.Map[Id, Object]()
 
   def set(variable: Variable, value: Value): Unit = globalVariables.put(variable, value)
 
@@ -17,16 +19,17 @@ object Global {
     case None => throw new IllegalStateException(s"no value bound to variable $variable")
   }
 
-  def registerRoutine(routine: Routine): Unit = {
-    routines.put(routine.id, routine)
-  }
+  def registerRoutine(routine: Routine): Unit = routines.put(routine.id, routine)
 
-  def loadRoutine(routineName: String): Routine = routines.get(routineName) match {
-    case Some(routine) => routine
-    case None => throw new IllegalStateException(s"no routine registered for name $routineName")
-  }
+  def loadRoutine(routineName: String): Option[Routine] = routines.get(routineName)
 
-  // TODO rooms, objecs
+  def registerRoom(room: Room): Unit = rooms.put(room.id, room)
+
+  def loadRoom(roomId: Id): Option[Room] = rooms.get(roomId)
+
+  def registerObject(obj: Object): Unit = objects.put(obj.id, obj)
+
+  def loadObject(objId: Id): Option[Object] = objects.get(objId)
 }
 
 case class Context(ip: InstructionPointer = NoIp, parent: Option[Context] = None) {
@@ -50,6 +53,8 @@ case class Context(ip: InstructionPointer = NoIp, parent: Option[Context] = None
     this
   }
 
+  def deref(id: Id): Option[HasId] = Global.loadObject(id).orElse(Global.loadRoom(id))
+
   def push(value: Value): Context = {
     stack.push(value)
     this
@@ -60,5 +65,4 @@ case class Context(ip: InstructionPointer = NoIp, parent: Option[Context] = None
   def in: String = "TODO"
 
   def out(s: String): Unit = print(s)
-
 }

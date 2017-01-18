@@ -1,12 +1,16 @@
 package models
 
+import parsers.KeyWords
+
 case class Room(id: Id, desc: Option[String] = None,
                 exits: Map[Direction, Exit] = Map.empty,
                 action: Option[Action] = None,
                 flags: Seq[Flag] = Nil)
-  extends HasId with HasLocation with Location {
+  extends HasId with HasLocation with ContainsObjects {
 
   val location = Rooms
+
+  def setLocation(location: Location): Unit = throw new IllegalStateException(s"room's location cannot be changed")
 
   def north: Exit = exits.getOrElse(North, NoExit)
   def south: Exit = exits.getOrElse(South, NoExit)
@@ -31,7 +35,7 @@ object Room {
   import parsers.ZParser
 
   val parser = ZParser[Room](zero(ROOM, Room(_)))(Seq(
-    point(LOC, (r, _) => r),
+    point(KeyWords.LOC, (r, _) => r),
     point(DESC, (r, desc) => r.withDesc(desc)),
     point2(TO, (r, dir, roomId) => Direction.unapply(dir).fold(r)(dir => r.withExit(dir, UExit(roomId)))),
     point2(PER, (r, dir, roomId) => Direction.unapply(dir).fold(r)(dir => r.withExit(dir, FExit(roomId)))),

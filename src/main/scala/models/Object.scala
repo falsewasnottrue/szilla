@@ -1,8 +1,10 @@
 package models
 
+import parsers.KeyWords
+
 case class Object(
                  id: Id,
-                 location: Location = Empty,
+                 var location: Location = Empty,
                  synonyms: Seq[String] = Nil,
                  adjectives: Seq[String] = Nil,
                  desc: Option[String] = None,
@@ -11,7 +13,9 @@ case class Object(
                  fdesc: Option[String] = None,
                  ldesc: Option[String] = None,
                  size: Int = 0)
-  extends HasId with HasLocation with Location {
+  extends HasId with HasLocation with ContainsObjects {
+
+  def setLocation(location: Location): Unit = this.location = location
 
   def withLocation(location: Location) = copy(location = location)
 
@@ -30,15 +34,6 @@ case class Object(
   def withLDesc(ldesc: String) = copy(ldesc = Some(ldesc))
 
   def withSize(size: Int) = copy(size = size)
-
-  // TODO put into trait?
-  // TODO test
-
-  private val contained = scala.collection.mutable.ListBuffer[Object]()
-
-  def contains(other: Object): Boolean = contained.contains(other)
-
-  def insert(other: Object): Unit = contained.append(other)
 }
 
 object Object {
@@ -47,7 +42,7 @@ object Object {
   import parsers.ZParser
 
   val parser = ZParser[Object](zero(OBJECT, Object(_)))(Seq(
-      point(LOC, (o, id) => o), // o.withLocation(RoomLocation(id))),
+      point(KeyWords.LOC, (o, id) => o.withLocation(RefLocation(id))),
       points(SYNONYM, (o, synonym) => o.withSynonym(synonym)),
       points(ADJECTIVE, (o, adjective) => o.withAdjective(adjective)),
       point(DESC, (o, desc) => o.withDesc(desc)),

@@ -17,8 +17,8 @@ case class StringValue(v: String) extends Value {
 case class BoolValue(v: Boolean) extends Value {
   override def toString = v.toString
 }
-case class ObjectValue(v: Object) extends Value {
-  override def toString = v.toString
+case class ObjectValue(id: Id) extends Value {
+  override def toString = id
 }
 
 object Int {

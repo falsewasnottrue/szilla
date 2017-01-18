@@ -45,7 +45,8 @@ object GrtrQInterpreter extends BaseInterpreter {
 object FSetQInterpreter extends BaseInterpreter {
   // Returns true if flag is set in object
   override def apply(ctx: Context)(i: Instruction): Context = {
-    val Seq(ObjectValue(obj), StringValue(flagId)) = arguments(ctx)(i, ValueTypes(ObjectType, StringType))
+    val Seq(ObjectValue(id), StringValue(flagId)) = arguments(ctx)(i, ValueTypes(ObjectType, StringType))
+    val Some(obj: Object) = ctx.deref(id)
     ctx.push(BoolValue(obj.flags.contains(Flag(flagId))))
   }
 }
@@ -53,7 +54,12 @@ object FSetQInterpreter extends BaseInterpreter {
 object InQInterpreter extends BaseInterpreter {
   // Returns true if object2 is the LOC of object1.
   override def apply(ctx: Context)(i: Instruction): Context = {
-    val Seq(ObjectValue(obj1), ObjectValue(obj2)) = arguments(ctx)(i, ValueTypes(ObjectType, ObjectType))
-    ctx.push(BoolValue(obj2.contains(obj1)))
+    val Seq(ObjectValue(id1), ObjectValue(id2)) = arguments(ctx)(i, ValueTypes(ObjectType, ObjectType))
+    val res = (ctx.deref(id1), ctx.deref(id2)) match {
+      case (Some(obj1: Object), Some(obj2: Object)) => obj2.contains(obj1)
+      case (Some(obj1: Object), Some(room: Room)) => room.contains(obj1)
+      case (o1, o2) => throw new IllegalStateException(s"$o2 cannot be the loc of $o1")
+    }
+    ctx.push(BoolValue(res))
   }
 }

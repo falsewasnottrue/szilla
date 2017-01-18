@@ -1,14 +1,16 @@
 package interpreter.impl
 
+import interpreter.Global
 import models._
 
 class FSetQInterpreterSpec extends BaseInterpreterSpec {
 
   trait Env0 extends Env {
     val lamp = Object("BRASS-LAMP").withFlag(Flag("ONBIT"))
+    Global.registerObject(lamp)
     val lampVar = Variable(",BRASS-LAMP")
 
-    ctx.set(lampVar, ObjectValue(lamp))
+    ctx.set(lampVar, ObjectValue(lamp.id))
 
     ctx.set(Variable(",ONBIT"), StringValue("ONBIT"))
     ctx.set(Variable(",SOMEBIT"), StringValue("SOMEBIT"))
