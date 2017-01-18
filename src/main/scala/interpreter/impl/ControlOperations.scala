@@ -1,7 +1,7 @@
 package interpreter.impl
 
 import interpreter.{Context, Global, Ip}
-import models.{BoolValue, Instruction, StringValue, Variable}
+import models._
 
 object CallInterpreter extends BaseInterpreter {
   override def apply(ctx: Context)(i: Instruction): Context = {
@@ -36,7 +36,17 @@ object CallInterpreter extends BaseInterpreter {
   }
 }
 
-// TODO RETURN
+object ReturnInterpreter extends BaseInterpreter {
+  override def apply(ctx: Context)(i: Instruction): Context = {
+    if (ctx.parent.isEmpty) {
+      throw new IllegalStateException(s"cannot return from top-most context")
+    }
+    val Seq(result) = arguments(ctx)(i, ValueTypes(WildcardType))
+    val Some(outer) = ctx.parent
+
+    outer.push(result)
+  }
+}
 
 object RTrueInterpreter extends BaseInterpreter {
   override def apply(ctx: Context)(i: Instruction): Context = {

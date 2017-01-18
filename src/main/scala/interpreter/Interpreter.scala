@@ -20,6 +20,7 @@ object Interpreter {
     MOVE -> MoveInterpreter,
     CRLF -> CRLFInterpreter,
     CALL -> CallInterpreter,
+    RETURN -> ReturnInterpreter,
     RTRUE -> RTrueInterpreter,
     RFALSE -> RFalseInterpreter,
     TELL -> TellInterpreter
