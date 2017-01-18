@@ -1,6 +1,5 @@
 package interpreter.impl
 
-import interpreter.Context
 import models.{Empty, RefLocation}
 
 class RemoveInterpreterSpec extends BaseInterpreterSpec {

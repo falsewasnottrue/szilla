@@ -64,5 +64,8 @@ case class Context(ip: InstructionPointer = NoIp, parent: Option[Context] = None
 
   def in: String = "TODO"
 
-  def out(s: String): Unit = print(s)
+  def out(s: String): Context = {
+    print(s)
+    this
+  }
 }
