@@ -193,7 +193,13 @@ object OpCode {
 }
 
 sealed trait Operand
+
 case class Variable(name: String) extends Operand
+object GlobalVariable {
+  def unapply(s: String): Option[String] =
+    if (s.startsWith(",")) Some(s.substring(1)) else None
+}
+
 case class Condition(cond: Operand, action: Operand*) extends Operand
 
 case class Instruction(opCode: OpCode, operands: Seq[Operand] = Nil) extends Operand {

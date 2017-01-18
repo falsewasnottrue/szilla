@@ -3,7 +3,10 @@ package interpreter.impl
 import interpreter.Context
 import models.{BoolValue, Instruction}
 
-// TODO CALL
+object CallInterpreter extends BaseInterpreter {
+  override def apply(ctx: Context)(i: Instruction): Context = ???
+}
+
 // TODO RETURN
 
 object RTrueInterpreter extends BaseInterpreter {

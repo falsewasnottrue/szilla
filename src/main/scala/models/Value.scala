@@ -28,8 +28,3 @@ object Int {
     case _ : java.lang.NumberFormatException => None
   }
 }
-
-object Global {
-  def unapply(s: String): Option[String] =
-    if (s.startsWith(",")) Some(s.substring(1)) else None
-}

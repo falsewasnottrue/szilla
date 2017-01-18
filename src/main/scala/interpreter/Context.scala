@@ -1,16 +1,35 @@
 package interpreter
 
-import models.{Value, Variable}
+import models.{Routine, Value, Variable}
 
-case class Context(parent: Option[Context] = None) {
+sealed trait InstructionPointer
+case class Ip(routine: Routine, line: Int) extends InstructionPointer
+case object NoIp extends InstructionPointer
 
-  private val values = scala.collection.mutable.Map[Variable, Value]()
+object Global {
+  private val routines = scala.collection.mutable.Map[String, Routine]()
+  private val globalVariables = scala.collection.mutable.Map[Variable, Value]()
+
+  def get(variable: Variable): Value = globalVariables.get(variable) match {
+    case Some(value) => value
+    case None => throw new IllegalStateException(s"no value bound to variable $variable")
+  }
+
+  // TODO rooms, objecs
+}
+
+case class Context(ip: InstructionPointer = NoIp, parent: Option[Context] = None) {
+
+  private val localVariables = scala.collection.mutable.Map[Variable, Value]()
   private val stack = scala.collection.mutable.Stack[Value]()
 
-  // TODO fallback to parent
-  def get(variable: Variable): Option[Value] = values.get(variable)
+  def get(variable: Variable): Value = (localVariables.get(variable), parent) match {
+    case (Some(value), _) => value
+    case (None, Some(p)) => p.get(variable)
+    case (None, None) => Global.get(variable)
+  }
 
-  def set(variable: Variable, value: Value): Unit = values.put(variable, value)
+  def set(variable: Variable, value: Value): Unit = localVariables.put(variable, value)
 
   def push(value: Value): Context = {
     stack.push(value)

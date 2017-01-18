@@ -19,6 +19,7 @@ object Interpreter {
     FSET_Q -> FSetQInterpreter,
     MOVE -> MoveInterpreter,
     CRLF -> CRLFInterpreter,
+    CALL -> CallInterpreter,
     RTRUE -> RTrueInterpreter,
     RFALSE -> RFalseInterpreter,
     TELL -> TellInterpreter
@@ -32,10 +33,7 @@ object Interpreter {
 
   private def evaluateVariable(ctx: Context)(v: Variable): Context = v match {
     case Variable(Int(i)) => ctx.push(IntValue(i))
-    case Variable(Global(g)) => ctx.get(v) match {
-      case Some(value) => ctx.push(value)
-      case _ => throw new IllegalStateException(s"variable not set $v")
-    }
+    case Variable(GlobalVariable(g)) => ctx.push(ctx.get(v))
     case Variable(s) => ctx.push(StringValue(s))
 
     case _ => throw new IllegalStateException(s"not implemented $v")
