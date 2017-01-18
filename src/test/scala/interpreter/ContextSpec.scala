@@ -24,6 +24,11 @@ class ContextSpec extends FlatSpec with Matchers {
     child.get(x) should be(v)
   }
 
+  it should "delegate to global context" in new Env {
+    ctx.setGlobal(x, v)
+    ctx.get(x) should be(v)
+  }
+
   it should "manage stack" in new Env {
     ctx.pop should be(None)
     ctx.push(v)

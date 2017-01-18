@@ -10,6 +10,8 @@ object Global {
   private val routines = scala.collection.mutable.Map[String, Routine]()
   private val globalVariables = scala.collection.mutable.Map[Variable, Value]()
 
+  def set(variable: Variable, value: Value): Unit = globalVariables.put(variable, value)
+
   def get(variable: Variable): Value = globalVariables.get(variable) match {
     case Some(value) => value
     case None => throw new IllegalStateException(s"no value bound to variable $variable")
@@ -29,7 +31,15 @@ case class Context(ip: InstructionPointer = NoIp, parent: Option[Context] = None
     case (None, None) => Global.get(variable)
   }
 
-  def set(variable: Variable, value: Value): Unit = localVariables.put(variable, value)
+  def set(variable: Variable, value: Value): Context = {
+    localVariables.put(variable, value)
+    this
+  }
+
+  def setGlobal(variable: Variable, value: Value): Context = {
+    Global.set(variable, value)
+    this
+  }
 
   def push(value: Value): Context = {
     stack.push(value)
