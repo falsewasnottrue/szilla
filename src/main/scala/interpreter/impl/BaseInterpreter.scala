@@ -48,7 +48,7 @@ abstract class BaseInterpreter {
           case Some(i @ IntValue(_)) if e == IntType => (as :+ i, pos+1)
           case Some(b @ BoolValue(_)) if e == BoolType => (as :+ b, pos+1)
           case Some(s @ StringValue(_)) if e == StringType => (as :+ s, pos+1)
-          case Some(o @ ObjectValue(_)) if e == ObjectType => (as :+ o, pos+1)
+          case Some(o @ RefValue(_)) if e == RefType => (as :+ o, pos+1)
 
           case x => throw new IllegalArgumentException(s"unexpected argument in ${instruction.opCode}: $x is not $e")
         }

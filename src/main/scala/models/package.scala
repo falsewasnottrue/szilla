@@ -20,5 +20,10 @@ package object models {
       contained.append(other)
       other.setLocation(RefLocation(id))
     }
+
+    def remove(other: Object): Unit = {
+      contained.remove(contained.indexOf(other))
+      other.setLocation(Empty)
+    }
   }
 }

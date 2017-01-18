@@ -18,7 +18,7 @@ class BaseInterpreterSpec extends FlatSpec with Matchers {
       val variable = Variable("," + name)
       val obj = Object(id = name)
       Global.registerObject(obj)
-      c.set(variable, ObjectValue(obj.id))
+      c.set(variable, RefValue(obj.id))
       obj
     }
 
@@ -26,7 +26,7 @@ class BaseInterpreterSpec extends FlatSpec with Matchers {
       val variable = Variable("," + name)
       val room = Room(id = name)
       Global.registerRoom(room)
-      c.set(variable, ObjectValue(room.id))
+      c.set(variable, RefValue(room.id))
       room
     }
   }

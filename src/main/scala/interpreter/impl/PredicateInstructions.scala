@@ -45,7 +45,7 @@ object GrtrQInterpreter extends BaseInterpreter {
 object FSetQInterpreter extends BaseInterpreter {
   // Returns true if flag is set in object
   override def apply(ctx: Context)(i: Instruction): Context = {
-    val Seq(ObjectValue(id), StringValue(flagId)) = arguments(ctx)(i, ValueTypes(ObjectType, StringType))
+    val Seq(RefValue(id), StringValue(flagId)) = arguments(ctx)(i, ValueTypes(RefType, StringType))
     val Some(obj: Object) = ctx.deref(id)
     ctx.push(BoolValue(obj.flags.contains(Flag(flagId))))
   }
@@ -54,7 +54,7 @@ object FSetQInterpreter extends BaseInterpreter {
 object InQInterpreter extends BaseInterpreter {
   // Returns true if object2 is the LOC of object1.
   override def apply(ctx: Context)(i: Instruction): Context = {
-    val Seq(ObjectValue(id1), ObjectValue(id2)) = arguments(ctx)(i, ValueTypes(ObjectType, ObjectType))
+    val Seq(RefValue(id1), RefValue(id2)) = arguments(ctx)(i, ValueTypes(RefType, RefType))
     val res = (ctx.deref(id1), ctx.deref(id2)) match {
       case (Some(obj1: Object), Some(obj2: Object)) => obj2.contains(obj1)
       case (Some(obj1: Object), Some(room: Room)) => room.contains(obj1)

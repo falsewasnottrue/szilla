@@ -1,7 +1,7 @@
 package interpreter.impl
 
 import interpreter.Global
-import models.{BoolValue, Object, ObjectValue, Variable}
+import models.{BoolValue, Object, RefValue, Variable}
 
 class InQInterpreterSpec extends BaseInterpreterSpec{
 

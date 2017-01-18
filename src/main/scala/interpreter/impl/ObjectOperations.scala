@@ -5,7 +5,7 @@ import models._
 object MoveInterpreter extends BaseInterpreter {
   // Puts object1 into object2
   override def apply(ctx: Context)(instruction: Instruction): Context = {
-    val Seq(ObjectValue(id1), ObjectValue(id2)) = arguments(ctx)(instruction, ValueTypes(ObjectType, ObjectType))
+    val Seq(RefValue(id1), RefValue(id2)) = arguments(ctx)(instruction, ValueTypes(RefType, RefType))
     (ctx.deref(id1), ctx.deref(id2)) match {
       case (Some(obj1: Object), Some(obj2: Object)) => obj2.insert(obj1)
       case (Some(obj1: Object), Some(room: Room)) => room.insert(obj1)
@@ -17,7 +17,15 @@ object MoveInterpreter extends BaseInterpreter {
 
 object RemoveInterpreter extends BaseInterpreter {
   // Removes object, setting its LOC to false.
-  override def apply(ctx: Context)(i: Instruction): Context = ???
+  override def apply(ctx: Context)(i: Instruction): Context = {
+    val Seq(RefValue(id)) = arguments(ctx)(i, ValueTypes(RefType))
+    val Some(obj: Object) = ctx.deref(id)
+    val RefLocation(locId) = obj.location
+    val Some(loc: ContainsObjects) = ctx.deref(locId)
+
+    loc.remove(obj)
+    ctx
+  }
 }
 
 // TODO LOC

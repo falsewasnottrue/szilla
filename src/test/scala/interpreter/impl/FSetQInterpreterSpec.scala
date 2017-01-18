@@ -10,7 +10,7 @@ class FSetQInterpreterSpec extends BaseInterpreterSpec {
     Global.registerObject(lamp)
     val lampVar = Variable(",BRASS-LAMP")
 
-    ctx.set(lampVar, ObjectValue(lamp.id))
+    ctx.set(lampVar, RefValue(lamp.id))
 
     ctx.set(Variable(",ONBIT"), StringValue("ONBIT"))
     ctx.set(Variable(",SOMEBIT"), StringValue("SOMEBIT"))
