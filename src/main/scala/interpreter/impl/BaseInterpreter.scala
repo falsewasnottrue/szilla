@@ -26,6 +26,7 @@ object ValueTypes {
 
   def continually(valueType: ValueType) = fromStream(Stream.continually(valueType))
   val arbitrary = continually(WildcardType)
+
   val empty = fromSeq(Nil)
 
   def fromSeq(seq: Seq[ValueType]) = SeqValueType(seq)

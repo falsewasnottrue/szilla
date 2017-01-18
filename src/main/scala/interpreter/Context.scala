@@ -17,6 +17,15 @@ object Global {
     case None => throw new IllegalStateException(s"no value bound to variable $variable")
   }
 
+  def registerRoutine(routine: Routine): Unit = {
+    routines.put(routine.id, routine)
+  }
+
+  def loadRoutine(routineName: String): Routine = routines.get(routineName) match {
+    case Some(routine) => routine
+    case None => throw new IllegalStateException(s"no routine registered for name $routineName")
+  }
+
   // TODO rooms, objecs
 }
 

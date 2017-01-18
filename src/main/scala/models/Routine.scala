@@ -2,7 +2,9 @@ package models
 
 import parsers._
 
-sealed trait Argument
+sealed trait Argument {
+  def id: String
+}
 case class SimpleArgument(id: String) extends Argument
 case class AuxArgument(id: String) extends Argument
 case class OptArgument(id: String) extends Argument
@@ -12,6 +14,10 @@ case class Routine(
                     arguments: Seq[Argument] = Nil,
                     instructions: Seq[Instruction] = Nil
                   ) extends HasId {
+
+  def params = arguments.collect { case arg @ SimpleArgument(_) => arg }
+  def optParams = arguments.collect { case arg @ OptArgument(_) => arg }
+  def auxParams = arguments.collect { case arg @ AuxArgument(_) => arg }
 
   def withArgument(argument: Argument) = copy(arguments = arguments :+ argument)
 
