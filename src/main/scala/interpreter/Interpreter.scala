@@ -17,6 +17,7 @@ object Interpreter {
     LESS_Q -> LessQInterpreter,
     GRTR_Q -> GrtrQInterpreter,
     FSET_Q -> FSetQInterpreter,
+    IN_Q -> InQInterpreter,
     MOVE -> MoveInterpreter,
     CRLF -> CRLFInterpreter,
     CALL -> CallInterpreter,

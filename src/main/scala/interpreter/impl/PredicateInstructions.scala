@@ -19,6 +19,7 @@ object EqualQInterpreter extends BaseInterpreter {
 }
 
 object ZeroQInterpreter extends BaseInterpreter {
+  // Returns true if the value of arg is zero.
   override def apply(ctx: Context)(instruction: Instruction): Context = {
     val Seq(IntValue(value)) = arguments(ctx)(instruction, ValueTypes(IntType))
     ctx.push(BoolValue(value == 0))
@@ -26,6 +27,7 @@ object ZeroQInterpreter extends BaseInterpreter {
 }
 
 object LessQInterpreter extends BaseInterpreter {
+  // Returns true if integer1 is less than integer2.
   override def apply(ctx: Context)(i: Instruction): Context = {
     val Seq(IntValue(arg1), IntValue(arg2)) = arguments(ctx)(i, ValueTypes(IntType, IntType))
     ctx.push(BoolValue(arg1 < arg2))
@@ -33,6 +35,7 @@ object LessQInterpreter extends BaseInterpreter {
 }
 
 object GrtrQInterpreter extends BaseInterpreter {
+  // Returns true if integer1 is greater than integer2.
   override def apply(ctx: Context)(i: Instruction): Context = {
     val Seq(IntValue(arg1), IntValue(arg2)) = arguments(ctx)(i, ValueTypes(IntType, IntType))
     ctx.push(BoolValue(arg1 > arg2))
@@ -47,4 +50,10 @@ object FSetQInterpreter extends BaseInterpreter {
   }
 }
 
-// TODO IN_Q
+object InQInterpreter extends BaseInterpreter {
+  // Returns true if object2 is the LOC of object1.
+  override def apply(ctx: Context)(i: Instruction): Context = {
+    val Seq(ObjectValue(obj1), ObjectValue(obj2)) = arguments(ctx)(i, ValueTypes(ObjectType, ObjectType))
+    ctx.push(BoolValue(obj2.contains(obj1)))
+  }
+}
