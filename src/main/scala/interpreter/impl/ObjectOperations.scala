@@ -37,13 +37,27 @@ object LocInterpreter extends BaseInterpreter {
         case RefLocation(locId) => ctx.push(RefValue(locId))
         case _ => ctx.push(BoolValue(false))
       }
-      case _ => throw new IllegalArgumentException(s"cannot deref $id^")
+      case _ => throw new IllegalArgumentException(s"cannot deref $id")
     }
     ctx
   }
 }
 
-// TODO FIRST_Q
+object FirstQInterpreter extends BaseInterpreter {
+  // Returns the first object within object1. Returns false if object1 has no contents.
+  override def apply(ctx: Context)(i: Instruction): Context = {
+    val Seq(RefValue(id)) = arguments(ctx)(i, ValueTypes(RefType))
+    ctx.deref(id) match {
+      case Some(containsObjects: ContainsObjects) => containsObjects.first match {
+        case Some(obj) => ctx.push(RefValue(obj.id))
+        case _ => ctx.push(BoolValue(false))
+      }
+      case _ => throw new IllegalArgumentException(s"cannot deref $id")
+    }
+    ctx
+  }
+}
+
 // TODO NEXT_Q
 // TODO FSET
 // TODO FCLEAR

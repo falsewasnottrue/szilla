@@ -25,5 +25,9 @@ package object models {
       contained.remove(contained.indexOf(other))
       other.setLocation(Empty)
     }
+
+    def first: Option[Object] = contained.headOption
+
+    def next(obj: Object): Option[Object] = ???
   }
 }

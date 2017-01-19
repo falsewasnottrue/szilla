@@ -21,6 +21,7 @@ object Interpreter {
     MOVE -> MoveInterpreter,
     REMOVE -> RemoveInterpreter,
     LOC -> LocInterpreter,
+    FIRST_Q -> FirstQInterpreter,
     PRINT -> PrintInterpreter,
     PRINTD -> PrintDInterpreter,
     PRINTN -> PrintNInterpreter,
