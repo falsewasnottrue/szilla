@@ -20,6 +20,7 @@ object Interpreter {
     IN_Q -> InQInterpreter,
     MOVE -> MoveInterpreter,
     REMOVE -> RemoveInterpreter,
+    LOC -> LocInterpreter,
     PRINT -> PrintInterpreter,
     PRINTD -> PrintDInterpreter,
     PRINTN -> PrintNInterpreter,

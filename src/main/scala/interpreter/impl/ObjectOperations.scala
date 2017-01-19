@@ -28,7 +28,21 @@ object RemoveInterpreter extends BaseInterpreter {
   }
 }
 
-// TODO LOC
+object LocInterpreter extends BaseInterpreter {
+  // Returns the location of object. Returns false if object has no location.
+  override def apply(ctx: Context)(i: Instruction): Context = {
+    val Seq(RefValue(id)) = arguments(ctx)(i, ValueTypes(RefType))
+    ctx.deref(id) match {
+      case Some(hasLocation: HasLocation) => hasLocation.location match {
+        case RefLocation(locId) => ctx.push(RefValue(locId))
+        case _ => ctx.push(BoolValue(false))
+      }
+      case _ => throw new IllegalArgumentException(s"cannot deref $id^")
+    }
+    ctx
+  }
+}
+
 // TODO FIRST_Q
 // TODO NEXT_Q
 // TODO FSET
