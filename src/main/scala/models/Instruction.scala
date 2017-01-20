@@ -199,6 +199,10 @@ object GlobalVariable {
   def unapply(s: String): Option[String] =
     if (s.startsWith(",")) Some(s.substring(1)) else None
 }
+object PropertyNameVariable {
+  def unapply(s: String): Option[String] =
+    if (s.startsWith(",P?")) Some(s.substring(3)) else None
+}
 
 case class Condition(cond: Operand, action: Operand*) extends Operand
 

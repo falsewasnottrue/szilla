@@ -109,7 +109,17 @@ object FClearInterpreter extends BaseInterpreter {
 
 object GetPInterpreter extends BaseInterpreter {
   // returns the specified property of object
-  override def apply(ctx: Context)(i: Instruction): Context = ???
+  override def apply(ctx: Context)(i: Instruction): Context = {
+    val Seq(RefValue(objId), StringValue(propName)) = arguments(ctx)(i, ValueTypes(RefType, StringType))
+    ctx.deref(objId) match {
+      case Some(hasProperties: HasProperties) => hasProperties.properties.get(propName) match {
+        case Some(value) => ctx.push(StringValue(value))
+        case None => ctx.push(BoolValue(false))
+      }
+      case _ => throw new IllegalArgumentException(s"cannot deref $objId")
+    }
+    ctx
+  }
 }
 
 // TODO PUTP

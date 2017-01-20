@@ -38,13 +38,14 @@ object Interpreter {
   )
 
   def evaluate(ctx: Context)(op: Operand): Context = op match {
-    case v @ Variable(_) => evaluateVariable(ctx)(v)
-    case i @ Instruction(_, _) => evaluateInstruction(ctx)(i)
-    case x => throw new IllegalArgumentException(s"unknown operand type $x")
-  }
+      case v @ Variable(_) => evaluateVariable(ctx)(v)
+      case i @ Instruction(_, _) => evaluateInstruction(ctx)(i)
+      case x => throw new IllegalArgumentException(s"unknown operand type $x")
+    }
 
   private def evaluateVariable(ctx: Context)(v: Variable): Context = v match {
     case Variable(Int(i)) => ctx.push(IntValue(i))
+    case Variable(PropertyNameVariable(p)) => ctx.push(StringValue(p))
     case Variable(GlobalVariable(g)) => ctx.push(ctx.get(v))
     case Variable(s) => ctx.push(StringValue(s))
 
