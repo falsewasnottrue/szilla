@@ -1,16 +1,19 @@
 package interpreter.impl
 
+import models.{Properties, PropertyName}
 import org.mockito.Mockito
 
 class PrintDInterpreterSpec extends BaseInterpreterSpec {
 
   trait Env0 extends Env {
-    createObject(ctx)("LANTERN", desc = Some("brass lantern"))
-    createRoom(ctx)("LIVING-ROOM", desc = Some("living room"))
+    val lantern = createObject(ctx)("LANTERN", Properties().add(PropertyName.DESC, "brass lantern"))
+    val livingRoom = createRoom(ctx)("LIVING-ROOM", Properties().add(PropertyName.DESC, "living room"))
   }
 
   "PrintInterpreter" should "print the DESC of the given object." in new Env0 {
     val ctxSpy = Mockito.spy(ctx)
+
+    println(lantern)
     run(ctxSpy)("<PRINTD ,LANTERN>")
 
     Mockito.verify(ctxSpy).out("brass lantern")
@@ -18,9 +21,9 @@ class PrintDInterpreterSpec extends BaseInterpreterSpec {
 
   it should "print the DESC of the given room." in new Env0 {
     val ctxSpy = Mockito.spy(ctx)
-    run(ctxSpy)("<PRINTD ,LANTERN>")
+    run(ctxSpy)("<PRINTD ,LIVING-ROOM>")
 
-    Mockito.verify(ctxSpy).out("brass lantern")
+    Mockito.verify(ctxSpy).out("living room")
   }
 
   it should "fail for too many arguments" in new Env0 {

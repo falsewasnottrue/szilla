@@ -46,4 +46,8 @@ package object models {
 
     def removeFlag(flag: Flag): Unit
   }
+
+  trait HasProperties {
+    def properties: Properties
+  }
 }

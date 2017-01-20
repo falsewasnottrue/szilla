@@ -2,11 +2,13 @@ package models
 
 import parsers.KeyWords
 
-case class Room(id: Id, desc: Option[String] = None,
+
+case class Room(id: Id,
                 exits: Map[Direction, Exit] = Map.empty,
                 action: Option[Action] = None,
+                properties: Properties = new Properties,
                 var flags: Seq[Flag] = Nil)
-  extends HasId with HasLocation with HasFlags with ContainsObjects {
+  extends HasId with HasLocation with HasFlags with HasProperties with ContainsObjects {
 
   val location = Rooms
 
@@ -17,7 +19,7 @@ case class Room(id: Id, desc: Option[String] = None,
   def up: Exit = exits.getOrElse(Up, NoExit)
   def down: Exit = exits.getOrElse(Down, NoExit)
 
-  def withDesc(desc: String): Room = copy(desc = Some(desc))
+  def withDesc(desc: String): Room = copy(properties = properties.add(PropertyName.DESC, desc))
 
   def withAction(action: Action): Room = copy(action = Some(action))
 
@@ -40,7 +42,7 @@ object Room {
 
   val parser = ZParser[Room](zero(ROOM, Room(_)))(Seq(
     point(KeyWords.LOC, (r, _) => r),
-    point(DESC, (r, desc) => r.withDesc(desc)),
+    point(KeyWords.DESC, (r, desc) => r.withDesc(desc)),
     point2(TO, (r, dir, roomId) => Direction.unapply(dir).fold(r)(dir => r.withExit(dir, UExit(roomId)))),
     point2(PER, (r, dir, roomId) => Direction.unapply(dir).fold(r)(dir => r.withExit(dir, FExit(roomId)))),
     point(ACTION, (r, action) => r.withAction(Action(action))),

@@ -107,6 +107,9 @@ object FClearInterpreter extends BaseInterpreter {
   }
 }
 
-// TODO GETP
-// TODO PUTP
+object GetPInterpreter extends BaseInterpreter {
+  // returns the specified property of object
+  override def apply(ctx: Context)(i: Instruction): Context = ???
+}
 
+// TODO PUTP

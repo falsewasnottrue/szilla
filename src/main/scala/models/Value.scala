@@ -20,6 +20,9 @@ case class BoolValue(v: Boolean) extends Value {
 case class RefValue(id: Id) extends Value {
   override def toString = id
 }
+case class SeqValue(v: Seq[String]) extends Value {
+  override def toString = v.toString
+}
 
 object Int {
   def unapply(s: String) : Option[Int] = try {

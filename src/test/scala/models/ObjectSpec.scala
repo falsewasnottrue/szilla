@@ -39,9 +39,9 @@ class ObjectSpec extends FlatSpec with Matchers {
   }
 
   it should "allow to add a description" in new Env {
-    lantern.desc should be(None)
+    lantern.properties.get(PropertyName.DESC) should be(None)
     val o = lantern.withDesc("This is a description")
-    o.desc should be(Some("This is a description"))
+    o.properties.get(PropertyName.DESC) should be(Some("This is a description"))
   }
 
   it should "allow to add flags" in new Env {
@@ -57,21 +57,21 @@ class ObjectSpec extends FlatSpec with Matchers {
   }
 
   it should "allow to add an fDesc" in new Env {
-    lantern.fdesc should be(None)
+    lantern.properties.get(PropertyName.FDESC) should be(None)
     val o = lantern.withFDesc("fdesc")
-    o.fdesc should be(Some("fdesc"))
+    o.properties.get(PropertyName.FDESC) should be(Some("fdesc"))
   }
 
   it should "allow to add an ldesc" in new Env {
-    lantern.ldesc should be(None)
+    lantern.properties.get(PropertyName.LDESC) should be(None)
     val o = lantern.withLDesc("ldesc")
-    o.ldesc should be(Some("ldesc"))
+    o.properties.get(PropertyName.LDESC) should be(Some("ldesc"))
   }
 
   it should "allow to add a size" in new Env {
-    lantern.size should be(0)
+    lantern.properties.get(PropertyName.SIZE) should be(None)
     val o = lantern.withSize(15)
-    o.size should be(15)
+    o.properties.getInt(PropertyName.SIZE) should be(Some(15))
   }
 
   it should "allow to put one object into another" in new Env {

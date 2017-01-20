@@ -23,13 +23,13 @@ class ObjectParserSpec extends FlatSpec with Matchers {
 
     obj.id should be("LANTERN")
     obj.location should be(RefLocation("LIVING-ROOM"))
-    obj.synonyms should be(Seq("LAMP", "LANTERN", "LIGHT"))
+    obj.synonyms should contain theSameElementsAs Seq("LAMP", "LANTERN", "LIGHT")
     obj.adjectives should be(Seq("BRASS"))
-    obj.desc should be(Some("brass lantern"))
+    obj.properties.get(PropertyName.DESC) should be(Some("brass lantern"))
     obj.flags should be(Seq(Flag("TAKEBIT"), Flag("LIGHTBIT")))
     obj.action should be(Some(Action("LANTERN-F")))
-    obj.fdesc should be(Some("A battery-powered lantern is on the trophy case."))
-    obj.ldesc should be(Some("There is a brass lantern (battery-powered) here."))
-    obj.size should be(15)
+    obj.properties.get(PropertyName.FDESC) should be(Some("A battery-powered lantern is on the trophy case."))
+    obj.properties.get(PropertyName.LDESC) should be(Some("There is a brass lantern (battery-powered) here."))
+    obj.properties.getInt(PropertyName.SIZE) should be(Some(15))
   }
 }

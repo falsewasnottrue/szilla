@@ -25,6 +25,7 @@ object Interpreter {
     NEXT_Q -> NextQInterpreter,
     FSET -> FSetInterpreter,
     FCLEAR -> FClearInterpreter,
+    GETP -> GetPInterpreter,
     PRINT -> PrintInterpreter,
     PRINTD -> PrintDInterpreter,
     PRINTN -> PrintNInterpreter,

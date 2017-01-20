@@ -4,34 +4,33 @@ import parsers.KeyWords
 
 case class Object(
                  id: Id,
-                 var location: Location = Empty,
-                 synonyms: Seq[String] = Nil,
-                 adjectives: Seq[String] = Nil,
-                 desc: Option[String] = None,
-                 var flags: Seq[Flag] = Nil,
                  action: Option[Action] = None,
-                 fdesc: Option[String] = None,
-                 ldesc: Option[String] = None,
-                 size: Int = 0)
-  extends HasId with HasLocation with HasFlags with ContainsObjects {
+                 var location: Location = Empty,
+                 properties: Properties = new Properties,
+                 var flags: Seq[Flag] = Nil)
+  extends HasId with HasLocation with HasFlags with HasProperties with ContainsObjects {
 
   def withLocation(location: Location) = copy(location = location)
 
-  def withSynonym(synonym: String) = copy(synonyms = synonyms :+ synonym)
+  def withSynonym(synonym: String) = copy(properties = properties.addSeq(PropertyName.SYNONYM, synonym))
 
-  def withAdjective(adjective: String) = copy(adjectives = adjectives :+ adjective)
+  def withAdjective(adjective: String) = copy(properties = properties.addSeq(PropertyName.ADJECTIVE, adjective))
 
-  def withDesc(desc: String) = copy(desc = Some(desc))
+  def withDesc(desc: String) = copy(properties = properties.add(PropertyName.DESC, desc))
 
   def withFlag(flag: Flag) = copy(flags = flags :+ flag)
 
   def withAction(action: Action) = copy(action = Some(action))
 
-  def withFDesc(fdesc: String) = copy(fdesc = Some(fdesc))
+  def withFDesc(fdesc: String) = copy(properties = properties.add(PropertyName.FDESC, fdesc))
 
-  def withLDesc(ldesc: String) = copy(ldesc = Some(ldesc))
+  def withLDesc(ldesc: String) = copy(properties = properties.add(PropertyName.LDESC, ldesc))
 
-  def withSize(size: Int) = copy(size = size)
+  def withSize(size: Int) = copy(properties = properties.addInt(PropertyName.SIZE, size))
+
+  def synonyms: Seq[String] = properties.getSeq(PropertyName.SYNONYM)
+
+  def adjectives: Seq[String] = properties.getSeq(PropertyName.ADJECTIVE)
 
   override def setLocation(location: Location): Unit = this.location = location
 

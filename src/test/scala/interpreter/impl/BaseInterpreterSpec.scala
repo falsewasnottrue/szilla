@@ -14,17 +14,19 @@ class BaseInterpreterSpec extends FlatSpec with Matchers {
       Interpreter.evaluate(ctx)(instruction)
     }
 
-    def createObject(c: Context)(name: String, desc: Option[String] = None): Object = {
+    def createObject(c: Context)(name: String,
+                                 properties: Properties = Properties()): Object = {
       val variable = Variable("," + name)
-      val obj = Object(id = name, desc = desc)
+      val obj = Object(id = name, properties = properties)
       Global.registerObject(obj)
       c.set(variable, RefValue(obj.id))
       obj
     }
 
-    def createRoom(c: Context)(name: String, desc: Option[String] = None): Room = {
+    def createRoom(c: Context)(name: String,
+                               properties: Properties = Properties()): Room = {
       val variable = Variable("," + name)
-      val room = Room(id = name, desc = desc)
+      val room = Room(id = name, properties = properties)
       Global.registerRoom(room)
       c.set(variable, RefValue(room.id))
       room

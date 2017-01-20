@@ -9,7 +9,7 @@ class RoomSpec extends FlatSpec with Matchers {
   }
 
   it should "have a description" in {
-    Room(id = "LIVING-ROOM", desc = Some("Living Room")).desc should be(Some("Living Room"))
+    Room(id = "LIVING-ROOM").withDesc("Living Room").properties.get(PropertyName.DESC) should be(Some("Living Room"))
   }
 
   it should "allow to query for Exits" in {
@@ -36,9 +36,9 @@ class RoomSpec extends FlatSpec with Matchers {
 
   it should "allow to add a description" in {
     val room = Room(id = "LIVING-ROOM")
-    room.desc should be(None)
+    room.properties.get(PropertyName.DESC) should be(None)
     val r = room.withDesc("this is the description")
-    r.desc should be(Some("this is the description"))
+    r.properties.get(PropertyName.DESC) should be(Some("this is the description"))
   }
 
   it should "allow to add an action" in {

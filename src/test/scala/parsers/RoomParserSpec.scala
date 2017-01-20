@@ -37,7 +37,8 @@ class RoomParserSpec extends FlatSpec with Matchers {
 
     room.id should be("LIVING-ROOM")
     room.location should be(Rooms)
-    room.desc should be(Some("This is the living Room"))
+    println(room)
+    room.properties.get(PropertyName.DESC) should be(Some("This is the living Room"))
 
     room.east should be(UExit("KITCHEN"))
     room.down should be(FExit("TRAP-DOOR-EXIT"))

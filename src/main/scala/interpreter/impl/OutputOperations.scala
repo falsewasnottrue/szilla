@@ -15,8 +15,10 @@ object PrintDInterpreter extends BaseInterpreter {
   override def apply(ctx: Context)(i: Instruction): Context = {
     val Seq(RefValue(id)) = arguments(ctx)(i, ValueTypes(RefType))
     ctx.deref(id) match {
-      case Some(room: Room) => ctx.out(room.desc.getOrElse(""))
-      case Some(obj: Object) => ctx.out(obj.desc.getOrElse(""))
+      case Some(hasProperties: HasProperties) => {
+        val desc = hasProperties.properties.get(PropertyName.DESC).getOrElse("")
+        ctx.out(desc)
+      }
       case x => throw new IllegalArgumentException(s"cannot PRINTD $x")
     }
   }
