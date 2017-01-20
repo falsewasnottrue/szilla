@@ -28,6 +28,14 @@ package object models {
 
     def first: Option[Object] = contained.headOption
 
-    def next(obj: Object): Option[Object] = ???
+    def next(obj: HasLocation): Option[Object] = findNext(contained, obj)
+
+    private def findNext(rest: Seq[Object], obj: HasLocation): Option[Object] = rest match {
+        case Nil => None
+        case `obj` +: Nil => None
+        case `obj` +: next +: _ => Some(next)
+        case _ +: os => findNext(os, obj)
+      }
+
   }
 }

@@ -22,6 +22,7 @@ object Interpreter {
     REMOVE -> RemoveInterpreter,
     LOC -> LocInterpreter,
     FIRST_Q -> FirstQInterpreter,
+    NEXT_Q -> NextQInterpreter,
     PRINT -> PrintInterpreter,
     PRINTD -> PrintDInterpreter,
     PRINTN -> PrintNInterpreter,

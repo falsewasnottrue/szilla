@@ -58,7 +58,30 @@ object FirstQInterpreter extends BaseInterpreter {
   }
 }
 
-// TODO NEXT_Q
+object NextQInterpreter extends BaseInterpreter {
+  // Returns the next object in the linked contents of object1's LOC.
+  // Returns false if object1 is the "last" object in its LOC.
+  override def apply(ctx: Context)(i: Instruction): Context = {
+    val Seq(RefValue(id)) = arguments(ctx)(i, ValueTypes(RefType))
+    ctx.deref(id) match {
+      case Some(obj: HasLocation) => obj.location match {
+        case RefLocation(locId) => {
+          ctx.deref(locId) match {
+            case Some(loc: ContainsObjects) => loc.next(obj) match {
+              case Some(nextObj) => ctx.push(RefValue(nextObj.id))
+              case _ => ctx.push(BoolValue(false))
+            }
+            case _ => ctx.push(BoolValue(false))
+          }
+        }
+        case _ => ctx.push(BoolValue(false))
+      }
+      case _ => throw new IllegalArgumentException(s"cannot deref $id")
+    }
+    ctx
+  }
+}
+
 // TODO FSET
 // TODO FCLEAR
 // TODO GETP
