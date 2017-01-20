@@ -26,6 +26,7 @@ object Interpreter {
     FSET -> FSetInterpreter,
     FCLEAR -> FClearInterpreter,
     GETP -> GetPInterpreter,
+    PUTP -> PutPInterpreter,
     PRINT -> PrintInterpreter,
     PRINTD -> PrintDInterpreter,
     PRINTN -> PrintNInterpreter,

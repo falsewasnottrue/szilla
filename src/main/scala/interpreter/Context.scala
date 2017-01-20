@@ -35,6 +35,11 @@ object Global {
   def registerFlag(flag: Flag): Unit = flags.put(flag.id, flag)
 
   def loadFlag(flagId: Id): Option[Flag] = flags.get(flagId)
+
+  def update(hasId: HasId): Unit = hasId match {
+      case obj: Object => registerObject(obj)
+      case room: Room => registerRoom(room)
+    }
 }
 
 case class Context(ip: InstructionPointer = NoIp, parent: Option[Context] = None) {

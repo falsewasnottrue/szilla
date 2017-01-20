@@ -1,5 +1,5 @@
 package interpreter.impl
-import interpreter.Context
+import interpreter.{Context, Global}
 import interpreter.impl.FSetInterpreter.arguments
 import models._
 
@@ -122,4 +122,24 @@ object GetPInterpreter extends BaseInterpreter {
   }
 }
 
-// TODO PUTP
+object PutPInterpreter extends BaseInterpreter {
+  // changes the value of the given object's given property to thing
+  override def apply(ctx: Context)(i: Instruction): Context = {
+    val Seq(RefValue(objId), StringValue(propName), newValue) = arguments(ctx)(i, ValueTypes(RefType, StringType, WildcardType))
+    ctx.deref(objId) match {
+      case Some(obj: Object) => newValue match {
+        case StringValue(s) => Global.update(obj.copy(properties = obj.properties.add(propName, s)))
+        case IntValue(j) => Global.update(obj.copy(properties = obj.properties.addInt(propName, j)))
+        case x => throw new IllegalArgumentException(s"cannot set property value $x")
+      }
+      case Some(room: Room) => newValue match {
+        case StringValue(s) => Global.update(room.copy(properties = room.properties.add(propName, s)))
+        case IntValue(j) => Global.update(room.copy(properties = room.properties.addInt(propName, j)))
+        case x => throw new IllegalArgumentException(s"cannot set property value $x")
+      }
+      case _ => throw new IllegalArgumentException(s"cannot deref $objId")
+    }
+    ctx
+  }
+}
+
