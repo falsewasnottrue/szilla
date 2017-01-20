@@ -82,8 +82,28 @@ object NextQInterpreter extends BaseInterpreter {
   }
 }
 
-// TODO FSET
+object FSetInterpreter extends BaseInterpreter {
+  // Sets flag1 in object1.
+  override def apply(ctx: Context)(i: Instruction): Context = {
+    val Seq(RefValue(objId), RefValue(flagId)) = arguments(ctx)(i, ValueTypes(RefType, RefType))
+    (ctx.deref(objId), ctx.deref(flagId)) match {
+      case (Some(hasFlags: HasFlags), Some(flag: Flag)) => hasFlags.addFlag(flag)
+      case _ => throw new IllegalArgumentException(s"cannot deref $objId or $flagId")
+    }
+    ctx
+  }
+}
+
 // TODO FCLEAR
+
+/*
+vFSET object1 flag1
+Sets flag1 in object1. Example:
+<FSET ,OILY-TORCH ,FLAMEBIT>
+FCLEAR object1 flag1
+Clears flag1 in object1. Example:
+<FCLEAR ,GUARDED-DIAMOND ,TRYTAKEBIT
+ */
 // TODO GETP
 // TODO PUTP
 

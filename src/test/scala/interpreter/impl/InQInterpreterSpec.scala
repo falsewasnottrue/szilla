@@ -1,7 +1,6 @@
 package interpreter.impl
 
-import interpreter.Global
-import models.{BoolValue, Object, RefValue, Variable}
+import models._
 
 class InQInterpreterSpec extends BaseInterpreterSpec{
 
@@ -29,13 +28,13 @@ class InQInterpreterSpec extends BaseInterpreterSpec{
 
   it should "fail for too few arguments" in new Env {
     intercept[IllegalArgumentException] {
-      run(ctx)("<FSET? ,BRASS-LAMP>")
+      run(ctx)("<IN? ,BRASS-LAMP>")
     }
   }
 
   it should "fail for wrong type of arguments" in new Env {
     intercept[IllegalArgumentException] {
-      run(ctx)("<FSET? 42 <RTRUE>>")
+      run(ctx)("<IN? 42 <RTRUE>>")
     }
   }
 }

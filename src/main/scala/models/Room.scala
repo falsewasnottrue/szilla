@@ -5,12 +5,10 @@ import parsers.KeyWords
 case class Room(id: Id, desc: Option[String] = None,
                 exits: Map[Direction, Exit] = Map.empty,
                 action: Option[Action] = None,
-                flags: Seq[Flag] = Nil)
-  extends HasId with HasLocation with ContainsObjects {
+                var flags: Seq[Flag] = Nil)
+  extends HasId with HasLocation with HasFlags with ContainsObjects {
 
   val location = Rooms
-
-  def setLocation(location: Location): Unit = throw new IllegalStateException(s"room's location cannot be changed")
 
   def north: Exit = exits.getOrElse(North, NoExit)
   def south: Exit = exits.getOrElse(South, NoExit)
@@ -27,6 +25,12 @@ case class Room(id: Id, desc: Option[String] = None,
     copy(exits = exits + (direction -> exit))
 
   def withFlag(flag: Flag): Room = copy(flags = flags :+ flag)
+
+  override def setLocation(location: Location): Unit = throw new IllegalStateException(s"room's location cannot be changed")
+
+  override def addFlag(flag: Flag): Unit = this.flags = flags :+ flag
+
+  override def removeFlag(flag: Flag): Unit = this.flags = flags.filter(_ != flag)
 }
 
 object Room {

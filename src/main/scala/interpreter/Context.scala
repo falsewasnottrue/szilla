@@ -11,6 +11,7 @@ object Global {
   private val globalVariables = scala.collection.mutable.Map[Variable, Value]()
   private val rooms = scala.collection.mutable.Map[Id, Room]()
   private val objects = scala.collection.mutable.Map[Id, Object]()
+  private val flags = scala.collection.mutable.Map[Id, Flag]()
 
   def set(variable: Variable, value: Value): Unit = globalVariables.put(variable, value)
 
@@ -30,6 +31,10 @@ object Global {
   def registerObject(obj: Object): Unit = objects.put(obj.id, obj)
 
   def loadObject(objId: Id): Option[Object] = objects.get(objId)
+
+  def registerFlag(flag: Flag): Unit = flags.put(flag.id, flag)
+
+  def loadFlag(flagId: Id): Option[Flag] = flags.get(flagId)
 }
 
 case class Context(ip: InstructionPointer = NoIp, parent: Option[Context] = None) {
@@ -53,7 +58,8 @@ case class Context(ip: InstructionPointer = NoIp, parent: Option[Context] = None
     this
   }
 
-  def deref(id: Id): Option[HasId] = Global.loadObject(id).orElse(Global.loadRoom(id))
+  def deref(id: Id): Option[HasId] =
+    Global.loadObject(id).orElse(Global.loadRoom(id)).orElse(Global.loadFlag(id))
 
   def push(value: Value): Context = {
     stack.push(value)

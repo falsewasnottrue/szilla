@@ -23,6 +23,7 @@ object Interpreter {
     LOC -> LocInterpreter,
     FIRST_Q -> FirstQInterpreter,
     NEXT_Q -> NextQInterpreter,
+    FSET -> FSetInterpreter,
     PRINT -> PrintInterpreter,
     PRINTD -> PrintDInterpreter,
     PRINTN -> PrintNInterpreter,

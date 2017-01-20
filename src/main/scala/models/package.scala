@@ -38,4 +38,12 @@ package object models {
       }
 
   }
+
+  trait HasFlags {
+    def flags: Seq[Flag]
+
+    def addFlag(flag: Flag): Unit
+
+    def removeFlag(flag: Flag): Unit
+  }
 }

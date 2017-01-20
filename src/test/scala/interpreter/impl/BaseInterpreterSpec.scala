@@ -29,5 +29,13 @@ class BaseInterpreterSpec extends FlatSpec with Matchers {
       c.set(variable, RefValue(room.id))
       room
     }
+
+    def createFlag(c: Context)(name: String): Flag = {
+      val variable = Variable("," + name)
+      val flag = Flag(id = name)
+      Global.registerFlag(flag)
+      c.set(variable, RefValue(flag.id))
+      flag
+    }
   }
 }

@@ -8,14 +8,12 @@ case class Object(
                  synonyms: Seq[String] = Nil,
                  adjectives: Seq[String] = Nil,
                  desc: Option[String] = None,
-                 flags: Seq[Flag] = Nil,
+                 var flags: Seq[Flag] = Nil,
                  action: Option[Action] = None,
                  fdesc: Option[String] = None,
                  ldesc: Option[String] = None,
                  size: Int = 0)
-  extends HasId with HasLocation with ContainsObjects {
-
-  def setLocation(location: Location): Unit = this.location = location
+  extends HasId with HasLocation with HasFlags with ContainsObjects {
 
   def withLocation(location: Location) = copy(location = location)
 
@@ -34,6 +32,12 @@ case class Object(
   def withLDesc(ldesc: String) = copy(ldesc = Some(ldesc))
 
   def withSize(size: Int) = copy(size = size)
+
+  override def setLocation(location: Location): Unit = this.location = location
+
+  override def addFlag(flag: Flag): Unit = this.flags = flags :+ flag
+
+  override def removeFlag(flag: Flag): Unit = this.flags = flags.filter(_ != flag)
 }
 
 object Object {
