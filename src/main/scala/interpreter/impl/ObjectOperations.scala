@@ -1,6 +1,5 @@
 package interpreter.impl
 import interpreter.{Context, Global}
-import interpreter.impl.FSetInterpreter.arguments
 import models._
 
 object MoveInterpreter extends BaseInterpreter {
