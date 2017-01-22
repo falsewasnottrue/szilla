@@ -93,6 +93,8 @@ case object SET extends OpCode
 case object COND extends OpCode
 case object TELL extends OpCode
 case object REPEAT extends OpCode
+case object CONSTANT extends OpCode
+case object TABLE extends OpCode
 
 object OpCode {
   def unapply(a: Any): Option[OpCode] = a match {
@@ -187,6 +189,8 @@ object OpCode {
     case "REPEAT" => Some(REPEAT)
     // TODO GLOBAL
     // TODO QUEUE
+    case "CONSTANT" => Some(CONSTANT)
+    case "TABLE" => Some(TABLE)
 
     case _ => None
   }

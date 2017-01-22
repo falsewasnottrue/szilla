@@ -624,4 +624,38 @@ class InstructionParserSpec extends FlatSpec with Matchers {
       Instruction(SET, Seq(Variable("CNT"), Instruction(ADD, Seq(Variable(".CNT"), Variable("1")))))
     ))
   }
+
+  it should "parse table block" in {
+    val text = "<TABLE 12 18 24 0 0 0>"
+    val res = Instruction.parser.parse(text)
+    res.opCode should be(TABLE)
+
+    res.operands should be(Seq(
+      Variable("12"),
+      Variable("18"),
+      Variable("24"),
+      Variable("0"),
+      Variable("0"),
+      Variable("0")
+    ))
+  }
+
+  it should "parse constant block" in {
+    val text = "<CONSTANT MAZE-TABLE <TABLE 12 18 24 0 0 0>>"
+    val res = Instruction.parser.parse(text)
+    res.opCode should be(CONSTANT)
+
+    res.operands should be(Seq(
+      Variable("MAZE-TABLE"),
+      Instruction(TABLE, Seq(
+        Variable("12"),
+        Variable("18"),
+        Variable("24"),
+        Variable("0"),
+        Variable("0"),
+        Variable("0")
+      ))
+    ))
+  }
+
 }
