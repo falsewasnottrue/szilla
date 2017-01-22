@@ -9,4 +9,5 @@ class TableInterpreterSpec extends BaseInterpreterSpec {
       Map(0 -> IntValue(1), 1 -> IntValue(2), 2 -> IntValue(3))
     )))
   }
+
 }

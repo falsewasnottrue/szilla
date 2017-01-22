@@ -36,7 +36,8 @@ object Interpreter {
     RTRUE -> RTrueInterpreter,
     RFALSE -> RFalseInterpreter,
     TELL -> TellInterpreter,
-    TABLE -> TableInterpreter
+    TABLE -> TableInterpreter,
+    CONSTANT -> ConstantInterpreter
   )
 
   def evaluate(ctx: Context)(op: Operand): Context = op match {
