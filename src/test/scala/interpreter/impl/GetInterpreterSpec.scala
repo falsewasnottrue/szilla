@@ -34,7 +34,7 @@ class GetInterpreterSpec extends BaseInterpreterSpec {
 
   it should "fail with wrong type of parameters" in new Env {
     intercept[IllegalArgumentException] {
-      run(ctx)("<GET 1 ,MAZE-EXITSs>")
+      run(ctx)("<GET 1 ,MAZE-EXITS>")
     }
   }
 }

@@ -39,7 +39,8 @@ object Interpreter {
     TABLE -> TableInterpreter,
     CONSTANT -> ConstantInterpreter,
     GET -> GetInterpreter,
-    PUT -> PutInterpreter
+    PUT -> PutInterpreter,
+    INTBL_Q -> IntblQInterpreter
   )
 
   def evaluate(ctx: Context)(op: Operand): Context = op match {

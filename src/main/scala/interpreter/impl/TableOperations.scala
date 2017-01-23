@@ -31,5 +31,13 @@ object PutInterpreter extends BaseInterpreter {
   }
 }
 
-// TODO NTBL_Q
+object IntblQInterpreter extends BaseInterpreter {
+  // Returns true if thing is found within the given table.
+  // The third argument is an integer representing the number of elements in the given table.
+  override def apply(ctx: Context)(i: Instruction): Context = {
+    val Seq(elem, TableValue(table), IntValue(len)) = arguments(ctx)(i, ValueTypes(WildcardType, TableType, IntType))
+    ctx.push(BoolValue(table.values.exists(_ == elem)))
+  }
+}
+
 // TODO COPYT
