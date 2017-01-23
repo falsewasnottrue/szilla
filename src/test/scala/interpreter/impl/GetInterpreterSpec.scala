@@ -3,10 +3,12 @@ package interpreter.impl
 import interpreter.Global
 import models._
 
+import scala.collection.mutable
+
 class GetInterpreterSpec extends BaseInterpreterSpec {
 
   trait Env0 extends Env {
-    val table = TableValue(Map(0 -> BoolValue(true), 1 -> StringValue("abc"), 2 -> IntValue(42)))
+    val table = TableValue(mutable.Map(0 -> BoolValue(true), 1 -> StringValue("abc"), 2 -> IntValue(42)))
     Global.set(Variable(",MAZE-EXITS"), table)
   }
 
@@ -32,7 +34,7 @@ class GetInterpreterSpec extends BaseInterpreterSpec {
 
   it should "fail with wrong type of parameters" in new Env {
     intercept[IllegalArgumentException] {
-      run(ctx)("<GET 1 ,MAZE-EXITS>")
+      run(ctx)("<GET 1 ,MAZE-EXITSs>")
     }
   }
 }

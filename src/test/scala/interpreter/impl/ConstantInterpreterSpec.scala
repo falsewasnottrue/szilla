@@ -2,6 +2,8 @@ package interpreter.impl
 
 import models.{IntValue, TableValue, Variable}
 
+import scala.collection.mutable
+
 class ConstantInterpreterSpec extends BaseInterpreterSpec {
 
   "ConstantInterpreter" should "register a global constant" in new Env {
@@ -12,7 +14,7 @@ class ConstantInterpreterSpec extends BaseInterpreterSpec {
   it should "work for expressions" in new Env {
     run(ctx)("<CONSTANT MAZE-TABLE <TABLE 1 2 3>>")
     ctx.get(Variable("MAZE-TABLE")) should be(TableValue(
-      Map(0 -> IntValue(1), 1 -> IntValue(2), 2 -> IntValue(3))
+      mutable.Map(0 -> IntValue(1), 1 -> IntValue(2), 2 -> IntValue(3))
     ))
   }
 

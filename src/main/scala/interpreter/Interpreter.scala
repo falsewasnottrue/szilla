@@ -38,7 +38,8 @@ object Interpreter {
     TELL -> TellInterpreter,
     TABLE -> TableInterpreter,
     CONSTANT -> ConstantInterpreter,
-    GET -> GetInterpreter
+    GET -> GetInterpreter,
+    PUT -> PutInterpreter
   )
 
   def evaluate(ctx: Context)(op: Operand): Context = op match {

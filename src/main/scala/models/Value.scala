@@ -25,7 +25,7 @@ case class RefValue(id: Id) extends Value {
 case class SeqValue(v: Seq[String]) extends Value {
   override def toString = v.toString
 }
-case class TableValue(v: Map[Int, Value]) extends Value {
+case class TableValue(v: scala.collection.mutable.Map[Int, Value] = scala.collection.mutable.Map[Int, Value]()) extends Value {
   override def toString = v.toString
 }
 
