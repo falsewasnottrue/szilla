@@ -40,4 +40,12 @@ object IntblQInterpreter extends BaseInterpreter {
   }
 }
 
-// TODO COPYT
+object CopyTInterpreter extends BaseInterpreter {
+  // Copies table1 into table2. The process stops at the integer1th slot number;
+  // if you desire, all of table1 doesn't have to be copied to table2.
+  override def apply(ctx: Context)(i: Instruction): Context = {
+    val Seq(TableValue(src), TableValue(dest), IntValue(limit)) = arguments(ctx)(i, ValueTypes(TableType, TableType, IntType))
+    src.filter { _._1 < limit}.foreach { case (index, value) => dest.put(index, value) }
+    ctx
+  }
+}
