@@ -7,16 +7,26 @@ case class Ip(routine: Routine, line: Int) extends InstructionPointer
 case object NoIp extends InstructionPointer
 
 object Global {
+
   private val routines = scala.collection.mutable.Map[String, Routine]()
   private val globalVariables = scala.collection.mutable.Map[GlobalVariable, Value]()
   private val rooms = scala.collection.mutable.Map[Id, Room]()
   private val objects = scala.collection.mutable.Map[Id, Object]()
   private val flags = scala.collection.mutable.Map[Id, Flag]()
 
-  // TODO define
+  def define(variable: GlobalVariable, value: Value): Unit =
+    if (globalVariables.get(variable).isEmpty) {
+      globalVariables.put(variable, value)
+    } else {
+      throw new IllegalArgumentException(s"cannot redefine global variable $variable")
+    }
 
-  // TODO test defined
-  def set(variable: GlobalVariable, value: Value): Unit = globalVariables.put(variable, value)
+  def set(variable: GlobalVariable, value: Value): Unit =
+    if (globalVariables.get(variable).isDefined) {
+      globalVariables.put(variable, value)
+    } else {
+      throw new IllegalArgumentException(s"cannot set undefined global variable $variable")
+    }
 
   def get(variable: GlobalVariable): Value = globalVariables.get(variable) match {
     case Some(value) => value
@@ -42,6 +52,10 @@ object Global {
   def update(hasId: HasId): Unit = hasId match {
     case obj: Object => registerObject(obj)
     case room: Room => registerRoom(room)
+  }
+
+  def reset() = {
+    Seq(routines, globalVariables, rooms, objects, flags).foreach(_.clear())
   }
 }
 

@@ -16,6 +16,13 @@ class ConstantInterpreterSpec extends BaseInterpreterSpec {
     ctx.getGlobal(GlobalVariable("FUSE-COUNTER")) should be(IntValue(0))
   }
 
+  it should "fail to redefine a global" in new Env {
+    run(ctx)("<CONSTANT FOUR 3>")
+    intercept[IllegalArgumentException] {
+      run(ctx)("<CONSTANT FOUR 4>")
+    }
+  }
+
   it should "work for expressions" in new Env {
     run(ctx)("<CONSTANT MAZE-TABLE <TABLE 1 2 3>>")
     ctx.getGlobal(GlobalVariable("MAZE-TABLE")) should be(TableValue(

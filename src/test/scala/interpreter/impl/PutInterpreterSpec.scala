@@ -1,5 +1,6 @@
 package interpreter.impl
 
+import interpreter.Global
 import models._
 
 
@@ -7,8 +8,8 @@ class PutInterpreterSpec extends BaseInterpreterSpec {
 
   trait Env0 extends Env {
     val table = TableValue()
-    ctx.setGlobal(GlobalVariable("SUSPECTS-TABLE"), table)
-    ctx.setGlobal(GlobalVariable("SUSPECTS-POINTER"), IntValue(17))
+    Global.define(GlobalVariable("SUSPECTS-TABLE"), table)
+    Global.define(GlobalVariable("SUSPECTS-POINTER"), IntValue(17))
     val butler = createObject(ctx)("BUTLER")
   }
 

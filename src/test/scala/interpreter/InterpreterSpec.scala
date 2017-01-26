@@ -23,7 +23,7 @@ class InterpreterSpec extends FlatSpec with Matchers {
 
   it should "evaluate global variables" in new Env {
     val globalVar = GlobalVariable(",TEN")
-    ctx.setGlobal(globalVar, IntValue(10))
+    Global.define(globalVar, IntValue(10))
 
     val c = Interpreter.evaluate(ctx)(globalVar)
     c.pop should be(Some(IntValue(10)))

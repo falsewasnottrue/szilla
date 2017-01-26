@@ -10,10 +10,10 @@ class FSetQInterpreterSpec extends BaseInterpreterSpec {
     Global.registerObject(lamp)
     val lampVar = GlobalVariable("BRASS-LAMP")
 
-    ctx.setGlobal(lampVar, RefValue(lamp.id))
+    Global.define(lampVar, RefValue(lamp.id))
 
-    ctx.setGlobal(GlobalVariable("ONBIT"), StringValue("ONBIT"))
-    ctx.setGlobal(GlobalVariable("SOMEBIT"), StringValue("SOMEBIT"))
+    Global.define(GlobalVariable("ONBIT"), StringValue("ONBIT"))
+    Global.define(GlobalVariable("SOMEBIT"), StringValue("SOMEBIT"))
   }
 
   "FSetQInterpreter" should "return true if bit is set" in new Env0 {

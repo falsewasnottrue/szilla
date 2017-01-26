@@ -15,7 +15,7 @@ object ConstantInterpreter extends BaseInterpreter {
   // defines a constant
   override def apply(ctx: Context)(i: Instruction): Context = {
     val Seq(StringValue(name), value) = arguments(ctx)(i, ValueTypes(StringType, WildcardType))
-    ctx.setGlobal(GlobalVariable(name), value)
+    Global.define(GlobalVariable(name), value)
     ctx
   }
 }
@@ -23,6 +23,7 @@ object ConstantInterpreter extends BaseInterpreter {
 object SetGInterpreter extends BaseInterpreter {
   // sets a global variable
   override def apply(ctx: Context)(i: Instruction): Context = {
-    ???
+    val Seq(StringValue(name), value) = arguments(ctx)(i, ValueTypes(StringType, WildcardType))
+    ctx.setGlobal(GlobalVariable(name), value)
   }
 }

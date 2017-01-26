@@ -1,12 +1,13 @@
 package interpreter.impl
 
-import models.{GlobalVariable, StringValue, Variable}
+import interpreter.Global
+import models._
 import org.mockito.Mockito
 
 class TellInterpreterSpec extends BaseInterpreterSpec {
 
   "TellInterpreter" should "evaluate and print its operands" in new Env {
-    ctx.setGlobal(GlobalVariable("NAME"), StringValue("Anton"))
+    Global.define(GlobalVariable("NAME"), StringValue("Anton"))
     val ctxSpy = Mockito.spy(ctx)
 
     run(ctxSpy)("<TELL \"Hallo \" ,NAME \"!\">")

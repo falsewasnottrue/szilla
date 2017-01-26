@@ -8,6 +8,7 @@ class BaseInterpreterSpec extends FlatSpec with Matchers {
 
   trait Env {
     val ctx = Context()
+    Global.reset()
 
     def run(ctx: Context)(text: String): Context = {
       val instruction = Instruction.parser.parse(text)
@@ -19,7 +20,7 @@ class BaseInterpreterSpec extends FlatSpec with Matchers {
       val variable = GlobalVariable(name)
       val obj = Object(id = name, properties = properties)
       Global.registerObject(obj)
-      c.setGlobal(variable, RefValue(obj.id))
+      Global.define(variable, RefValue(obj.id))
       obj
     }
 
@@ -28,7 +29,7 @@ class BaseInterpreterSpec extends FlatSpec with Matchers {
       val variable = GlobalVariable(name)
       val room = Room(id = name, properties = properties)
       Global.registerRoom(room)
-      c.setGlobal(variable, RefValue(room.id))
+      Global.define(variable, RefValue(room.id))
       room
     }
 
@@ -36,7 +37,7 @@ class BaseInterpreterSpec extends FlatSpec with Matchers {
       val variable = GlobalVariable(name)
       val flag = Flag(id = name)
       Global.registerFlag(flag)
-      c.setGlobal(variable, RefValue(flag.id))
+      Global.define(variable, RefValue(flag.id))
       flag
     }
   }
