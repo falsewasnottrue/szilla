@@ -41,7 +41,7 @@ object ZParser {
   def points[T](keyword: String, step: (T, String) => T): PartialFunction[(T, Tree), T] =
     {case (obj, Node(Leaf(`keyword`) +: clauses, _)) => clauses.foldLeft(obj) {
       case (o, Leaf(clause)) => step(o, clause)
-      case (o, Node(_, _)) => o // ignore
+      case (o, Node(_, _)) => o // ignore TODO really?
       case s => throw new IllegalArgumentException(s"illegal clause $keyword: $s")
     }}
 }
