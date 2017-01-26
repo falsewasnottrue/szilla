@@ -4,9 +4,19 @@ import models._
 
 import scala.concurrent.Future
 
-sealed trait InstructionPointer
-case class Ip(routine: Routine, line: Int) extends InstructionPointer
-case object NoIp extends InstructionPointer
+sealed trait InstructionPointer {
+  def instruction: Option[Instruction]
+  def inc: Unit
+}
+case class Ip(routine: Routine, var line: Int) extends InstructionPointer {
+  def instruction = if (line >= routine.length) None else Some(routine.instructions(line))
+  def inc = line = line+1
+}
+
+case object NoIp extends InstructionPointer {
+  val instruction = None
+  def inc = {}
+}
 
 object Global {
 
@@ -66,6 +76,12 @@ case class Context(ip: InstructionPointer = NoIp, parent: Option[Context] = None
   private val localVariables = scala.collection.mutable.Map[LocalVariable, Value]()
   private val stack = scala.collection.mutable.Stack[Value]()
 
+  def isDefined(variable: LocalVariable): Boolean = (localVariables.get(variable), parent) match {
+    case (Some(_), _) => true
+    case (None, Some(p)) => p.isDefined(variable)
+    case _ => false
+  }
+
   def get(variable: LocalVariable): Value = (localVariables.get(variable), parent) match {
     case (Some(value), _) => value
     case (None, Some(p)) => p.get(variable)
@@ -94,10 +110,27 @@ case class Context(ip: InstructionPointer = NoIp, parent: Option[Context] = None
 
   def pop: Option[Value] = if (stack.isEmpty) None else Some(stack.pop)
 
+  def inc: Context = {
+    ip.inc
+    (ip.instruction, parent) match {
+      case (Some(_), _) => this
+      case (None, Some(c)) => c.inc
+      case _ => this
+    }
+
+
+  }
+
+  // TODO implement
   def in: Future[String] = Future.successful("TODO")
 
   def out(s: String): Context = {
-    print(s)
+    if (parent.isDefined) {
+      parent.get.out(s)
+    } else {
+      print(s)
+    }
+
     this
   }
 }

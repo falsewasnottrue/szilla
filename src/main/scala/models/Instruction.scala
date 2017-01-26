@@ -202,14 +202,14 @@ sealed trait Var extends Operand
 case class LocalVariable(name: String) extends Var
 case class GlobalVariable(name: String) extends Var
 case class PropertyNameVariable(name: String) extends Var
+case class Literal(name: String) extends Var
 
 object Variable {
-  // TODO LocalVariable with "." ?
-
   def apply(varname: String): Var =
     if (varname.startsWith(",P?")) PropertyNameVariable(varname.substring(3))
     else if (varname.startsWith(",")) GlobalVariable(varname.substring(1))
-    else LocalVariable(varname)
+    else if (varname.startsWith(".")) LocalVariable(varname.substring(1))
+    else Literal(varname)
 }
 
 case class Condition(cond: Operand, action: Operand*) extends Operand

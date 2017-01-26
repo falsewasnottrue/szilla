@@ -12,8 +12,6 @@ class PrintDInterpreterSpec extends BaseInterpreterSpec {
 
   "PrintInterpreter" should "print the DESC of the given object." in new Env0 {
     val ctxSpy = Mockito.spy(ctx)
-
-    println(lantern)
     run(ctxSpy)("<PRINTD ,LANTERN>")
 
     Mockito.verify(ctxSpy).out("brass lantern")

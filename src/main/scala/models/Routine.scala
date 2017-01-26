@@ -15,6 +15,8 @@ case class Routine(
                     instructions: Seq[Instruction] = Nil
                   ) extends HasId {
 
+  val length = instructions.length
+
   def params = arguments.collect { case arg @ SimpleArgument(_) => arg }
   def optParams = arguments.collect { case arg @ OptArgument(_) => arg }
   def auxParams = arguments.collect { case arg @ AuxArgument(_) => arg }

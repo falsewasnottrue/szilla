@@ -11,7 +11,7 @@ object AddInterpreter extends BaseInterpreter {
       case (acc, IntValue(i)) => acc + i
       case x => throw new IllegalArgumentException(s"unexpected argument for ADD: $x")
     }
-    ctx.push(IntValue(res))
+    ctx.push(IntValue(res)).inc
   }
 }
 

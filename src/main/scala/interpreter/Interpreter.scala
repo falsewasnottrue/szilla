@@ -43,29 +43,42 @@ object Interpreter {
     INTBL_Q -> IntblQInterpreter,
     COPYT -> CopyTInterpreter,
     SETG -> SetGInterpreter,
-    INPUT -> InputInterpreter
+    INPUT -> InputInterpreter,
+    SET -> SetInterpreter
   )
 
   def evaluate(ctx: Context)(op: Operand): Context = op match {
-      case v @ LocalVariable(_) => evaluateVariable(ctx)(v)
-      case v @ GlobalVariable(_) => evaluateVariable(ctx)(v)
-      case v @ PropertyNameVariable(_) => evaluateVariable(ctx)(v)
+    case v @ LocalVariable(_) => evaluateVariable(ctx)(v)
+    case v @ GlobalVariable(_) => evaluateVariable(ctx)(v)
+    case v @ PropertyNameVariable(_) => evaluateVariable(ctx)(v)
+    case v @ Literal(_) => evaluateVariable(ctx)(v)
 
-      case i @ Instruction(_, _) => evaluateInstruction(ctx)(i)
+    case i @ Instruction(_, _) => evaluateInstruction(ctx)(i)
 
-      case x => throw new IllegalArgumentException(s"unknown operand type $x")
-    }
+    case x => throw new IllegalArgumentException(s"unknown operand type $x")
+  }
 
   private def evaluateVariable(ctx: Context)(v: Var): Context = v match {
-    case LocalVariable(Int(i)) => ctx.push(IntValue(i))
     case PropertyNameVariable(p) => ctx.push(StringValue(p))
+    case Literal(Int(i)) => ctx.push(IntValue(i))
+      // constants
+    case Literal("T") => ctx.push(BoolValue(true))
+    case Literal("CR") => ctx.push(StringValue("\n"))
+      // fallback
+    case Literal(r) => ctx.push(StringValue(r))
+    case l @ LocalVariable(_) if ctx.isDefined(l) => ctx.push(ctx.get(l))
     case g @ GlobalVariable(_) => ctx.push(Global.get(g))
-      // pattern match on string has to come as last default
-    case LocalVariable(s) => ctx.push(StringValue(s))
 
     case _ => throw new IllegalStateException(s"not implemented $v")
   }
 
   private def evaluateInstruction(ctx: Context)(i: Instruction): Context =
     interpreters(i.opCode)(ctx)(i)
+
+  def run(ctx: Context): Context = {
+    ctx.ip.instruction match {
+      case None => ctx
+      case Some(instruction) => run(evaluate(ctx)(instruction))
+    }
+  }
 }
