@@ -15,12 +15,12 @@ class RoomSpec extends FlatSpec with Matchers {
   it should "allow to query for Exits" in {
     val room = Room(id = "LIVING-ROOM")
 
-    room.north should be(NoExit)
-    room.south should be(NoExit)
-    room.west should be(NoExit)
-    room.east should be(NoExit)
-    room.up should be(NoExit)
-    room.down should be(NoExit)
+    room.exit(North) should be(NExit(None))
+    room.exit(South) should be(NExit(None))
+    room.exit(West) should be(NExit(None))
+    room.exit(East) should be(NExit(None))
+    room.exit(Up) should be(NExit(None))
+    room.exit(Down) should be(NExit(None))
   }
 
   it should "have an optional (?) Action" in {
@@ -50,9 +50,9 @@ class RoomSpec extends FlatSpec with Matchers {
 
   it should "allow to add exits" in {
     val room = Room(id = "LIVING-ROOM")
-    room.east should be(NoExit)
+    room.exit(East) should be(NExit(None))
     val r = room.withExit(East, UExit("KITCHEN"))
-    r.east should be(UExit("KITCHEN"))
+    r.exit(East) should be(UExit("KITCHEN"))
   }
 
   it should "allow to add flags" in {

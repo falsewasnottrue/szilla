@@ -12,12 +12,7 @@ case class Room(id: Id,
 
   val location = Rooms
 
-  def north: Exit = exits.getOrElse(North, NoExit)
-  def south: Exit = exits.getOrElse(South, NoExit)
-  def west: Exit = exits.getOrElse(West, NoExit)
-  def east: Exit = exits.getOrElse(East, NoExit)
-  def up: Exit = exits.getOrElse(Up, NoExit)
-  def down: Exit = exits.getOrElse(Down, NoExit)
+  def exit(dir: Direction) = exits.getOrElse(dir, NExit())
 
   def withDesc(desc: String): Room = copy(properties = properties.add(PropertyName.DESC, desc))
 
@@ -44,9 +39,12 @@ object Room {
     point(KeyWords.LOC, (r, _) => r),
     point(KeyWords.DESC, (r, desc) => r.withDesc(desc)),
     point2(TO, (r, dir, roomId) => Direction.unapply(dir).fold(r)(dir => r.withExit(dir, UExit(roomId)))),
-    // conditional exit form is too complicated for generalisation
+    // conditional exit
     { case (r, Node(Seq(Leaf(dir), Leaf("TO"), Leaf(roomId), Leaf("IF"), Leaf(cond), Leaf("ELSE"), Leaf(otherwise)), _)) =>
       Direction.unapply(dir).fold(r)(dir => r.withExit(dir, CExit(roomId, Variable(cond), otherwise))) },
+    // non-exit with message
+    { case (r, Node(Seq(Leaf(dir), Leaf("SORRY"), Leaf(msg)), _)) =>
+      Direction.unapply(dir).fold(r)(dir => r.withExit(dir, NExit(Some(msg)))) },
     point2(PER, (r, dir, roomId) => Direction.unapply(dir).fold(r)(dir => r.withExit(dir, FExit(roomId)))),
     point(ACTION, (r, action) => r.withAction(Action(action))),
     points(FLAGS, (r, flag) => r.withFlag(Flag(flag))),

@@ -2,7 +2,8 @@ package models
 
 sealed trait Exit
 
-case object NoExit extends Exit
+// non exit
+case class NExit(sorry: Option[String] = None) extends Exit
 
 // Unconditional exit
 case class UExit(roomId: Id) extends Exit
