@@ -658,4 +658,15 @@ class InstructionParserSpec extends FlatSpec with Matchers {
     ))
   }
 
+  it should "parse global" in {
+    val text = "<GLOBAL FUSE-COUNTER 0>"
+    val res = Instruction.parser.parse(text)
+    res.opCode should be(CONSTANT)
+
+    res.operands should be(Seq(
+      Variable("FUSE-COUNTER"),
+      Variable("0")
+    ))
+  }
+
 }

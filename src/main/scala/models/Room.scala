@@ -41,7 +41,7 @@ object Room {
     point2(TO, (r, dir, roomId) => Direction.unapply(dir).fold(r)(dir => r.withExit(dir, UExit(roomId)))),
     // conditional exit
     { case (r, Node(Seq(Leaf(dir), Leaf("TO"), Leaf(roomId), Leaf("IF"), Leaf(cond), Leaf("ELSE"), Leaf(otherwise)), _)) =>
-      Direction.unapply(dir).fold(r)(dir => r.withExit(dir, CExit(roomId, Variable(cond), otherwise))) },
+      Direction.unapply(dir).fold(r)(dir => r.withExit(dir, CExit(roomId, GlobalVariable(cond), otherwise))) },
     // non-exit with message
     { case (r, Node(Seq(Leaf(dir), Leaf("SORRY"), Leaf(msg)), _)) =>
       Direction.unapply(dir).fold(r)(dir => r.withExit(dir, NExit(Some(msg)))) },

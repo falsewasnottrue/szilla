@@ -20,25 +20,25 @@ class CallInterpreterSpec extends BaseInterpreterSpec {
 
     c.parent should be(Some(ctx))
     // parameters are bound to arguments
-    c.get(Variable("A")) should be(IntValue(42))
-    c.get(Variable("B")) should be(IntValue(17))
+    c.get(LocalVariable("A")) should be(IntValue(42))
+    c.get(LocalVariable("B")) should be(IntValue(17))
 
     // parameters are not visible in the outer scope
-    intercept[IllegalStateException] {
-      ctx.get(Variable("A"))
+    intercept[IllegalArgumentException] {
+      ctx.get(LocalVariable("A"))
     }
 
     // AUX and OPT parameters are initialised with default value
-    c.get(Variable("C")) should be(BoolValue(false))
-    c.get(Variable("D")) should be(BoolValue(false))
-    c.get(Variable("E")) should be(BoolValue(false))
-    c.get(Variable("F")) should be(BoolValue(false))
+    c.get(LocalVariable("C")) should be(BoolValue(false))
+    c.get(LocalVariable("D")) should be(BoolValue(false))
+    c.get(LocalVariable("E")) should be(BoolValue(false))
+    c.get(LocalVariable("F")) should be(BoolValue(false))
   }
 
   it should "fill up optional parameters" in new Env0 {
     val c = run(ctx)("<CALL R 42 17 <RTRUE> \"abc\">")
-    c.get(Variable("E")) should be(BoolValue(true))
-    c.get(Variable("F")) should be(StringValue("abc"))
+    c.get(LocalVariable("E")) should be(BoolValue(true))
+    c.get(LocalVariable("F")) should be(StringValue("abc"))
   }
 
   it should "fail without a routine name" in new Env0 {

@@ -8,14 +8,17 @@ case object NoIp extends InstructionPointer
 
 object Global {
   private val routines = scala.collection.mutable.Map[String, Routine]()
-  private val globalVariables = scala.collection.mutable.Map[Variable, Value]()
+  private val globalVariables = scala.collection.mutable.Map[GlobalVariable, Value]()
   private val rooms = scala.collection.mutable.Map[Id, Room]()
   private val objects = scala.collection.mutable.Map[Id, Object]()
   private val flags = scala.collection.mutable.Map[Id, Flag]()
 
-  def set(variable: Variable, value: Value): Unit = globalVariables.put(variable, value)
+  // TODO define
 
-  def get(variable: Variable): Value = globalVariables.get(variable) match {
+  // TODO test defined
+  def set(variable: GlobalVariable, value: Value): Unit = globalVariables.put(variable, value)
+
+  def get(variable: GlobalVariable): Value = globalVariables.get(variable) match {
     case Some(value) => value
     case None => throw new IllegalStateException(s"no value bound to variable $variable")
   }
@@ -44,24 +47,26 @@ object Global {
 
 case class Context(ip: InstructionPointer = NoIp, parent: Option[Context] = None) {
 
-  private val localVariables = scala.collection.mutable.Map[Variable, Value]()
+  private val localVariables = scala.collection.mutable.Map[LocalVariable, Value]()
   private val stack = scala.collection.mutable.Stack[Value]()
 
-  def get(variable: Variable): Value = (localVariables.get(variable), parent) match {
+  def get(variable: LocalVariable): Value = (localVariables.get(variable), parent) match {
     case (Some(value), _) => value
     case (None, Some(p)) => p.get(variable)
-    case (None, None) => Global.get(variable)
+    case _ => throw new IllegalArgumentException(s"no value bound to local variable $variable")
   }
 
-  def set(variable: Variable, value: Value): Context = {
+  def set(variable: LocalVariable, value: Value): Context = {
     localVariables.put(variable, value)
     this
   }
 
-  def setGlobal(variable: Variable, value: Value): Context = {
-    Global.set(variable, value)
+  def setGlobal(globalVariable: GlobalVariable, value: Value): Context = {
+    Global.set(globalVariable, value)
     this
   }
+
+  def getGlobal(globalVariable: GlobalVariable): Value = Global.get(globalVariable)
 
   def deref(id: Id): Option[HasId] =
     Global.loadObject(id).orElse(Global.loadRoom(id)).orElse(Global.loadFlag(id))

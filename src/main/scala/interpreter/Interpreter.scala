@@ -41,20 +41,26 @@ object Interpreter {
     GET -> GetInterpreter,
     PUT -> PutInterpreter,
     INTBL_Q -> IntblQInterpreter,
-    COPYT -> CopyTInterpreter
+    COPYT -> CopyTInterpreter,
+    SETG -> SetGInterpreter
   )
 
   def evaluate(ctx: Context)(op: Operand): Context = op match {
-      case v @ Variable(_) => evaluateVariable(ctx)(v)
+      case v @ LocalVariable(_) => evaluateVariable(ctx)(v)
+      case v @ GlobalVariable(_) => evaluateVariable(ctx)(v)
+      case v @ PropertyNameVariable(_) => evaluateVariable(ctx)(v)
+
       case i @ Instruction(_, _) => evaluateInstruction(ctx)(i)
+
       case x => throw new IllegalArgumentException(s"unknown operand type $x")
     }
 
-  private def evaluateVariable(ctx: Context)(v: Variable): Context = v match {
-    case Variable(Int(i)) => ctx.push(IntValue(i))
-    case Variable(PropertyNameVariable(p)) => ctx.push(StringValue(p))
-    case Variable(GlobalVariable(g)) => ctx.push(ctx.get(v))
-    case Variable(s) => ctx.push(StringValue(s))
+  private def evaluateVariable(ctx: Context)(v: Var): Context = v match {
+    case LocalVariable(Int(i)) => ctx.push(IntValue(i))
+    case PropertyNameVariable(p) => ctx.push(StringValue(p))
+    case g @ GlobalVariable(_) => ctx.push(Global.get(g))
+      // pattern match on string has to come as last default
+    case LocalVariable(s) => ctx.push(StringValue(s))
 
     case _ => throw new IllegalStateException(s"not implemented $v")
   }

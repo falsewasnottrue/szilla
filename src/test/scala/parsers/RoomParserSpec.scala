@@ -27,7 +27,7 @@ class RoomParserSpec extends FlatSpec with Matchers {
     room.properties.get(PropertyName.DESC) should be(Some("This is the living Room"))
 
     room.exit(East) should be(UExit("KITCHEN"))
-    room.exit(West) should be(CExit("STRANGE-PASSAGE", Variable("CYCLOPS-FLED"), "The wooden door is nailed shut."))
+    room.exit(West) should be(CExit("STRANGE-PASSAGE", GlobalVariable("CYCLOPS-FLED"), "The wooden door is nailed shut."))
     room.exit(Down) should be(FExit("TRAP-DOOR-EXIT"))
     room.exit(NW) should be(NExit(Some("The soldier informs you that only Emperor Bonaparte is allowed through.")))
     room.action should be(Some(Action("LIVING-ROOM-F")))

@@ -10,7 +10,7 @@ class IntblQInterpreterSpec extends BaseInterpreterSpec {
   trait Env0 extends Env {
     val rudolph = createObject(ctx)("RUDOLPH")
     val table = TableValue(mutable.Map(0 -> BoolValue(true), 1 -> StringValue("abc"), 2 -> IntValue(42), 17 -> RefValue("RUDOLPH")))
-    Global.set(Variable(",REINDEER-TABLE"), table)
+    ctx.setGlobal(GlobalVariable("REINDEER-TABLE"), table)
   }
 
   "IntblQInterpreter" should "return true if thing is found within the given table" in new Env0 {

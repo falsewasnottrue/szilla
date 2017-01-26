@@ -9,7 +9,7 @@ class GetInterpreterSpec extends BaseInterpreterSpec {
 
   trait Env0 extends Env {
     val table = TableValue(mutable.Map(0 -> BoolValue(true), 1 -> StringValue("abc"), 2 -> IntValue(42)))
-    Global.set(Variable(",MAZE-EXITS"), table)
+    ctx.setGlobal(GlobalVariable("MAZE-EXITS"), table)
   }
 
   "GetInterpreter" should "return the value that is stored in the ith slot in the given table" in new Env0 {

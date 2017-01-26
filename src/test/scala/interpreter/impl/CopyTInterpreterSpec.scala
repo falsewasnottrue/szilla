@@ -1,6 +1,5 @@
 package interpreter.impl
 
-import interpreter.Global
 import models._
 
 import scala.collection.mutable
@@ -9,9 +8,9 @@ class CopyTInterpreterSpec extends BaseInterpreterSpec {
 
   trait Env0 extends Env {
     val table = TableValue(mutable.Map(0 -> BoolValue(true), 1 -> StringValue("abc"), 2 -> IntValue(42)))
-    Global.set(Variable(",CURRENT-MOVE-TBL"), table)
+    ctx.setGlobal(GlobalVariable("CURRENT-MOVE-TBL"), table)
     val tableDest = TableValue()
-    Global.set(Variable(",OLD-MOVE-TBL"), tableDest)
+    ctx.setGlobal(GlobalVariable("OLD-MOVE-TBL"), tableDest)
   }
 
   "CopyTInterpreter" should "copy table1 into table2" in new Env0 {

@@ -25,11 +25,11 @@ object CallInterpreter extends BaseInterpreter {
 
     val initialised = for {
       (value, argument) <- parameterValues.zip(routine.params ++ routine.optParams)
-      _ = context.set(Variable(argument.id), value)
+      _ = context.set(LocalVariable(argument.id), value)
     } yield argument.id
 
     for (argument <- routine.arguments.filter(arg => !initialised.contains(arg.id))) {
-      context.set(Variable(argument.id), BoolValue(false))
+      context.set(LocalVariable(argument.id), BoolValue(false))
     }
 
     context

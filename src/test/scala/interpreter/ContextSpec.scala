@@ -8,7 +8,7 @@ class ContextSpec extends FlatSpec with Matchers {
   trait Env {
     val ctx = Context()
 
-    val x = Variable("x")
+    val x = LocalVariable("x")
     val v = IntValue(42)
   }
 
@@ -22,11 +22,6 @@ class ContextSpec extends FlatSpec with Matchers {
     val child = Context(parent = Some(ctx))
 
     child.get(x) should be(v)
-  }
-
-  it should "delegate to global context" in new Env {
-    ctx.setGlobal(x, v)
-    ctx.get(x) should be(v)
   }
 
   it should "manage stack" in new Env {

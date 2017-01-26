@@ -96,6 +96,8 @@ case object REPEAT extends OpCode
 case object CONSTANT extends OpCode
 case object TABLE extends OpCode
 
+// TODO QUEUE
+
 object OpCode {
   def unapply(a: Any): Option[OpCode] = a match {
     // arithmetic instructions
@@ -187,9 +189,7 @@ object OpCode {
     case "COND" => Some(COND)
     case "TELL" => Some(TELL)
     case "REPEAT" => Some(REPEAT)
-    // TODO GLOBAL
-    // TODO QUEUE
-    case "CONSTANT" => Some(CONSTANT)
+    case "CONSTANT" | "GLOBAL" => Some(CONSTANT)
     case "TABLE" => Some(TABLE)
 
     case _ => None
@@ -198,14 +198,18 @@ object OpCode {
 
 sealed trait Operand
 
-case class Variable(name: String) extends Operand
-object GlobalVariable {
-  def unapply(s: String): Option[String] =
-    if (s.startsWith(",")) Some(s.substring(1)) else None
-}
-object PropertyNameVariable {
-  def unapply(s: String): Option[String] =
-    if (s.startsWith(",P?")) Some(s.substring(3)) else None
+sealed trait Var extends Operand
+case class LocalVariable(name: String) extends Var
+case class GlobalVariable(name: String) extends Var
+case class PropertyNameVariable(name: String) extends Var
+
+object Variable {
+  // TODO LocalVariable with "." ?
+
+  def apply(varname: String): Var =
+    if (varname.startsWith(",P?")) PropertyNameVariable(varname.substring(3))
+    else if (varname.startsWith(",")) GlobalVariable(varname.substring(1))
+    else LocalVariable(varname)
 }
 
 case class Condition(cond: Operand, action: Operand*) extends Operand
