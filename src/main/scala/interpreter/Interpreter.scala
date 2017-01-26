@@ -42,7 +42,8 @@ object Interpreter {
     PUT -> PutInterpreter,
     INTBL_Q -> IntblQInterpreter,
     COPYT -> CopyTInterpreter,
-    SETG -> SetGInterpreter
+    SETG -> SetGInterpreter,
+    INPUT -> InputInterpreter
   )
 
   def evaluate(ctx: Context)(op: Operand): Context = op match {

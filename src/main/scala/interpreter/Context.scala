@@ -2,6 +2,8 @@ package interpreter
 
 import models._
 
+import scala.concurrent.Future
+
 sealed trait InstructionPointer
 case class Ip(routine: Routine, line: Int) extends InstructionPointer
 case object NoIp extends InstructionPointer
@@ -92,7 +94,7 @@ case class Context(ip: InstructionPointer = NoIp, parent: Option[Context] = None
 
   def pop: Option[Value] = if (stack.isEmpty) None else Some(stack.pop)
 
-  def in: String = "TODO"
+  def in: Future[String] = Future.successful("TODO")
 
   def out(s: String): Context = {
     print(s)

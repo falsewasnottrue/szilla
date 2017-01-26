@@ -8,6 +8,7 @@ case object RefType extends ValueType
 case object SeqType extends ValueType
 case object TableType extends ValueType
 case object WildcardType extends ValueType
+case class Optional(valueType: ValueType) extends ValueType
 
 sealed trait Value
 case class IntValue(v: Int) extends Value {
