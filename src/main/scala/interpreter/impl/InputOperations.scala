@@ -15,7 +15,7 @@ object InputInterpreter extends BaseInterpreter {
   // that many tenths of a second. The second optional argument is the name of a
   // routine that INPUT should call if it "times out"—that is, if it gets no keystroke
   // within the allotted time. Example:
-  override def apply(ctx: Context)(i: Instruction): Context = {
+  override def step(ctx: Context)(i: Instruction): Context = {
     val args = arguments(ctx)(i, ValueTypes(IntType, Optional(IntType), Optional(StringType)))
     if (args.length != 1 && args.length != 3) {
       throw new IllegalArgumentException(s"illegal arguments for INPUT: $args")
@@ -38,6 +38,9 @@ object InputInterpreter extends BaseInterpreter {
         }
     }
   }
+
+  // special handling implemented
+  override def advance(ctx: Context): Context = ctx
 }
 
 

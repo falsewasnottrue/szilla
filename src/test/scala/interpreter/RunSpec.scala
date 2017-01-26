@@ -31,11 +31,11 @@ class RunSpec extends FlatSpec with Matchers {
 
     val text2 = """<ROUTINE RHYME ("AUX" ARG1 ARG2)
                   |    <SET ARG1 30>
-                  |      <SET ARG2 "September">
-                  |      <CALL LINE-IN-RHYME .ARG1 .ARG2>
+                  |    <SET ARG2 "September">
+                  |    <CALL LINE-IN-RHYME .ARG1 .ARG2>
                   |    <SET ARG1 28>
-                  |      <SET ARG2 "February">
-                  |      <CALL LINE-IN-RHYME .ARG1 .ARG2>>""".stripMargin
+                  |    <SET ARG2 "February">
+                  |    <CALL LINE-IN-RHYME .ARG1 .ARG2>>""".stripMargin
     val routine2 = Routine.parser.parse(text2)
     Global.registerRoutine(routine2)
 

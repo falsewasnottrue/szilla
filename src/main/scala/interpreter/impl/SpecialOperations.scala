@@ -4,16 +4,16 @@ import interpreter.{Context, Global}
 import models._
 
 object TellInterpreter extends BaseInterpreter {
-  override def apply(ctx: Context)(instruction: Instruction): Context = {
+  override def step(ctx: Context)(instruction: Instruction): Context = {
     val args = arguments(ctx)(instruction, ValueTypes.arbitrary)
     args.foreach(value => ctx.out(value.toString))
-    ctx.inc
+    ctx
   }
 }
 
 object ConstantInterpreter extends BaseInterpreter {
   // defines a constant
-  override def apply(ctx: Context)(i: Instruction): Context = {
+  override def step(ctx: Context)(i: Instruction): Context = {
     val Seq(StringValue(name), value) = arguments(ctx)(i, ValueTypes(StringType, WildcardType))
     Global.define(GlobalVariable(name), value)
     ctx
@@ -22,7 +22,7 @@ object ConstantInterpreter extends BaseInterpreter {
 
 object SetGInterpreter extends BaseInterpreter {
   // sets a global variable
-  override def apply(ctx: Context)(i: Instruction): Context = {
+  override def step(ctx: Context)(i: Instruction): Context = {
     val Seq(StringValue(name), value) = arguments(ctx)(i, ValueTypes(StringType, WildcardType))
     ctx.setGlobal(GlobalVariable(name), value)
   }
@@ -30,8 +30,8 @@ object SetGInterpreter extends BaseInterpreter {
 
 object SetInterpreter extends BaseInterpreter {
   // sets a local variable
-  override def apply(ctx: Context)(i: Instruction): Context = {
+  override def step(ctx: Context)(i: Instruction): Context = {
     val Seq(StringValue(name), value) = arguments(ctx)(i, ValueTypes(StringType, WildcardType))
-    ctx.set(LocalVariable(name), value).inc
+    ctx.set(LocalVariable(name), value)
   }
 }
