@@ -1,10 +1,18 @@
 package interpreter
 
-import models.{GlobalVariable, IntValue, RefValue, Routine}
+import models._
 import org.mockito.{ArgumentCaptor, Mockito}
 import org.scalatest._
 
 class RunSpec extends FlatSpec with Matchers {
+
+  def createObject(name: String): Object = {
+    val variable = GlobalVariable(name)
+    val obj = Object(id = name)
+    Global.registerObject(obj)
+    Global.define(variable, RefValue(obj.id))
+    obj
+  }
 
   it should "run a routine" in {
     val text = """<ROUTINE INCREMENT-SCORE (NUM)
@@ -53,9 +61,11 @@ class RunSpec extends FlatSpec with Matchers {
     captor.getAllValues should contain("February")
   }
 
-  // TODO implement cond first
-  /*
   it should "run an even more complicated routine" in {
+    val sandwich = createObject("HAM-SANDWICH")
+    val candybar = createObject("CANDY-BAR")
+    val endive = createObject("BELGIAN-ENDIVE")
+    val here = createObject("HERE")
 
     val findFoodText =
       """<ROUTINE FIND-FOOD ("AUX" FOOD)
@@ -66,8 +76,7 @@ class RunSpec extends FlatSpec with Matchers {
         |       (<IN? ,BELGIAN-ENDIVE ,HERE>
         |        <SET FOOD ,BELGIAN-ENDIVE>)
         |       (T
-        |        <SET FOOD <RFALSE>>)
-        |>
+        |        <SET FOOD <RFALSE>>)>
         |<RETURN .FOOD>>
       """.stripMargin
     val findFoodRoutine = Routine.parser.parse(findFoodText)
@@ -78,7 +87,6 @@ class RunSpec extends FlatSpec with Matchers {
     val startCtx = Context(Ip(go, 0))
 
     val ctx = Interpreter.run(startCtx)
-    ctx.pop should be(Some(RefValue("")))
+    ctx.pop should be(Some(BoolValue(false)))
   }
-  */
 }

@@ -1,6 +1,6 @@
 package interpreter.impl
 
-import interpreter.Global
+import interpreter.{Global, Ip}
 import models.{GlobalVariable, IntValue}
 
 class CondInterpreterSpec extends BaseInterpreterSpec {
@@ -20,6 +20,7 @@ class CondInterpreterSpec extends BaseInterpreterSpec {
       |>""".stripMargin
     run(ctx)(text)
     ctx.getGlobal(GlobalVariable("SIGNAL")) should be(IntValue(3))
+    ctx.ip should be(Ip(fakeRoutine, 1))
   }
 
   it should "run default block if no condition is true" in new Env0 {
@@ -33,6 +34,7 @@ class CondInterpreterSpec extends BaseInterpreterSpec {
         |>""".stripMargin
     run(ctx)(text)
     ctx.getGlobal(GlobalVariable("SIGNAL")) should be(IntValue(5))
+    ctx.ip should be(Ip(fakeRoutine, 1))
   }
 
   it should "run no block if no condition is true" in new Env0 {
@@ -45,6 +47,7 @@ class CondInterpreterSpec extends BaseInterpreterSpec {
         |>""".stripMargin
     run(ctx)(text)
     ctx.getGlobal(GlobalVariable("SIGNAL")) should be(IntValue(0))
+    ctx.ip should be(Ip(fakeRoutine, 1))
   }
 
   it should "work with more than one action" in new Env0 {
@@ -58,5 +61,6 @@ class CondInterpreterSpec extends BaseInterpreterSpec {
         |>""".stripMargin
     run(ctx)(text)
     ctx.getGlobal(GlobalVariable("SIGNAL")) should be(IntValue(8))
+    ctx.ip should be(Ip(fakeRoutine, 1))
   }
 }

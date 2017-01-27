@@ -73,10 +73,14 @@ object Interpreter {
     case _ => throw new IllegalStateException(s"not implemented $v")
   }
 
-  private def evaluateInstruction(ctx: Context)(i: Instruction): Context =
+  private def evaluateInstruction(ctx: Context)(i: Instruction): Context = {
+    println(i)
     interpreters(i.opCode)(ctx)(i)
+  }
 
   def run(ctx: Context): Context = {
+    println(ctx.ip)
+    println(ctx.ip.instruction)
     ctx.ip.instruction match {
       case None => ctx
       case Some(instruction) => run(evaluate(ctx)(instruction))

@@ -216,6 +216,8 @@ case class Condition(cond: Operand, action: Operand*) extends Operand
 
 case class Instruction(opCode: OpCode, operands: Seq[Operand] = Nil) extends Operand {
   def withOperand(operand: Operand) = copy(operands = operands :+ operand)
+
+  override def toString = opCode + "(" + operands.map(_.toString).mkString(",") + ")"
 }
 
 object Instruction {
