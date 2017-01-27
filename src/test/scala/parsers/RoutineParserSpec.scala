@@ -73,6 +73,25 @@ class RoutineParserSpec extends FlatSpec with Matchers {
     ))
   }
 
+  it should "parse this" in {
+    val text =
+      """<ROUTINE FIND-FOOD ("AUX" FOOD)
+      |<COND (<IN? ,HAM-SANDWICH ,HERE>
+      |        <SET FOOD ,HAM-SANDWICH>)
+      |       (<IN? ,CANDY-BAR ,HERE>
+      |        <SET FOOD ,CANDY-BAR>)
+      |       (<IN? ,BELGIAN-ENDIVE ,HERE>
+      |        <SET FOOD ,BELGIAN-ENDIVE>)
+      |       (T
+      |        <SET FOOD <RFALSE>>)
+      |>
+      |<RETURN .FOOD>>""".stripMargin
+    val routine = Routine.parser.parse(text)
+
+    routine.id should be("FIND-FOOD")
+  }
+
+  // TODO
   /*
   <ROUTINE AVOCADO-F ()
           <COND (<VERB? EAT>

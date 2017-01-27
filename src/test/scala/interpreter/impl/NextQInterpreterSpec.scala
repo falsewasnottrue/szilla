@@ -5,15 +5,15 @@ import models.{BoolValue, RefValue}
 class NextQInterpreterSpec extends BaseInterpreterSpec {
 
   trait Env0 extends Env {
-    val cabinet = createObject(ctx)("KITCHEN-CABINET")
-    val pitcher = createObject(ctx)("PITCHER")
-    val head = createObject(ctx)("SEVERED-HEAD")
+    val cabinet = createObject("KITCHEN-CABINET")
+    val pitcher = createObject("PITCHER")
+    val head = createObject("SEVERED-HEAD")
     cabinet.insert(pitcher)
     cabinet.insert(head)
 
-    val kitchen = createRoom(ctx)("KITCHEN")
-    val knife = createObject(ctx)("KNIFE")
-    val sieve = createObject(ctx)("SIEVE")
+    val kitchen = createRoom("KITCHEN")
+    val knife = createObject("KNIFE")
+    val sieve = createObject("SIEVE")
     kitchen.insert(knife)
     kitchen.insert(sieve)
   }

@@ -5,9 +5,9 @@ import models._
 class MoveInterpreterSpec extends BaseInterpreterSpec {
 
   trait Env0 extends Env {
-    val bread = createObject(ctx)("BREAD")
-    val toaster = createObject(ctx)("TOASTER")
-    val livingRoom = createRoom(ctx)("LIVING-ROOM")
+    val bread = createObject("BREAD")
+    val toaster = createObject("TOASTER")
+    val livingRoom = createRoom("LIVING-ROOM")
   }
 
   "MoveInterpreter" should "put an object into another" in new Env0 {

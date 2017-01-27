@@ -10,7 +10,7 @@ class PutInterpreterSpec extends BaseInterpreterSpec {
     val table = TableValue()
     Global.define(GlobalVariable("SUSPECTS-TABLE"), table)
     Global.define(GlobalVariable("SUSPECTS-POINTER"), IntValue(17))
-    val butler = createObject(ctx)("BUTLER")
+    val butler = createObject("BUTLER")
   }
 
   "PutInterpreterSpec" should "change the ith slot of the given table to thing" in new Env0 {

@@ -3,9 +3,9 @@ package interpreter.impl
 class FSetInterpreterSpec extends BaseInterpreterSpec {
 
   trait Env0 extends Env {
-    val torch = createObject(ctx)("OILY-TORCH")
-    val flameBit = createFlag(ctx)("FLAMEBIT")
-    val stable = createRoom(ctx)("STABLE")
+    val torch = createObject("OILY-TORCH")
+    val flameBit = createFlag("FLAMEBIT")
+    val stable = createRoom("STABLE")
   }
 
   "FSetInterpreter" should "sets flag1 in object1." in new Env0 {

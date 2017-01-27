@@ -6,8 +6,8 @@ import org.mockito.Mockito
 class PrintDInterpreterSpec extends BaseInterpreterSpec {
 
   trait Env0 extends Env {
-    val lantern = createObject(ctx)("LANTERN", Properties().add(PropertyName.DESC, "brass lantern"))
-    val livingRoom = createRoom(ctx)("LIVING-ROOM", Properties().add(PropertyName.DESC, "living room"))
+    val lantern = createObject("LANTERN", Properties().add(PropertyName.DESC, "brass lantern"))
+    val livingRoom = createRoom("LIVING-ROOM", Properties().add(PropertyName.DESC, "living room"))
   }
 
   "PrintInterpreter" should "print the DESC of the given object." in new Env0 {

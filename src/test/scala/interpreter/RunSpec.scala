@@ -1,6 +1,6 @@
 package interpreter
 
-import models.{GlobalVariable, IntValue, Routine}
+import models.{GlobalVariable, IntValue, RefValue, Routine}
 import org.mockito.{ArgumentCaptor, Mockito}
 import org.scalatest._
 
@@ -51,5 +51,31 @@ class RunSpec extends FlatSpec with Matchers {
 
     captor.getAllValues should contain("September")
     captor.getAllValues should contain("February")
+  }
+
+  it should "run an even more complicated routine" in {
+
+    val findFoodText =
+      """<ROUTINE FIND-FOOD ("AUX" FOOD)
+        | <COND (<IN? ,HAM-SANDWICH ,HERE>
+        |        <SET FOOD ,HAM-SANDWICH>)
+        |       (<IN? ,CANDY-BAR ,HERE>
+        |        <SET FOOD ,CANDY-BAR>)
+        |       (<IN? ,BELGIAN-ENDIVE ,HERE>
+        |        <SET FOOD ,BELGIAN-ENDIVE>)
+        |       (T
+        |        <SET FOOD <RFALSE>>)
+        |>
+        |<RETURN .FOOD>>
+      """.stripMargin
+    val findFoodRoutine = Routine.parser.parse(findFoodText)
+    Global.registerRoutine(findFoodRoutine)
+
+    val go = Routine.parser.parse("<ROUTINE GO () <CALL FIND-FOOD>>")
+    Global.registerRoutine(go)
+    val startCtx = Context(Ip(go, 0))
+
+    val ctx = Interpreter.run(startCtx)
+    ctx.pop should be(Some(RefValue("")))
   }
 }

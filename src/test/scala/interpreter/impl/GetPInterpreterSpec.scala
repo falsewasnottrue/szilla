@@ -5,8 +5,8 @@ import models.{BoolValue, Properties, PropertyName, StringValue}
 class GetPInterpreterSpec extends BaseInterpreterSpec {
 
   trait Env0 extends Env {
-    val here = createRoom(ctx)("HERE", Properties().add(PropertyName.DESC, "here we are"))
-    val torch = createObject(ctx)("TORCH", Properties().add(PropertyName.LDESC, "this is a torch"))
+    val here = createRoom("HERE", Properties().add(PropertyName.DESC, "here we are"))
+    val torch = createObject("TORCH", Properties().add(PropertyName.LDESC, "this is a torch"))
   }
 
   "GetPInterpreter" should "return the specified property of an object" in new Env0 {

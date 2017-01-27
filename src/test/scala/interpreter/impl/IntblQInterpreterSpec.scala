@@ -8,7 +8,7 @@ import scala.collection.mutable
 class IntblQInterpreterSpec extends BaseInterpreterSpec {
 
   trait Env0 extends Env {
-    val rudolph = createObject(ctx)("RUDOLPH")
+    val rudolph = createObject("RUDOLPH")
     val table = TableValue(mutable.Map(0 -> BoolValue(true), 1 -> StringValue("abc"), 2 -> IntValue(42), 17 -> RefValue("RUDOLPH")))
     Global.define(GlobalVariable("REINDEER-TABLE"), table)
   }

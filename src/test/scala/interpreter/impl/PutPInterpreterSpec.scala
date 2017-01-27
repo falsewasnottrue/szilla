@@ -5,8 +5,8 @@ import models._
 class PutPInterpreterSpec extends BaseInterpreterSpec {
 
   trait Env0 extends Env {
-    val tomato = createObject(ctx)("ROTTING-TOMATO")
-    val livingRoom = createRoom(ctx)("LIVING-ROOM")
+    val tomato = createObject("ROTTING-TOMATO")
+    val livingRoom = createRoom("LIVING-ROOM")
   }
 
   "PutPInterpreter" should "change the value of the given object's given property to thing" in new Env0 {

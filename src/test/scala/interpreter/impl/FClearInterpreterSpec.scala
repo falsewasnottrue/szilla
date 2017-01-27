@@ -3,12 +3,12 @@ package interpreter.impl
 class FClearInterpreterSpec extends BaseInterpreterSpec {
 
   trait Env0 extends Env {
-    val diamond = createObject(ctx)("GUARDED-DIAMOND")
-    val tryTakeBit = createFlag(ctx)("TRYTAKEBIT")
+    val diamond = createObject("GUARDED-DIAMOND")
+    val tryTakeBit = createFlag("TRYTAKEBIT")
     diamond.addFlag(tryTakeBit)
 
-    val stable = createRoom(ctx)("STABLE")
-    val burningBit = createFlag(ctx)("BURNING-BIT")
+    val stable = createRoom("STABLE")
+    val burningBit = createFlag("BURNING-BIT")
     stable.addFlag(burningBit)
   }
 

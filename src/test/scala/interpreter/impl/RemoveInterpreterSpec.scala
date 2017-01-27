@@ -5,9 +5,9 @@ import models.{Empty, RefLocation}
 class RemoveInterpreterSpec extends BaseInterpreterSpec {
 
   trait Env0 extends Env {
-    val bread = createObject(ctx)("BREAD")
-    val toaster = createObject(ctx)("TOASTER")
-    val livingRoom = createRoom(ctx)("LIVING-ROOM")
+    val bread = createObject("BREAD")
+    val toaster = createObject("TOASTER")
+    val livingRoom = createRoom("LIVING-ROOM")
   }
 
   "RemoveInterpreter" should "removes an object from another object, setting its LOC to false" in new Env0 {

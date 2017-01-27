@@ -5,10 +5,10 @@ import models.{BoolValue, RefValue}
 class FirstQInterpreterSpec extends BaseInterpreterSpec {
 
   trait Env0 extends Env {
-    val smokingGun = createObject(ctx)("SMOKING-GUN")
-    val fryingPan = createObject(ctx)("FRYING-PAN")
-    val desk = createObject(ctx)("DESK")
-    val livingRoom = createRoom(ctx)("LIVING-ROOM")
+    val smokingGun = createObject("SMOKING-GUN")
+    val fryingPan = createObject("FRYING-PAN")
+    val desk = createObject("DESK")
+    val livingRoom = createRoom("LIVING-ROOM")
   }
 
   "FirstQInterpreter" should "return the first object within another object" in new Env0 {

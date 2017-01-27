@@ -16,8 +16,8 @@ class BaseInterpreterSpec extends FlatSpec with Matchers {
       Interpreter.evaluate(ctx)(instruction)
     }
 
-    def createObject(c: Context)(name: String,
-                                 properties: Properties = Properties()): Object = {
+    def createObject(name: String,
+                     properties: Properties = Properties()): Object = {
       val variable = GlobalVariable(name)
       val obj = Object(id = name, properties = properties)
       Global.registerObject(obj)
@@ -25,8 +25,8 @@ class BaseInterpreterSpec extends FlatSpec with Matchers {
       obj
     }
 
-    def createRoom(c: Context)(name: String,
-                               properties: Properties = Properties()): Room = {
+    def createRoom(name: String,
+                   properties: Properties = Properties()): Room = {
       val variable = GlobalVariable(name)
       val room = Room(id = name, properties = properties)
       Global.registerRoom(room)
@@ -34,7 +34,7 @@ class BaseInterpreterSpec extends FlatSpec with Matchers {
       room
     }
 
-    def createFlag(c: Context)(name: String): Flag = {
+    def createFlag(name: String): Flag = {
       val variable = GlobalVariable(name)
       val flag = Flag(id = name)
       Global.registerFlag(flag)

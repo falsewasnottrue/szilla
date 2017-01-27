@@ -5,9 +5,9 @@ import models.{BoolValue, RefValue}
 class LocInterpreterSpec extends BaseInterpreterSpec {
 
   trait Env0 extends Env {
-    val livingRoom = createRoom(ctx)("LIVING-ROOM")
-    val smokingGun = createObject(ctx)("SMOKING-GUN")
-    val desk = createObject(ctx)("DESK")
+    val livingRoom = createRoom("LIVING-ROOM")
+    val smokingGun = createObject("SMOKING-GUN")
+    val desk = createObject("DESK")
   }
 
   "LocInterpreterSpec" should "returns the location of an object" in new Env0 {

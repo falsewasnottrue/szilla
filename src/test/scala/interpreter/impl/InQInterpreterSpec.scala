@@ -5,9 +5,9 @@ import models._
 class InQInterpreterSpec extends BaseInterpreterSpec{
 
   trait Env0 extends Env {
-    val will = createObject(ctx)("SECRET-WILL")
-    val safe = createObject(ctx)("WALL-SAFE")
-    val desk = createObject(ctx)("DESK")
+    val will = createObject("SECRET-WILL")
+    val safe = createObject("WALL-SAFE")
+    val desk = createObject("DESK")
 
     safe.insert(will)
   }
