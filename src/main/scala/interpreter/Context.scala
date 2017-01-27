@@ -7,8 +7,6 @@ import scala.concurrent.Future
 sealed trait InstructionPointer {
   def instruction: Option[Instruction]
   def inc: Unit
-  def line: Int
-  def line_=(i: Int) : Unit
 }
 
 case class Ip(routine: Routine, var line: Int) extends InstructionPointer {
@@ -19,8 +17,6 @@ case class Ip(routine: Routine, var line: Int) extends InstructionPointer {
 case object NoIp extends InstructionPointer {
   val instruction = None
   def inc = {}
-  def line = 0
-  def line_=(i: Int) = {}
 }
 
 object Global {
@@ -122,9 +118,6 @@ case class Context(ip: InstructionPointer = NoIp, parent: Option[Context] = None
       case (None, Some(c)) => c.inc
       case _ => this
     }
-
-
-
   }
 
   // TODO implement

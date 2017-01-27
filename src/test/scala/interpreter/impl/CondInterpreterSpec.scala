@@ -12,12 +12,12 @@ class CondInterpreterSpec extends BaseInterpreterSpec {
   "CondInterpreter" should "run first (and only first) block for which condition is true" in new Env0 {
     val text =
       """
-      |<COND (<RFALSE> <SETG SIGNAL 1>)
-      |      (<RFALSE> <SETG SIGNAL 2>)
-      |      (<RTRUE>  <SETG SIGNAL 3>)
-      |      (<RTRUE>  <SETG SIGNAL 4>)
-      |      (T        <SETG SIGNAL 5>)
-      |>""".stripMargin
+        |<COND (<RFALSE> <SETG SIGNAL 1>)
+        |      (<RFALSE> <SETG SIGNAL 2>)
+        |      (<RTRUE>  <SETG SIGNAL 3>)
+        |      (<RTRUE>  <SETG SIGNAL 4>)
+        |      (T        <SETG SIGNAL 5>)
+        |>""".stripMargin
     run(ctx)(text)
     ctx.getGlobal(GlobalVariable("SIGNAL")) should be(IntValue(3))
     ctx.ip should be(Ip(fakeRoutine, 1))

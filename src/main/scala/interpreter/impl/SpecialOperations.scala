@@ -1,6 +1,6 @@
 package interpreter.impl
 
-import interpreter.{Context, Global, Interpreter}
+import interpreter.{Context, Global, Interpreter, NoIp}
 import models._
 
 object TellInterpreter extends BaseInterpreter {
@@ -31,7 +31,6 @@ object SetGInterpreter extends BaseInterpreter {
 object SetInterpreter extends BaseInterpreter {
   // sets a local variable
   override def step(ctx: Context)(i: Instruction): Context = {
-    println(ctx)
     val Seq(StringValue(name), value) = arguments(ctx)(i, ValueTypes(StringType, WildcardType))
     ctx.set(LocalVariable(name), value)
   }
@@ -40,28 +39,19 @@ object SetInterpreter extends BaseInterpreter {
 object CondInterpreter extends BaseInterpreter {
   // chooses the first condition that is true and runs the code block
   override def step(ctx: Context)(i: Instruction): Context = {
-    println(s"initCtx: $ctx")
-    // TODO save ip
-    // val currLine = ctx.ip.line
-    val conds = i.operands.collect { case cond: Condition => cond }
-    val condMet = conds.find { cond => Interpreter.evaluate(ctx)(cond.cond).pop.contains(BoolValue(true))}
+    val isolated = Context(NoIp)
+    val conditions = i.operands.collect { case cond: Condition => cond }
+    val condMet = conditions.find { c =>  Interpreter.evaluate(isolated)(c.cond).pop.contains(BoolValue(true)) }
 
-    val resCtx = condMet match {
-      case Some(condition) => condition.action.foldLeft(ctx) {
-        case (c, op) =>
-          println(s"now: $c")
-          val x = Interpreter.evaluate(c)(op)
-          println(s"and now $x")
-          x
+    condMet match {
+      case Some(condition) => condition.action.foldLeft(isolated) {
+        case (c, op) => Interpreter.evaluate(c)(op)
       }
-      case _ => ctx
+      case _ => ctx // no condition was met
     }
 
-    // TODO restore ip
-    // resCtx.ip.line = currLine+1
-
-    println(s"resCtx: $resCtx")
-    resCtx
+    isolated.pop.map(ctx.push)
+    ctx.inc
   }
 
   override def advance(ctx: Context): Context = ctx
