@@ -44,7 +44,8 @@ object Interpreter {
     COPYT -> CopyTInterpreter,
     SETG -> SetGInterpreter,
     INPUT -> InputInterpreter,
-    SET -> SetInterpreter
+    SET -> SetInterpreter,
+    COND -> CondInterpreter
   )
 
   def evaluate(ctx: Context)(op: Operand): Context = op match {

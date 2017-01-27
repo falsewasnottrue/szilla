@@ -1,6 +1,6 @@
 package interpreter.impl
 
-import interpreter.{Context, Global}
+import interpreter.{Context, Global, Interpreter}
 import models._
 
 object TellInterpreter extends BaseInterpreter {
@@ -33,5 +33,19 @@ object SetInterpreter extends BaseInterpreter {
   override def step(ctx: Context)(i: Instruction): Context = {
     val Seq(StringValue(name), value) = arguments(ctx)(i, ValueTypes(StringType, WildcardType))
     ctx.set(LocalVariable(name), value)
+  }
+}
+
+object CondInterpreter extends BaseInterpreter {
+  // chooses the first condition that is true and runs the code block
+  override def step(ctx: Context)(i: Instruction): Context = {
+    val conds = i.operands.collect { case cond: Condition => cond }
+    val condMet = conds.find { cond => Interpreter.evaluate(ctx)(cond.cond).pop.contains(BoolValue(true))}
+    condMet match {
+      case Some(condition) => condition.action.foldLeft(ctx) {
+        case (c, op) => Interpreter.evaluate(c)(op)
+      }
+      case _ => ctx
+    }
   }
 }
