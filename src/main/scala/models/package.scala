@@ -12,7 +12,7 @@ package object models {
   }
 
   trait ContainsObjects extends HasId {
-    private val contained = scala.collection.mutable.ListBuffer[Object]()
+    val contained = scala.collection.mutable.ListBuffer[Object]()
 
     def contains(other: Object): Boolean = contained.contains(other)
 

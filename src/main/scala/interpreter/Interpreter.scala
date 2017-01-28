@@ -48,15 +48,18 @@ object Interpreter {
     COND -> CondInterpreter
   )
 
-  def evaluate(ctx: Context)(op: Operand): Context = op match {
-    case v @ LocalVariable(_) => evaluateVariable(ctx)(v)
-    case v @ GlobalVariable(_) => evaluateVariable(ctx)(v)
-    case v @ PropertyNameVariable(_) => evaluateVariable(ctx)(v)
-    case v @ Literal(_) => evaluateVariable(ctx)(v)
+  def evaluate(ctx: Context)(op: Operand): Context = {
+    // println(op)
+    op match {
+      case v @ LocalVariable(_) => evaluateVariable(ctx)(v)
+      case v @ GlobalVariable(_) => evaluateVariable(ctx)(v)
+      case v @ PropertyNameVariable(_) => evaluateVariable(ctx)(v)
+      case v @ Literal(_) => evaluateVariable(ctx)(v)
 
-    case i @ Instruction(_, _) => evaluateInstruction(ctx)(i)
+      case i @ Instruction(_, _) => evaluateInstruction(ctx)(i)
 
-    case x => throw new IllegalArgumentException(s"unknown operand type $x")
+      case x => throw new IllegalArgumentException(s"unknown operand type $x")
+    }
   }
 
   private def evaluateVariable(ctx: Context)(v: Var): Context = v match {

@@ -66,6 +66,7 @@ class RunSpec extends FlatSpec with Matchers {
     val candybar = createObject("CANDY-BAR")
     val endive = createObject("BELGIAN-ENDIVE")
     val here = createObject("HERE")
+    here.insert(candybar)
 
     val findFoodText =
       """<ROUTINE FIND-FOOD ("AUX" FOOD)
@@ -87,6 +88,6 @@ class RunSpec extends FlatSpec with Matchers {
     val startCtx = Context(Ip(go, 0))
 
     val ctx = Interpreter.run(startCtx)
-    ctx.pop should be(Some(BoolValue(false)))
+    ctx.pop should be(Some(RefValue("CANDY-BAR")))
   }
 }

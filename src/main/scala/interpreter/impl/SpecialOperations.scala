@@ -39,18 +39,22 @@ object SetInterpreter extends BaseInterpreter {
 object CondInterpreter extends BaseInterpreter {
   // chooses the first condition that is true and runs the code block
   override def step(ctx: Context)(i: Instruction): Context = {
-    val isolated = Context(NoIp)
+    val storeIp = ctx.ip
+    ctx.ip = NoIp
     val conditions = i.operands.collect { case cond: Condition => cond }
-    val condMet = conditions.find { c =>  Interpreter.evaluate(isolated)(c.cond).pop.contains(BoolValue(true)) }
+    val condMet = conditions.find { c => {
+      Interpreter.evaluate(ctx)(c.cond)
+      ctx.pop.contains(BoolValue(true))
+    } }
 
     condMet match {
-      case Some(condition) => condition.action.foldLeft(isolated) {
+      case Some(condition) => condition.action.foldLeft(ctx) {
         case (c, op) => Interpreter.evaluate(c)(op)
       }
       case _ => ctx // no condition was met
     }
 
-    isolated.pop.map(ctx.push)
+    ctx.ip = storeIp
     ctx.inc
   }
 

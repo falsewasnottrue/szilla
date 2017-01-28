@@ -41,13 +41,11 @@ object CallInterpreter extends BaseInterpreter {
 
 object ReturnInterpreter extends BaseInterpreter {
   override def step(ctx: Context)(i: Instruction): Context = {
-    if (ctx.parent.isEmpty) {
-      throw new IllegalStateException(s"cannot return from top-most context")
-    }
     val Seq(result) = arguments(ctx)(i, ValueTypes(WildcardType))
-    val Some(outer) = ctx.parent
-
-    outer.push(result)
+    ctx.parent match {
+      case Some(outer) => outer.push(result)
+      case _ => throw new IllegalStateException(s"cannot return from top-most context")
+    }
   }
 }
 
