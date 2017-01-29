@@ -601,13 +601,8 @@ class InstructionParserSpec extends FlatSpec with Matchers {
         Instruction(TELL, Seq(Variable("You begin to feel sick."), Variable("CR")))
       )
     ))
-    /*
-    <COND (,AVOCADO-POISONED
-      <SETG PLAYER-POISONED T>
-    <REMOVE ,AVOCADO>
-      <TELL "You begin to feel sick." CR>)
-    */
   }
+
   it should "parse repeat blocks" in {
     val text =
       """
@@ -666,6 +661,17 @@ class InstructionParserSpec extends FlatSpec with Matchers {
     res.operands should be(Seq(
       Variable("FUSE-COUNTER"),
       Variable("0")
+    ))
+  }
+
+  it should "parse queue" in {
+    val text = "<QUEUE I-SHOOTING-STAR 10>"
+    val res = Instruction.parser.parse(text)
+    res.opCode should be(QUEUE)
+
+    res.operands should be(Seq(
+      Variable("I-SHOOTING-STAR"),
+      Variable("10")
     ))
   }
 
