@@ -60,3 +60,16 @@ object CondInterpreter extends BaseInterpreter {
 
   override def advance(ctx: Context): Context = ctx
 }
+
+object RepeatInterpreter extends BaseInterpreter {
+  // repeats the inner block
+  override def step(ctx: Context)(i: Instruction): Context = {
+    def run(c: Context, block: Seq[Operand]): Context = block match {
+      case Nil => c // actually start over
+      case (instruction: Instruction) :: _ if instruction.opCode == RETURN => c
+      case current :: rest => run(Interpreter.evaluate(c)(current), rest)
+    }
+
+    run(ctx, i.operands)
+  }
+}

@@ -45,7 +45,8 @@ object Interpreter {
     SETG -> SetGInterpreter,
     INPUT -> InputInterpreter,
     SET -> SetInterpreter,
-    COND -> CondInterpreter
+    COND -> CondInterpreter,
+    REPEAT -> RepeatInterpreter
   )
 
   def evaluate(ctx: Context)(op: Operand): Context = {
