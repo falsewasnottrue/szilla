@@ -50,7 +50,9 @@ object Interpreter {
   )
 
   def evaluate(ctx: Context)(op: Operand): Context = {
-    // println(op)
+
+    println(s"$op in $ctx")
+
     op match {
       case v @ LocalVariable(_) => evaluateVariable(ctx)(v)
       case v @ GlobalVariable(_) => evaluateVariable(ctx)(v)

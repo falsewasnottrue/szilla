@@ -109,7 +109,7 @@ object OpCode {
     case "RANDOM" => Some(RANDOM)
 
     // predicate instructions
-    case "EQUAL?" => Some(EQUAL_Q)
+    case "EQUAL?" | "EQ?" => Some(EQUAL_Q)
     case "ZERO?" => Some(ZERO_Q)
     case "L?" | "LESS?" => Some(LESS_Q)
     case "G?" | "GRTR?" => Some(GRTR_Q)

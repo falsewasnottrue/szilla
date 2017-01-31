@@ -64,12 +64,13 @@ object CondInterpreter extends BaseInterpreter {
 object RepeatInterpreter extends BaseInterpreter {
   // repeats the inner block
   override def step(ctx: Context)(i: Instruction): Context = {
+    val inner = Context(parent = Some(ctx))
     def run(c: Context, block: Seq[Operand]): Context = block match {
-      case Nil => c // actually start over
+      case Nil => run(c, i.operands) // start over
       case (instruction: Instruction) :: _ if instruction.opCode == RETURN => c
       case current :: rest => run(Interpreter.evaluate(c)(current), rest)
     }
 
-    run(ctx, i.operands)
+    run(inner, i.operands)
   }
 }

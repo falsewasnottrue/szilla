@@ -14,12 +14,27 @@ class RepeatInterpreterSpec extends BaseInterpreterSpec {
       """
         |<REPEAT ()
         | <SETG A 1>
-        | <SETG A 2>
         | <RETURN>
+        | <SETG A 2>
         |>
       """.stripMargin
     run(ctx)(text)
 
-    ctx.getGlobal(GlobalVariable("A")) should be(IntValue(2))
+    ctx.getGlobal(GlobalVariable("A")) should be(IntValue(1))
   }
+
+  /*
+  it should "repeat instructions in block" in new Env0 {
+    val text =
+      """
+        |<REPEAT ()
+        | <SETG A <+ ,A 1>>
+        | <COND (<EQ? ,A 10> <RETURN>)>
+        |>
+      """.stripMargin
+    run(ctx)(text)
+
+    ctx.getGlobal(GlobalVariable("A")) should be(IntValue(10))
+  }
+  */
 }
