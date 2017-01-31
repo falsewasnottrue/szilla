@@ -675,4 +675,9 @@ class InstructionParserSpec extends FlatSpec with Matchers {
     ))
   }
 
+  it should "parse again" in {
+    val text = "<AGAIN>"
+    val res = Instruction.parser.parse(text)
+    res.opCode should be(AGAIN)
+  }
 }
