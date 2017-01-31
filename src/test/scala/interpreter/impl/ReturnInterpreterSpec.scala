@@ -13,6 +13,14 @@ class ReturnInterpreterSpec extends BaseInterpreterSpec {
     res.pop should be(Some(BoolValue(true)))
   }
 
+  it should "escape scope without returning a result" in new Env {
+    val c = Context(parent = Some(ctx))
+    val res = run(c)("<RETURN>")
+
+    res should be(ctx)
+    res.pop should be(None)
+  }
+
   it should "fail if there is no surrounding scope" in new Env {
     intercept[IllegalStateException] {
       run(ctx)("<RETURN 1>")
@@ -23,13 +31,6 @@ class ReturnInterpreterSpec extends BaseInterpreterSpec {
     intercept[IllegalArgumentException] {
       val c = Context(parent = Some(ctx))
       run(c)("<RETURN 1 2>")
-    }
-  }
-
-  it should "fail with too few parameters" in new Env {
-    intercept[IllegalArgumentException] {
-      val c = Context(parent = Some(ctx))
-      run(c)("<RETURN>")
     }
   }
 }

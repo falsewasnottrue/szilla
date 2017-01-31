@@ -1,7 +1,7 @@
 package interpreter.impl
 
 import interpreter.{Context, Interpreter}
-import models._
+import models.{Optional, _}
 
 sealed trait ValueTypes {
   def finite: Boolean
@@ -48,6 +48,8 @@ abstract class BaseInterpreter {
         Interpreter.evaluate(ctx)(operand)
         ctx.pop match {
           case Some(value) if e == WildcardType => (as :+ value, pos+1)
+          case Some(value) if e == Optional(WildcardType) => (as :+ value, pos+1)
+
           case Some(i @ IntValue(_)) if e == IntType => (as :+ i, pos+1)
           case Some(i @ IntValue(_)) if e == Optional(IntType) => (as :+ i, pos+1)
 

@@ -41,9 +41,10 @@ object CallInterpreter extends BaseInterpreter {
 
 object ReturnInterpreter extends BaseInterpreter {
   override def step(ctx: Context)(i: Instruction): Context = {
-    val Seq(result) = arguments(ctx)(i, ValueTypes(WildcardType))
-    ctx.parent match {
-      case Some(outer) => outer.push(result)
+    val args = arguments(ctx)(i, ValueTypes(Optional(WildcardType)))
+    (ctx.parent, args) match {
+      case (Some(outer), Seq(result)) => outer.push(result)
+      case (Some(outer), Nil) => outer
       case _ => throw new IllegalStateException(s"cannot return from top-most context")
     }
   }
