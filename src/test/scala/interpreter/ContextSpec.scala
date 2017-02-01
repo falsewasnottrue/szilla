@@ -6,7 +6,8 @@ import org.scalatest.{FlatSpec, Matchers}
 class ContextSpec extends FlatSpec with Matchers {
 
   trait Env {
-    val ctx = Context()
+    val fakeRoutine = Routine("fake")
+    val ctx = Context(Ip(fakeRoutine, 0))
 
     val x = LocalVariable("x")
     val v = IntValue(42)

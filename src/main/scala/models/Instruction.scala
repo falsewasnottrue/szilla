@@ -214,7 +214,12 @@ object Variable {
     else Literal(varname)
 }
 
-case class Condition(cond: Operand, action: Operand*) extends Operand
+case class Block(instructions: Seq[Instruction] = Nil) extends Operand {
+  def withInstruction(instruction: Instruction) = copy(instructions = instructions :+ instruction)
+  val length = instructions.size
+}
+
+case class Condition(cond: Operand, block: Block) extends Operand
 
 case class Instruction(opCode: OpCode, operands: Seq[Operand] = Nil) extends Operand {
   def withOperand(operand: Operand) = copy(operands = operands :+ operand)
@@ -240,13 +245,17 @@ object Instruction {
       { case (i, Node(Leaf(predicate) :: actions, Round)) =>
         i.withOperand(Condition(
           Variable(predicate),
-          actions.map(Instruction.parser.parse):_*
+          actions.foldLeft(Block()) {
+            case (block, tree) => block.withInstruction(Instruction.parser.parse(tree))
+          }
         )) },
       // cond n
       { case (i, Node(predicate :: actions, Round)) =>
         i.withOperand(Condition(
           Instruction.parser.parse(predicate),
-          actions.map(Instruction.parser.parse):_*
+          actions.foldLeft(Block()) {
+            case (block, tree) => block.withInstruction(Instruction.parser.parse(tree))
+          }
         )) }
     )
 

@@ -535,13 +535,14 @@ class InstructionParserSpec extends FlatSpec with Matchers {
     res.operands should be(Seq(
       Condition(
         Variable(",SCORE-NOTIFICATION-ON"),
-        Instruction(TELL, Seq(
+        Block(Seq(
+          Instruction(TELL, Seq(
           Variable("[Your score has just gone up by "),
           Variable("N"),
           Variable(".NUM"),
           Variable(".]"),
           Variable("CR")
-        ))
+        ))))
       )
     ))
   }
@@ -565,19 +566,19 @@ class InstructionParserSpec extends FlatSpec with Matchers {
     res.operands should be(Seq(
       Condition(
         Instruction(IN_Q, Seq(Variable(",HAM-SANDWICH"), Variable(",HERE"))),
-        Instruction(SET, Seq(Variable("FOOD"), Variable(",HAM-SANDWICH")))
+        Block(Seq(Instruction(SET, Seq(Variable("FOOD"), Variable(",HAM-SANDWICH")))))
       ),
       Condition(
         Instruction(IN_Q, Seq(Variable(",CANDY-BAR"), Variable(",HERE"))),
-        Instruction(SET, Seq(Variable("FOOD"), Variable(",CANDY-BAR")))
+        Block(Seq(Instruction(SET, Seq(Variable("FOOD"), Variable(",CANDY-BAR")))))
       ),
       Condition(
         Instruction(IN_Q, Seq(Variable(",BELGIAN-ENDIVE"), Variable(",HERE"))),
-        Instruction(SET, Seq(Variable("FOOD"), Variable(",BELGIAN-ENDIVE")))
+        Block(Seq(Instruction(SET, Seq(Variable("FOOD"), Variable(",BELGIAN-ENDIVE")))))
       ),
       Condition(
         Variable("T"),
-        Instruction(SET, Seq(Variable("FOOD"), Variable("NULL")))
+        Block(Seq(Instruction(SET, Seq(Variable("FOOD"), Variable("NULL")))))
       )
     ))
   }
@@ -596,9 +597,11 @@ class InstructionParserSpec extends FlatSpec with Matchers {
     res.operands should be(Seq(
       Condition(
         Variable(",AVOCADO-POISONED"),
-        Instruction(SETG, Seq(Variable("PLAYER-POISONED"), Variable("T"))),
-        Instruction(REMOVE, Seq(Variable(",AVOCADO"))),
-        Instruction(TELL, Seq(Variable("You begin to feel sick."), Variable("CR")))
+        Block(Seq(
+          Instruction(SETG, Seq(Variable("PLAYER-POISONED"), Variable("T"))),
+          Instruction(REMOVE, Seq(Variable(",AVOCADO"))),
+          Instruction(TELL, Seq(Variable("You begin to feel sick."), Variable("CR")))
+        ))
       )
     ))
   }

@@ -5,16 +5,25 @@ import models._
 import scala.concurrent.Future
 
 sealed trait InstructionPointer {
+  def isScope: Boolean
   def instruction: Option[Instruction]
   def inc: Unit
 }
 
 case class Ip(routine: Routine, var line: Int) extends InstructionPointer {
+  val isScope = true
   def instruction = if (line >= routine.length) None else Some(routine.instructions(line))
   def inc = line = line+1
 }
 
+case class BlockIp(block: Block, var line: Int) extends InstructionPointer {
+  val isScope = false
+  def instruction = if (line >= block.length) None else Some(block.instructions(line))
+  def inc = line = line+1
+}
+
 case object NoIp extends InstructionPointer {
+  val isScope = false
   val instruction = None
   def inc = {}
 }
@@ -90,7 +99,9 @@ case class Context(var ip: InstructionPointer = NoIp, parent: Option[Context] = 
   }
 
   def set(variable: LocalVariable, value: Value): Context = {
-    localVariables.put(variable, value)
+    val scope = Context.findScope(this)
+    scope.localVariables.put(variable, value)
+
     this
   }
 
@@ -131,5 +142,13 @@ case class Context(var ip: InstructionPointer = NoIp, parent: Option[Context] = 
     }
 
     this
+  }
+}
+
+object Context {
+  def findScope(context: Context): Context = (context.ip.isScope, context.parent) match {
+    case (true, _) => context
+    case (false, Some(parent)) => findScope(parent)
+    case _ => throw new IllegalArgumentException("no scope found")
   }
 }

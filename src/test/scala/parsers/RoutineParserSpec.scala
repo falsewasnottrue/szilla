@@ -44,12 +44,14 @@ class RoutineParserSpec extends FlatSpec with Matchers {
       Instruction(COND, Seq(
         Condition(
           Variable(",SCORE-NOTIFICATION-ON"),
+          Block(Seq(
           Instruction(TELL, Seq(
             Variable("[Your score has just gone up by "),
             Variable("N"),
             Variable(".NUM"),
             Variable(".]"),
             Variable("CR")
+          ))
           ))
         )
       ))

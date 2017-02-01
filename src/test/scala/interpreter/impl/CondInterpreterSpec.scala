@@ -1,7 +1,7 @@
 package interpreter.impl
 
-import interpreter.{Global, Ip}
-import models.{GlobalVariable, IntValue}
+import interpreter.{BlockIp, Global, Ip}
+import models.{Block, GlobalVariable, Instruction, IntValue}
 
 class CondInterpreterSpec extends BaseInterpreterSpec {
 
@@ -18,9 +18,11 @@ class CondInterpreterSpec extends BaseInterpreterSpec {
         |      (<RTRUE>  <SETG SIGNAL 4>)
         |      (T        <SETG SIGNAL 5>)
         |>""".stripMargin
-    run(ctx)(text)
-    ctx.getGlobal(GlobalVariable("SIGNAL")) should be(IntValue(3))
-    ctx.ip should be(Ip(fakeRoutine, 1))
+    val c = run(ctx)(text)
+
+    ctx.ip should be(Ip(fakeRoutine, 0))
+    c.parent should be(Some(ctx))
+    c.ip should be(BlockIp(Block(Seq(Instruction.parser.parse("<SETG SIGNAL 3>"))), 0))
   }
 
   it should "run default block if no condition is true" in new Env0 {
@@ -32,9 +34,10 @@ class CondInterpreterSpec extends BaseInterpreterSpec {
         |      (<RFALSE> <SETG SIGNAL 4>)
         |      (T        <SETG SIGNAL 5>)
         |>""".stripMargin
-    run(ctx)(text)
-    ctx.getGlobal(GlobalVariable("SIGNAL")) should be(IntValue(5))
-    ctx.ip should be(Ip(fakeRoutine, 1))
+    val c = run(ctx)(text)
+    ctx.ip should be(Ip(fakeRoutine, 0))
+    c.parent should be(Some(ctx))
+    c.ip should be(BlockIp(Block(Seq(Instruction.parser.parse("<SETG SIGNAL 5>"))), 0))
   }
 
   it should "run no block if no condition is true" in new Env0 {
@@ -45,9 +48,9 @@ class CondInterpreterSpec extends BaseInterpreterSpec {
         |      (<RFALSE> <SETG SIGNAL 3>)
         |      (<RFALSE> <SETG SIGNAL 4>)
         |>""".stripMargin
-    run(ctx)(text)
-    ctx.getGlobal(GlobalVariable("SIGNAL")) should be(IntValue(0))
-    ctx.ip should be(Ip(fakeRoutine, 1))
+    val c = run(ctx)(text)
+    ctx.ip should be(Ip(fakeRoutine, 0))
+    c should be(ctx)
   }
 
   it should "work with more than one action" in new Env0 {
@@ -55,12 +58,14 @@ class CondInterpreterSpec extends BaseInterpreterSpec {
       """
         |<COND (<RFALSE> <SETG SIGNAL 1>)
         |      (<RFALSE> <SETG SIGNAL 2>)
-        |      (<RTRUE>  <SETG SIGNAL 7 ><SETG SIGNAL 8>)
+        |      (<RTRUE>  <SETG SIGNAL 7><SETG SIGNAL 8>)
         |      (<RTRUE>  <SETG SIGNAL 4>)
         |      (T        <SETG SIGNAL 5>)
         |>""".stripMargin
-    run(ctx)(text)
-    ctx.getGlobal(GlobalVariable("SIGNAL")) should be(IntValue(8))
-    ctx.ip should be(Ip(fakeRoutine, 1))
+    val c = run(ctx)(text)
+
+    ctx.ip should be(Ip(fakeRoutine, 0))
+    c.parent should be(Some(ctx))
+    c.ip should be(BlockIp(Block(Seq(Instruction.parser.parse("<SETG SIGNAL 7>"), Instruction.parser.parse("<SETG SIGNAL 8>"))), 0))
   }
 }

@@ -1,7 +1,9 @@
 package interpreter.impl
 
-import interpreter.{Context, Global, Interpreter, NoIp}
+import interpreter._
 import models._
+
+import scala.concurrent.BlockContext
 
 object TellInterpreter extends BaseInterpreter {
   override def step(ctx: Context)(instruction: Instruction): Context = {
@@ -39,23 +41,19 @@ object SetInterpreter extends BaseInterpreter {
 object CondInterpreter extends BaseInterpreter {
   // chooses the first condition that is true and runs the code block
   override def step(ctx: Context)(i: Instruction): Context = {
-    val storeIp = ctx.ip
+    val storedIp = ctx.ip
     ctx.ip = NoIp
     val conditions = i.operands.collect { case cond: Condition => cond }
     val condMet = conditions.find { c => {
       Interpreter.evaluate(ctx)(c.cond)
       ctx.pop.contains(BoolValue(true))
     } }
+    ctx.ip = storedIp
 
     condMet match {
-      case Some(condition) => condition.action.foldLeft(ctx) {
-        case (c, op) => Interpreter.evaluate(c)(op)
-      }
+      case Some(condition) => Context(BlockIp(condition.block, 0), Some(ctx))
       case _ => ctx // no condition was met
     }
-
-    ctx.ip = storeIp
-    ctx.inc
   }
 
   override def advance(ctx: Context): Context = ctx
