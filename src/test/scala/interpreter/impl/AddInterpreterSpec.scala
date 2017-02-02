@@ -1,6 +1,6 @@
 package interpreter.impl
 
-import interpreter.{Context, Global, Ip}
+import interpreter.Global
 import models._
 
 class AddInterpreterSpec extends BaseInterpreterSpec {
@@ -11,10 +11,6 @@ class AddInterpreterSpec extends BaseInterpreterSpec {
 
   it should "add multiple integers" in new Env {
     run(ctx)("<ADD 1 2 3 4>").pop should be(Some(IntValue(10)))
-  }
-
-  it should "advance the ip by default" in new Env {
-    run(ctx)("<+ 19 23>").ip should be(Ip(fakeRoutine, 1))
   }
 
   it should "work with global variables" in new Env {

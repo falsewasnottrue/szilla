@@ -6,7 +6,7 @@ import models._
 import scala.concurrent.BlockContext
 
 object TellInterpreter extends BaseInterpreter {
-  override def step(ctx: Context)(instruction: Instruction): Context = {
+  override def apply(ctx: Context)(instruction: Instruction): Context = {
     val args = arguments(ctx)(instruction, ValueTypes.arbitrary)
     args.foreach(value => ctx.out(value.toString))
     ctx
@@ -15,7 +15,7 @@ object TellInterpreter extends BaseInterpreter {
 
 object ConstantInterpreter extends BaseInterpreter {
   // defines a constant
-  override def step(ctx: Context)(i: Instruction): Context = {
+  override def apply(ctx: Context)(i: Instruction): Context = {
     val Seq(StringValue(name), value) = arguments(ctx)(i, ValueTypes(StringType, WildcardType))
     Global.define(GlobalVariable(name), value)
     ctx
@@ -24,7 +24,7 @@ object ConstantInterpreter extends BaseInterpreter {
 
 object SetGInterpreter extends BaseInterpreter {
   // sets a global variable
-  override def step(ctx: Context)(i: Instruction): Context = {
+  override def apply(ctx: Context)(i: Instruction): Context = {
     val Seq(StringValue(name), value) = arguments(ctx)(i, ValueTypes(StringType, WildcardType))
     ctx.setGlobal(GlobalVariable(name), value)
   }
@@ -32,7 +32,7 @@ object SetGInterpreter extends BaseInterpreter {
 
 object SetInterpreter extends BaseInterpreter {
   // sets a local variable
-  override def step(ctx: Context)(i: Instruction): Context = {
+  override def apply(ctx: Context)(i: Instruction): Context = {
     val Seq(StringValue(name), value) = arguments(ctx)(i, ValueTypes(StringType, WildcardType))
     ctx.set(LocalVariable(name), value)
   }
@@ -40,7 +40,7 @@ object SetInterpreter extends BaseInterpreter {
 
 object CondInterpreter extends BaseInterpreter {
   // chooses the first condition that is true and runs the code block
-  override def step(ctx: Context)(i: Instruction): Context = {
+  override def apply(ctx: Context)(i: Instruction): Context = {
     val storedIp = ctx.ip
     ctx.ip = NoIp
     val conditions = i.operands.collect { case cond: Condition => cond }
@@ -55,13 +55,11 @@ object CondInterpreter extends BaseInterpreter {
       case _ => ctx // no condition was met
     }
   }
-
-  override def advance(ctx: Context): Context = ctx
 }
 
 object RepeatInterpreter extends BaseInterpreter {
   // repeats the inner block
-  override def step(ctx: Context)(i: Instruction): Context = {
+  override def apply(ctx: Context)(i: Instruction): Context = {
     val inner = Context(parent = Some(ctx))
     def run(c: Context, block: Seq[Operand]): Context = block match {
       case Nil => run(c, i.operands) // start over

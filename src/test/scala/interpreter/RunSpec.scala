@@ -13,7 +13,7 @@ class RunSpec extends FlatSpec with Matchers {
     Global.define(variable, RefValue(obj.id))
     obj
   }
-
+/*
   it should "run a routine" in {
     val text = """<ROUTINE INCREMENT-SCORE (NUM)
                  | <SETG SCORE <+ ,SCORE .NUM>>>
@@ -91,8 +91,6 @@ class RunSpec extends FlatSpec with Matchers {
     ctx.pop should be(Some(RefValue("CANDY-BAR")))
   }
 
-  // TODO implement REPEAT
-  /*
   it should "calculate faculty" in {
     val fac =
       """<ROUTINE FAC (N "AUX" I RES)

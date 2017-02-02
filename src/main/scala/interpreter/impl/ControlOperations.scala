@@ -4,7 +4,7 @@ import interpreter.{Context, Global, Ip}
 import models._
 
 object CallInterpreter extends BaseInterpreter {
-  override def step(ctx: Context)(i: Instruction): Context = {
+  override def apply(ctx: Context)(i: Instruction): Context = {
     val args = arguments(ctx)(i, ValueTypes.arbitrary)
     if (args.length < 1) {
       throw new IllegalArgumentException(s"CALL needs a routine name")
@@ -34,13 +34,10 @@ object CallInterpreter extends BaseInterpreter {
 
     context
   }
-
-  // special handling implemented
-  override def advance(ctx: Context): Context = ctx
 }
 
 object ReturnInterpreter extends BaseInterpreter {
-  override def step(ctx: Context)(i: Instruction): Context = {
+  override def apply(ctx: Context)(i: Instruction): Context = {
     val args = arguments(ctx)(i, ValueTypes(Optional(WildcardType)))
     (ctx.parent, args) match {
       case (Some(outer), Seq(result)) => outer.push(result)
@@ -51,7 +48,7 @@ object ReturnInterpreter extends BaseInterpreter {
 }
 
 object RTrueInterpreter extends BaseInterpreter {
-  override def step(ctx: Context)(i: Instruction): Context = {
+  override def apply(ctx: Context)(i: Instruction): Context = {
     println()
     arguments(ctx)(i, ValueTypes.empty)
     ctx.push(BoolValue(true))
@@ -59,7 +56,7 @@ object RTrueInterpreter extends BaseInterpreter {
 }
 
 object RFalseInterpreter extends BaseInterpreter {
-  override def step(ctx: Context)(i: Instruction): Context = {
+  override def apply(ctx: Context)(i: Instruction): Context = {
     arguments(ctx)(i, ValueTypes.empty)
     ctx.push(BoolValue(false))
   }

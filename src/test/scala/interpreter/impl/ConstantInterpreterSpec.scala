@@ -1,6 +1,5 @@
 package interpreter.impl
 
-import interpreter.Ip
 import models._
 
 import scala.collection.mutable
@@ -10,10 +9,6 @@ class ConstantInterpreterSpec extends BaseInterpreterSpec {
   "ConstantInterpreter" should "register a global constant" in new Env {
     run(ctx)("<CONSTANT FOUR 4>")
     ctx.getGlobal(GlobalVariable("FOUR")) should be(IntValue(4))
-  }
-
-  it should "advance the ip by default" in new Env {
-    run(ctx)("<CONSTANT FOUR 4>").ip should be(Ip(fakeRoutine, 1))
   }
 
   it should "work with GLOBAL keyword" in new Env {

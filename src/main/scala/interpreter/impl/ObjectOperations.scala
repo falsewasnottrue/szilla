@@ -4,7 +4,7 @@ import models._
 
 object MoveInterpreter extends BaseInterpreter {
   // Puts object1 into object2
-  override def step(ctx: Context)(instruction: Instruction): Context = {
+  override def apply(ctx: Context)(instruction: Instruction): Context = {
     val Seq(RefValue(id1), RefValue(id2)) = arguments(ctx)(instruction, ValueTypes(RefType, RefType))
     (ctx.deref(id1), ctx.deref(id2)) match {
       case (Some(obj1: Object), Some(obj2: Object)) => obj2.insert(obj1)
@@ -17,7 +17,7 @@ object MoveInterpreter extends BaseInterpreter {
 
 object RemoveInterpreter extends BaseInterpreter {
   // Removes object, setting its LOC to false.
-  override def step(ctx: Context)(i: Instruction): Context = {
+  override def apply(ctx: Context)(i: Instruction): Context = {
     val Seq(RefValue(id)) = arguments(ctx)(i, ValueTypes(RefType))
     val Some(obj: Object) = ctx.deref(id)
     val RefLocation(locId) = obj.location
@@ -30,7 +30,7 @@ object RemoveInterpreter extends BaseInterpreter {
 
 object LocInterpreter extends BaseInterpreter {
   // Returns the location of object. Returns false if object has no location.
-  override def step(ctx: Context)(i: Instruction): Context = {
+  override def apply(ctx: Context)(i: Instruction): Context = {
     val Seq(RefValue(id)) = arguments(ctx)(i, ValueTypes(RefType))
     ctx.deref(id) match {
       case Some(hasLocation: HasLocation) => hasLocation.location match {
@@ -45,7 +45,7 @@ object LocInterpreter extends BaseInterpreter {
 
 object FirstQInterpreter extends BaseInterpreter {
   // Returns the first object within object1. Returns false if object1 has no contents.
-  override def step(ctx: Context)(i: Instruction): Context = {
+  override def apply(ctx: Context)(i: Instruction): Context = {
     val Seq(RefValue(id)) = arguments(ctx)(i, ValueTypes(RefType))
     ctx.deref(id) match {
       case Some(containsObjects: ContainsObjects) => containsObjects.first match {
@@ -61,7 +61,7 @@ object FirstQInterpreter extends BaseInterpreter {
 object NextQInterpreter extends BaseInterpreter {
   // Returns the next object in the linked contents of object1's LOC.
   // Returns false if object1 is the "last" object in its LOC.
-  override def step(ctx: Context)(i: Instruction): Context = {
+  override def apply(ctx: Context)(i: Instruction): Context = {
     val Seq(RefValue(id)) = arguments(ctx)(i, ValueTypes(RefType))
     ctx.deref(id) match {
       case Some(obj: HasLocation) => obj.location match {
@@ -84,7 +84,7 @@ object NextQInterpreter extends BaseInterpreter {
 
 object FSetInterpreter extends BaseInterpreter {
   // Sets flag1 in object1.
-  override def step(ctx: Context)(i: Instruction): Context = {
+  override def apply(ctx: Context)(i: Instruction): Context = {
     val Seq(RefValue(objId), RefValue(flagId)) = arguments(ctx)(i, ValueTypes(RefType, RefType))
     (ctx.deref(objId), ctx.deref(flagId)) match {
       case (Some(hasFlags: HasFlags), Some(flag: Flag)) => hasFlags.addFlag(flag)
@@ -96,7 +96,7 @@ object FSetInterpreter extends BaseInterpreter {
 
 object FClearInterpreter extends BaseInterpreter {
   // Clears flag1 in object1.
-  override def step(ctx: Context)(i: Instruction): Context = {
+  override def apply(ctx: Context)(i: Instruction): Context = {
     val Seq(RefValue(objId), RefValue(flagId)) = arguments(ctx)(i, ValueTypes(RefType, RefType))
     (ctx.deref(objId), ctx.deref(flagId)) match {
       case (Some(hasFlags: HasFlags), Some(flag: Flag)) => hasFlags.removeFlag(flag)
@@ -108,7 +108,7 @@ object FClearInterpreter extends BaseInterpreter {
 
 object GetPInterpreter extends BaseInterpreter {
   // returns the specified property of object
-  override def step(ctx: Context)(i: Instruction): Context = {
+  override def apply(ctx: Context)(i: Instruction): Context = {
     val Seq(RefValue(objId), StringValue(propName)) = arguments(ctx)(i, ValueTypes(RefType, StringType))
     ctx.deref(objId) match {
       case Some(hasProperties: HasProperties) => hasProperties.properties.get(propName) match {
@@ -123,7 +123,7 @@ object GetPInterpreter extends BaseInterpreter {
 
 object PutPInterpreter extends BaseInterpreter {
   // changes the value of the given object's given property to thing
-  override def step(ctx: Context)(i: Instruction): Context = {
+  override def apply(ctx: Context)(i: Instruction): Context = {
     val Seq(RefValue(objId), StringValue(propName), newValue) = arguments(ctx)(i, ValueTypes(RefType, StringType, WildcardType))
     ctx.deref(objId) match {
       case Some(obj: Object) => newValue match {

@@ -71,9 +71,5 @@ abstract class BaseInterpreter {
     }._1
   }
 
-  def apply(ctx: Context)(i: Instruction): Context = advance(step(ctx)(i))
-
-  def advance(ctx: Context): Context = ctx.inc
-
-  def step(ctx: Context)(i: Instruction): Context
+  def apply(ctx: Context)(i: Instruction): Context
 }
