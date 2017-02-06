@@ -10,6 +10,7 @@ sealed trait InstructionPointer {
   def inc: Unit
 }
 
+// TODO these two classes look like they can be comobined
 case class Ip(routine: Routine, var line: Int) extends InstructionPointer {
   val isScope = true
   def instruction = if (line >= routine.length) None else Some(routine.instructions(line))
@@ -20,12 +21,6 @@ case class BlockIp(block: Block, var line: Int) extends InstructionPointer {
   val isScope = false
   def instruction = if (line >= block.length) None else Some(block.instructions(line))
   def inc = line = line+1
-}
-
-case object NoIp extends InstructionPointer {
-  val isScope = false
-  val instruction = None
-  def inc = {}
 }
 
 object Global {
@@ -81,7 +76,7 @@ object Global {
   }
 }
 
-class Context(val ip: InstructionPointer = NoIp, val parent: Option[Context] = None) {
+class Context(val ip: InstructionPointer, val parent: Option[Context] = None) {
 
   private val localVariables = scala.collection.mutable.Map[LocalVariable, Value]()
   private val stack = scala.collection.mutable.Stack[Value]()
@@ -124,11 +119,7 @@ class Context(val ip: InstructionPointer = NoIp, val parent: Option[Context] = N
 
   def inc: Context = {
     ip.inc
-    (ip.instruction, parent) match {
-      case (Some(_), _) => this
-      case (None, Some(c)) => c.inc
-      case _ => this
-    }
+    this
   }
 
   // TODO implement

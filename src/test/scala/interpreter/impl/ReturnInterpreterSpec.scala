@@ -1,12 +1,12 @@
 package interpreter.impl
 
-import interpreter.Context
+import interpreter.{Context, Ip}
 import models.BoolValue
 
 class ReturnInterpreterSpec extends BaseInterpreterSpec {
 
   "Return interpreter" should "escape to surrounding scope and return single result" in new Env {
-    val c = new Context(parent = Some(ctx))
+    val c = new Context(Ip(fakeRoutine, 0), parent = Some(ctx))
     val res = run(c)("<RETURN <RTRUE>>")
 
     res should be(ctx)
@@ -14,7 +14,7 @@ class ReturnInterpreterSpec extends BaseInterpreterSpec {
   }
 
   it should "escape scope without returning a result" in new Env {
-    val c = new Context(parent = Some(ctx))
+    val c = new Context(Ip(fakeRoutine, 0), parent = Some(ctx))
     val res = run(c)("<RETURN>")
 
     res should be(ctx)
@@ -29,7 +29,7 @@ class ReturnInterpreterSpec extends BaseInterpreterSpec {
 
   it should "fail with too many parameters" in new Env {
     intercept[IllegalArgumentException] {
-      val c = new Context(parent = Some(ctx))
+      val c = new Context(Ip(fakeRoutine, 0), parent = Some(ctx))
       run(c)("<RETURN 1 2>")
     }
   }

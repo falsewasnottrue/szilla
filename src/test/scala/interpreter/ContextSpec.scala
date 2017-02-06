@@ -20,7 +20,7 @@ class ContextSpec extends FlatSpec with Matchers {
 
   it should "delegate to parent context" in new Env {
     ctx.set(x, v)
-    val child = new Context(parent = Some(ctx))
+    val child = new Context(Ip(fakeRoutine, 0), parent = Some(ctx))
 
     child.get(x) should be(v)
   }

@@ -62,7 +62,8 @@ object CondInterpreter extends BaseInterpreter {
 object RepeatInterpreter extends BaseInterpreter {
   // repeats the inner block
   override def apply(ctx: Context)(i: Instruction): Context = {
-    val inner = new Context(parent = Some(ctx))
+    // FIXME implement
+    val inner = new Context(ip = null, parent = Some(ctx))
     def run(c: Context, block: Seq[Operand]): Context = block match {
       case Nil => run(c, i.operands) // start over
       case (instruction: Instruction) :: _ if instruction.opCode == RETURN => c

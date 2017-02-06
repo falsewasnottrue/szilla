@@ -87,12 +87,23 @@ object Interpreter {
     case None => ctx
     case Some(instruction) => {
       val afterEvalCtx = evaluate(ctx)(instruction)
-      // TODO implement advancing mechanism
-      val afterAdvanceCtx = instruction.opCode match {
-        case CALL => afterEvalCtx
-        case _ => afterEvalCtx.inc
-      }
+      val afterAdvanceCtx = advance(afterEvalCtx, instruction)
+
       run(afterAdvanceCtx)
+    }
+  }
+
+  private def advance(ctx: Context, after: Instruction): Context = {
+    after.opCode match {
+      case CALL => ctx
+      case _ => {
+        ctx.inc
+        (ctx.ip.instruction, ctx.parent) match {
+          case (Some(_), _) => ctx
+          case (None, Some(c)) => advance(c, after)
+          case _ => ctx // ???
+        }
+      }
     }
   }
 }
