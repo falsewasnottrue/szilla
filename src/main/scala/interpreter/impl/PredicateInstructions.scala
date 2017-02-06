@@ -77,5 +77,17 @@ object AndInterpreter extends BaseInterpreter {
   }
 }
 
-// TODO OR
+object OrInterpreter extends BaseInterpreter {
+  // Calculates conjunction of values
+  override def apply(ctx: Context)(i: Instruction): Context = {
+    val args = arguments(ctx)(i, ValueTypes.continually(BoolType))
+    val result = args.foldLeft(false) {
+      case (true, _) => true
+      case (false, BoolValue(b)) => b
+      case (_, v) => throw new IllegalArgumentException(s"unexpected value in OR $v")
+    }
+    ctx.push(BoolValue(result))
+  }
+}
+
 // TODO NOT

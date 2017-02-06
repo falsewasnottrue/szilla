@@ -19,6 +19,7 @@ object Interpreter {
     FSET_Q -> FSetQInterpreter,
     IN_Q -> InQInterpreter,
     AND -> AndInterpreter,
+    OR -> OrInterpreter,
     MOVE -> MoveInterpreter,
     REMOVE -> RemoveInterpreter,
     LOC -> LocInterpreter,
