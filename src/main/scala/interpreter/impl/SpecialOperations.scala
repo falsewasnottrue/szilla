@@ -41,17 +41,19 @@ object SetInterpreter extends BaseInterpreter {
 object CondInterpreter extends BaseInterpreter {
   // chooses the first condition that is true and runs the code block
   override def apply(ctx: Context)(i: Instruction): Context = {
+    /*
     val storedIp = ctx.ip
     ctx.ip = NoIp
+    */
     val conditions = i.operands.collect { case cond: Condition => cond }
     val condMet = conditions.find { c => {
       Interpreter.evaluate(ctx)(c.cond)
       ctx.pop.contains(BoolValue(true))
     } }
-    ctx.ip = storedIp
+    // ctx.ip = storedIp
 
     condMet match {
-      case Some(condition) => Context(BlockIp(condition.block, 0), Some(ctx))
+      case Some(condition) => new Context(BlockIp(condition.block, 0), Some(ctx))
       case _ => ctx // no condition was met
     }
   }
@@ -60,7 +62,7 @@ object CondInterpreter extends BaseInterpreter {
 object RepeatInterpreter extends BaseInterpreter {
   // repeats the inner block
   override def apply(ctx: Context)(i: Instruction): Context = {
-    val inner = Context(parent = Some(ctx))
+    val inner = new Context(parent = Some(ctx))
     def run(c: Context, block: Seq[Operand]): Context = block match {
       case Nil => run(c, i.operands) // start over
       case (instruction: Instruction) :: _ if instruction.opCode == RETURN => c

@@ -24,14 +24,12 @@ class RunSpec extends FlatSpec with Matchers {
 
     val go = Routine.parser.parse("<ROUTINE GO () <CALL INCREMENT-SCORE 23>>")
     Global.registerRoutine(go)
-    val startCtx = Context(Ip(go, 0))
+    val startCtx = new Context(Ip(go, 0))
 
     val ctx = Interpreter.run(startCtx)
 
     ctx.getGlobal(GlobalVariable("SCORE")) should be(IntValue(42))
   }
-
-  /*
 
   it should "run a slightly longer routine" in {
     val text1 = """<ROUTINE LINE-IN-RHYME (ARG-A ARG-B)
@@ -51,7 +49,7 @@ class RunSpec extends FlatSpec with Matchers {
 
     val go = Routine.parser.parse("<ROUTINE GO () <CALL RHYME>>")
     Global.registerRoutine(go)
-    val startCtx = Context(Ip(go, 0))
+    val startCtx = new Context(Ip(go, 0))
     val mockedStartCtx = Mockito.spy(startCtx)
 
     val ctx = Interpreter.run(mockedStartCtx)
@@ -62,60 +60,61 @@ class RunSpec extends FlatSpec with Matchers {
     captor.getAllValues should contain("September")
     captor.getAllValues should contain("February")
   }
+/*
+it should "run an even more complicated routine" in {
+  val sandwich = createObject("HAM-SANDWICH")
+  val candybar = createObject("CANDY-BAR")
+  val endive = createObject("BELGIAN-ENDIVE")
+  val here = createObject("HERE")
+  here.insert(candybar)
 
-  it should "run an even more complicated routine" in {
-    val sandwich = createObject("HAM-SANDWICH")
-    val candybar = createObject("CANDY-BAR")
-    val endive = createObject("BELGIAN-ENDIVE")
-    val here = createObject("HERE")
-    here.insert(candybar)
+  val findFoodText =
+    """<ROUTINE FIND-FOOD ("AUX" FOOD)
+      | <COND (<IN? ,HAM-SANDWICH ,HERE>
+      |        <SET FOOD ,HAM-SANDWICH>)
+      |       (<IN? ,CANDY-BAR ,HERE>
+      |        <SET FOOD ,CANDY-BAR>)
+      |       (<IN? ,BELGIAN-ENDIVE ,HERE>
+      |        <SET FOOD ,BELGIAN-ENDIVE>)
+      |       (T
+      |        <SET FOOD <RFALSE>>)>
+      |<RETURN .FOOD>>
+    """.stripMargin
+  val findFoodRoutine = Routine.parser.parse(findFoodText)
+  Global.registerRoutine(findFoodRoutine)
 
-    val findFoodText =
-      """<ROUTINE FIND-FOOD ("AUX" FOOD)
-        | <COND (<IN? ,HAM-SANDWICH ,HERE>
-        |        <SET FOOD ,HAM-SANDWICH>)
-        |       (<IN? ,CANDY-BAR ,HERE>
-        |        <SET FOOD ,CANDY-BAR>)
-        |       (<IN? ,BELGIAN-ENDIVE ,HERE>
-        |        <SET FOOD ,BELGIAN-ENDIVE>)
-        |       (T
-        |        <SET FOOD <RFALSE>>)>
-        |<RETURN .FOOD>>
-      """.stripMargin
-    val findFoodRoutine = Routine.parser.parse(findFoodText)
-    Global.registerRoutine(findFoodRoutine)
+  val go = Routine.parser.parse("<ROUTINE GO () <CALL FIND-FOOD>>")
+  Global.registerRoutine(go)
+  val startCtx = Context(Ip(go, 0))
 
-    val go = Routine.parser.parse("<ROUTINE GO () <CALL FIND-FOOD>>")
-    Global.registerRoutine(go)
-    val startCtx = Context(Ip(go, 0))
+  val ctx = Interpreter.run(startCtx)
+  ctx.pop should be(Some(RefValue("CANDY-BAR")))
+}
 
-    val ctx = Interpreter.run(startCtx)
-    ctx.pop should be(Some(RefValue("CANDY-BAR")))
-  }
 
-  it should "calculate faculty" in {
-    val fac =
-      """<ROUTINE FAC (N "AUX" I RES)
-        |	<SET I 1>
-        |	<SET RES 0>
-        |	<REPEAT ()
-        |		<COND
-        |     (<EQUAL? .N .I> <RETURN>)
-        |			(T <SET RES <MUL .RES .I>>
-        |			   <SET I <ADD .I 1>>)
-        |   >
-        |	>
-        |	<RETURN .RES>
-        |>""".stripMargin
-    val facRoutine = Routine.parser.parse(fac)
-    Global.registerRoutine(facRoutine)
+it should "calculate faculty" in {
+  val fac =
+    """<ROUTINE FAC (N "AUX" I RES)
+      |	<SET I 1>
+      |	<SET RES 0>
+      |	<REPEAT ()
+      |		<COND
+      |     (<EQUAL? .N .I> <RETURN>)
+      |			(T <SET RES <MUL .RES .I>>
+      |			   <SET I <ADD .I 1>>)
+      |   >
+      |	>
+      |	<RETURN .RES>
+      |>""".stripMargin
+  val facRoutine = Routine.parser.parse(fac)
+  Global.registerRoutine(facRoutine)
 
-    val go = Routine.parser.parse("<ROUTINE GO () <CALL FAC 10>>")
-    Global.registerRoutine(go)
-    val startCtx = Context(Ip(go, 0))
+  val go = Routine.parser.parse("<ROUTINE GO () <CALL FAC 10>>")
+  Global.registerRoutine(go)
+  val startCtx = Context(Ip(go, 0))
 
-    val ctx = Interpreter.run(startCtx)
-    ctx.pop should be(Some(IntValue(3628800)))
-  }
-  */
+  val ctx = Interpreter.run(startCtx)
+  ctx.pop should be(Some(IntValue(3628800)))
+}
+*/
 }

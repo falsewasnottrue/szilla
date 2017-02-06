@@ -81,7 +81,7 @@ object Global {
   }
 }
 
-case class Context(var ip: InstructionPointer = NoIp, parent: Option[Context] = None) {
+class Context(val ip: InstructionPointer = NoIp, val parent: Option[Context] = None) {
 
   private val localVariables = scala.collection.mutable.Map[LocalVariable, Value]()
   private val stack = scala.collection.mutable.Stack[Value]()

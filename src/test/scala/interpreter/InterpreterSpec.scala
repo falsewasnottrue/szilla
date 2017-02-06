@@ -6,7 +6,7 @@ import org.scalatest.{FlatSpec, Matchers}
 class InterpreterSpec extends FlatSpec with Matchers {
 
   trait Env {
-    val ctx = Context()
+    val ctx = new Context()
   }
 
   "Interpreter" should "evaluate int variables" in new Env {

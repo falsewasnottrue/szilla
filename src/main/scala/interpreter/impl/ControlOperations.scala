@@ -12,7 +12,7 @@ object CallInterpreter extends BaseInterpreter {
     val StringValue(routineName) = args.head
     val Some(routine) = Global.loadRoutine(routineName)
     val instructionPointer = Ip(routine, 0)
-    val context = Context(instructionPointer, Some(ctx))
+    val context = new Context(instructionPointer, Some(ctx))
 
     val parameterValues = args.drop(1)
 

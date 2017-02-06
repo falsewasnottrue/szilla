@@ -7,7 +7,7 @@ class ContextSpec extends FlatSpec with Matchers {
 
   trait Env {
     val fakeRoutine = Routine("fake")
-    val ctx = Context(Ip(fakeRoutine, 0))
+    val ctx = new Context(Ip(fakeRoutine, 0))
 
     val x = LocalVariable("x")
     val v = IntValue(42)
@@ -20,7 +20,7 @@ class ContextSpec extends FlatSpec with Matchers {
 
   it should "delegate to parent context" in new Env {
     ctx.set(x, v)
-    val child = Context(parent = Some(ctx))
+    val child = new Context(parent = Some(ctx))
 
     child.get(x) should be(v)
   }

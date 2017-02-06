@@ -8,7 +8,7 @@ class BaseInterpreterSpec extends FlatSpec with Matchers {
 
   trait Env {
     val fakeRoutine = Routine("fake")
-    val ctx = Context(Ip(fakeRoutine, 0))
+    val ctx = new Context(Ip(fakeRoutine, 0))
     Global.reset()
 
     def run(ctx: Context)(text: String): Context = {

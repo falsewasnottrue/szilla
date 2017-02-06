@@ -32,7 +32,7 @@ object InputInterpreter extends BaseInterpreter {
           val routineName = maybeRoutine.get
           val Some(routine) = Global.loadRoutine(routineName)
           val instructionPointer = Ip(routine, 0)
-          Context(instructionPointer, Some(ctx))
+          new Context(instructionPointer, Some(ctx))
         } else {
           ctx.push(StringValue(""))
         }
