@@ -39,7 +39,8 @@ object CallInterpreter extends BaseInterpreter {
 object ReturnInterpreter extends BaseInterpreter {
   override def apply(ctx: Context)(i: Instruction): Context = {
     val args = arguments(ctx)(i, ValueTypes(Optional(WildcardType)))
-    (ctx.parent, args) match {
+    val scope = Context.findScope(ctx)
+    (scope.parent, args) match {
       case (Some(outer), Seq(result)) => outer.push(result)
       case (Some(outer), Nil) => outer
       case _ => throw new IllegalStateException(s"cannot return from top-most context")
@@ -49,7 +50,6 @@ object ReturnInterpreter extends BaseInterpreter {
 
 object RTrueInterpreter extends BaseInterpreter {
   override def apply(ctx: Context)(i: Instruction): Context = {
-    println()
     arguments(ctx)(i, ValueTypes.empty)
     ctx.push(BoolValue(true))
   }

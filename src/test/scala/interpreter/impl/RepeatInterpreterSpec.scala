@@ -1,7 +1,7 @@
 package interpreter.impl
 
-import interpreter.Global
-import models.{GlobalVariable, IntValue}
+import interpreter.{BlockIp, Global}
+import models.{Block, GlobalVariable, Instruction, IntValue}
 
 class RepeatInterpreterSpec extends BaseInterpreterSpec {
 
@@ -18,18 +18,24 @@ class RepeatInterpreterSpec extends BaseInterpreterSpec {
         | <SETG A 2>
         |>
       """.stripMargin
-    run(ctx)(text)
+    val c = run(ctx)(text)
 
-    ctx.getGlobal(GlobalVariable("A")) should be(IntValue(1))
+    c.parent should be(Some(ctx))
+    c.ip should be(BlockIp(Block(Seq(
+      Instruction.parser.parse("<SETG A 1>"),
+      Instruction.parser.parse("<RETURN>"),
+      Instruction.parser.parse("<SETG A 2>")
+    )), -1, true))
   }
 
+  // TODO Move to runspec
   /*
   it should "repeat instructions in block" in new Env0 {
     val text =
       """
         |<REPEAT ()
         | <SETG A <+ ,A 1>>
-        | <COND (<EQ? ,A 10> <RETURN>)>
+        | <COND (<G? ,A 10> <RETURN>)>
         |>
       """.stripMargin
     run(ctx)(text)

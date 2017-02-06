@@ -51,7 +51,7 @@ object Interpreter {
 
   def evaluate(ctx: Context)(op: Operand): Context = {
 
-    println(s"$op")
+    // println(s"$op")
     // println(s"$op in $ctx")
 
     op match {
@@ -95,7 +95,8 @@ object Interpreter {
 
   private def advance(ctx: Context, after: Instruction): Context = {
     after.opCode match {
-      case CALL | COND => ctx
+      case CALL => ctx
+      // case RETURN => Context.findScope(ctx).inc
       case _ => {
         ctx.inc
         (ctx.ip.instruction, ctx.parent) match {

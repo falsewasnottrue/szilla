@@ -90,8 +90,7 @@ class RunSpec extends FlatSpec with Matchers {
     val ctx = Interpreter.run(startCtx)
     ctx.pop should be(Some(RefValue("CANDY-BAR")))
   }
-
-  /*
+/*
   it should "calculate faculty" in {
     val fac =
       """<ROUTINE FAC (N "AUX" I RES)

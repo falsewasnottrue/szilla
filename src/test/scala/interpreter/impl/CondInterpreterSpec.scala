@@ -22,7 +22,7 @@ class CondInterpreterSpec extends BaseInterpreterSpec {
 
     ctx.ip should be(Ip(fakeRoutine, 0))
     c.parent should be(Some(ctx))
-    c.ip should be(BlockIp(Block(Seq(Instruction.parser.parse("<SETG SIGNAL 3>"))), 0))
+    c.ip should be(BlockIp(Block(Seq(Instruction.parser.parse("<SETG SIGNAL 3>"))), -1))
   }
 
   it should "run default block if no condition is true" in new Env0 {
@@ -37,7 +37,7 @@ class CondInterpreterSpec extends BaseInterpreterSpec {
     val c = run(ctx)(text)
     ctx.ip should be(Ip(fakeRoutine, 0))
     c.parent should be(Some(ctx))
-    c.ip should be(BlockIp(Block(Seq(Instruction.parser.parse("<SETG SIGNAL 5>"))), 0))
+    c.ip should be(BlockIp(Block(Seq(Instruction.parser.parse("<SETG SIGNAL 5>"))), -1))
   }
 
   it should "run no block if no condition is true" in new Env0 {
@@ -66,6 +66,6 @@ class CondInterpreterSpec extends BaseInterpreterSpec {
 
     ctx.ip should be(Ip(fakeRoutine, 0))
     c.parent should be(Some(ctx))
-    c.ip should be(BlockIp(Block(Seq(Instruction.parser.parse("<SETG SIGNAL 7>"), Instruction.parser.parse("<SETG SIGNAL 8>"))), 0))
+    c.ip should be(BlockIp(Block(Seq(Instruction.parser.parse("<SETG SIGNAL 7>"), Instruction.parser.parse("<SETG SIGNAL 8>"))), -1))
   }
 }

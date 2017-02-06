@@ -17,7 +17,7 @@ case class Ip(routine: Routine, var line: Int) extends InstructionPointer {
   def inc = line = line+1
 }
 
-case class BlockIp(block: Block, var line: Int) extends InstructionPointer {
+case class BlockIp(block: Block, var line: Int = -1, repeating: Boolean = false) extends InstructionPointer {
   val isScope = false
   def instruction = if (line >= block.length) None else Some(block.instructions(line))
   def inc = line = line+1
@@ -94,7 +94,6 @@ class Context(val ip: InstructionPointer, val parent: Option[Context] = None) {
   }
 
   def set(variable: LocalVariable, value: Value): Context = {
-    println(s"SET $variable to $value")
     val scope = Context.findScope(this)
     scope.localVariables.put(variable, value)
 

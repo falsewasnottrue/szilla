@@ -42,13 +42,10 @@ object CondInterpreter extends BaseInterpreter {
   // chooses the first condition that is true and runs the code block
   override def apply(ctx: Context)(i: Instruction): Context = {
     val conditions = i.operands.collect { case cond: Condition => cond }
-    val condMet = conditions.find { c => {
-      Interpreter.evaluate(ctx)(c.cond)
-      ctx.pop.contains(BoolValue(true))
-    } }
-    
+    val condMet = conditions.find { c => Interpreter.evaluate(ctx)(c.cond).pop.contains(BoolValue(true))}
+
     condMet match {
-      case Some(condition) => new Context(BlockIp(condition.block, 0), Some(ctx))
+      case Some(condition) => new Context(BlockIp(condition.block), Some(ctx))
       case _ => ctx // no condition was met
     }
   }
@@ -57,6 +54,13 @@ object CondInterpreter extends BaseInterpreter {
 object RepeatInterpreter extends BaseInterpreter {
   // repeats the inner block
   override def apply(ctx: Context)(i: Instruction): Context = {
+    val block = new Block(i.operands.collect { case instruction: Instruction => instruction })
+    val inner = new Context(BlockIp(block, repeating = true), Some(ctx))
+
+    inner
+  }
+  /*
+  {
     // FIXME implement
     val inner = new Context(ip = null, parent = Some(ctx))
     def run(c: Context, block: Seq[Operand]): Context = block match {
@@ -67,4 +71,5 @@ object RepeatInterpreter extends BaseInterpreter {
 
     run(inner, i.operands)
   }
+  */
 }
