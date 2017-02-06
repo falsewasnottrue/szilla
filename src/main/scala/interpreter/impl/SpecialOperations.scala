@@ -59,17 +59,4 @@ object RepeatInterpreter extends BaseInterpreter {
 
     inner
   }
-  /*
-  {
-    // FIXME implement
-    val inner = new Context(ip = null, parent = Some(ctx))
-    def run(c: Context, block: Seq[Operand]): Context = block match {
-      case Nil => run(c, i.operands) // start over
-      case (instruction: Instruction) :: _ if instruction.opCode == RETURN => c
-      case current :: rest => run(Interpreter.evaluate(c)(current), rest)
-    }
-
-    run(inner, i.operands)
-  }
-  */
 }

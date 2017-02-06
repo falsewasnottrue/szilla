@@ -27,20 +27,4 @@ class RepeatInterpreterSpec extends BaseInterpreterSpec {
       Instruction.parser.parse("<SETG A 2>")
     )), -1, true))
   }
-
-  // TODO Move to runspec
-  /*
-  it should "repeat instructions in block" in new Env0 {
-    val text =
-      """
-        |<REPEAT ()
-        | <SETG A <+ ,A 1>>
-        | <COND (<G? ,A 10> <RETURN>)>
-        |>
-      """.stripMargin
-    run(ctx)(text)
-
-    ctx.getGlobal(GlobalVariable("A")) should be(IntValue(10))
-  }
-  */
 }

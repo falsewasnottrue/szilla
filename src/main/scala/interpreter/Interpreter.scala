@@ -95,12 +95,12 @@ object Interpreter {
 
   private def advance(ctx: Context, after: Instruction): Context = {
     after.opCode match {
-      case CALL => ctx
-      // case RETURN => Context.findScope(ctx).inc
+      case CALL => ctx // use the context produced
       case _ => {
         ctx.inc
         (ctx.ip.instruction, ctx.parent) match {
           case (Some(_), _) => ctx
+          case (None, _) if ctx.ip.repeating => ctx.reset
           case (None, Some(c)) => advance(c, after)
           case _ => ctx // ???
         }

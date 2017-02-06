@@ -90,6 +90,30 @@ class RunSpec extends FlatSpec with Matchers {
     val ctx = Interpreter.run(startCtx)
     ctx.pop should be(Some(RefValue("CANDY-BAR")))
   }
+
+  it should "repeat instructions in block" in {
+    Global.reset()
+    Global.define(GlobalVariable("A"), IntValue(0))
+    val adder = Routine.parser.parse(
+      """
+        |<ROUTINE ADDER()
+        |<REPEAT ()
+        | <SETG A <+ ,A 1>>
+        | <COND (<EQ? ,A 10> <RETURN>)>
+        |>
+        |>
+      """.stripMargin
+    )
+    Global.registerRoutine(adder)
+
+    val go = Routine.parser.parse("<ROUTINE GO () <CALL ADDER>>")
+    Global.registerRoutine(go)
+    val startCtx = new Context(Ip(go, 0))
+
+    val ctx = Interpreter.run(startCtx)
+    ctx.getGlobal(GlobalVariable("A")) should be(IntValue(10))
+  }
+
 /*
   it should "calculate faculty" in {
     val fac =
