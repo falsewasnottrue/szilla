@@ -1,7 +1,7 @@
 package interpreter.impl
 
-import interpreter.{Context, Ip}
-import models.BoolValue
+import interpreter.{BlockIp, Context, Ip}
+import models.{Block, BoolValue}
 
 class ReturnInterpreterSpec extends BaseInterpreterSpec {
 
@@ -14,7 +14,7 @@ class ReturnInterpreterSpec extends BaseInterpreterSpec {
   }
 
   it should "escape scope without returning a result" in new Env {
-    val c = new Context(Ip(fakeRoutine, 0), parent = Some(ctx))
+    val c = new Context(BlockIp(Block(Seq())), parent = Some(ctx))
     val res = run(c)("<RETURN>")
 
     res should be(ctx)

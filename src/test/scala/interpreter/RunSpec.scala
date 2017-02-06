@@ -114,15 +114,14 @@ class RunSpec extends FlatSpec with Matchers {
     ctx.getGlobal(GlobalVariable("A")) should be(IntValue(10))
   }
 
-/*
   it should "calculate faculty" in {
     val fac =
       """<ROUTINE FAC (N "AUX" I RES)
         |	<SET I 1>
-        |	<SET RES 0>
+        |	<SET RES 1>
         |	<REPEAT ()
         |		<COND
-        |     (<EQUAL? .N .I> <RETURN>)
+        |     (<G? .I .N> <RETURN>)
         |			(T <SET RES <MUL .RES .I>>
         |			   <SET I <ADD .I 1>>)
         |   >
@@ -139,5 +138,4 @@ class RunSpec extends FlatSpec with Matchers {
     val ctx = Interpreter.run(startCtx)
     ctx.pop should be(Some(IntValue(3628800)))
   }
-  */
 }
