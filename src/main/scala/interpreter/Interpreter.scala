@@ -51,6 +51,7 @@ object Interpreter {
 
   def evaluate(ctx: Context)(op: Operand): Context = {
 
+    println(s"$op")
     // println(s"$op in $ctx")
 
     op match {
@@ -84,6 +85,14 @@ object Interpreter {
 
   def run(ctx: Context): Context = ctx.ip.instruction match {
     case None => ctx
-    case Some(instruction) => run(evaluate(ctx)(instruction))
+    case Some(instruction) => {
+      val afterEvalCtx = evaluate(ctx)(instruction)
+      // TODO implement advancing mechanism
+      val afterAdvanceCtx = instruction.opCode match {
+        case CALL => afterEvalCtx
+        case _ => afterEvalCtx.inc
+      }
+      run(afterAdvanceCtx)
+    }
   }
 }

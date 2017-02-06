@@ -13,7 +13,7 @@ class RunSpec extends FlatSpec with Matchers {
     Global.define(variable, RefValue(obj.id))
     obj
   }
-/*
+
   it should "run a routine" in {
     val text = """<ROUTINE INCREMENT-SCORE (NUM)
                  | <SETG SCORE <+ ,SCORE .NUM>>>
@@ -30,6 +30,8 @@ class RunSpec extends FlatSpec with Matchers {
 
     ctx.getGlobal(GlobalVariable("SCORE")) should be(IntValue(42))
   }
+
+  /*
 
   it should "run a slightly longer routine" in {
     val text1 = """<ROUTINE LINE-IN-RHYME (ARG-A ARG-B)
