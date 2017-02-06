@@ -18,6 +18,7 @@ object Interpreter {
     GRTR_Q -> GrtrQInterpreter,
     FSET_Q -> FSetQInterpreter,
     IN_Q -> InQInterpreter,
+    AND -> AndInterpreter,
     MOVE -> MoveInterpreter,
     REMOVE -> RemoveInterpreter,
     LOC -> LocInterpreter,

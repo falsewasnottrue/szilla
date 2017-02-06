@@ -64,6 +64,18 @@ object InQInterpreter extends BaseInterpreter {
   }
 }
 
-// TODO AND
+object AndInterpreter extends BaseInterpreter {
+  // Calculates conjunction of values
+  override def apply(ctx: Context)(i: Instruction): Context = {
+    val args = arguments(ctx)(i, ValueTypes.continually(BoolType))
+    val result = args.foldLeft(true) {
+      case (false, _) => false
+      case (true, BoolValue(b)) => b
+      case (_, v) => throw new IllegalArgumentException(s"unexpected value in AND $v")
+    }
+    ctx.push(BoolValue(result))
+  }
+}
+
 // TODO OR
 // TODO NOT
