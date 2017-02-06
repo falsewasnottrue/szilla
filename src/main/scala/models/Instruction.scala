@@ -19,7 +19,7 @@ object Variable {
     else Literal(varname)
 }
 
-case class Block(instructions: Seq[Instruction] = Nil) extends Operand {
+case class Block(instructions: Seq[Instruction] = Nil) extends Operand with HasInstructions {
   def withInstruction(instruction: Instruction) = copy(instructions = instructions :+ instruction)
   val length = instructions.size
 }

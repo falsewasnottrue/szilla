@@ -7,7 +7,7 @@ class InterpreterSpec extends FlatSpec with Matchers {
 
   trait Env {
     val fakeRoutine = Routine("fake")
-    val ctx = new Context(Ip(fakeRoutine, 0))
+    val ctx = new Context(InstructionPointer(fakeRoutine, 0))
   }
 
   "Interpreter" should "evaluate int variables" in new Env {

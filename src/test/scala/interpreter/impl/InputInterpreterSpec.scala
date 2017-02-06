@@ -1,6 +1,6 @@
 package interpreter.impl
 
-import interpreter.{Global, Ip}
+import interpreter.{Global, InstructionPointer}
 import models.{Routine, StringValue}
 import org.mockito.Mockito
 
@@ -31,7 +31,7 @@ class InputInterpreterSpec extends BaseInterpreterSpec {
 
     val c = run(ctxMock)("<INPUT 1 5 DUMMY>")
     c.parent should be(Some(ctxMock))
-    c.ip should be(Ip(routine, 0))
+    c.ip should be(InstructionPointer(routine, 0))
   }
 
   // takes too long (waiting for timeout)

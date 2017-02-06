@@ -1,6 +1,6 @@
 package interpreter.impl
 
-import interpreter.{Context, Global, Ip}
+import interpreter.{Context, Global, InstructionPointer}
 import models._
 
 object CallInterpreter extends BaseInterpreter {
@@ -11,7 +11,7 @@ object CallInterpreter extends BaseInterpreter {
     }
     val StringValue(routineName) = args.head
     val Some(routine) = Global.loadRoutine(routineName)
-    val instructionPointer = Ip(routine, 0)
+    val instructionPointer = InstructionPointer(routine, 0)
     val context = new Context(instructionPointer, Some(ctx))
 
     val parameterValues = args.drop(1)

@@ -4,28 +4,15 @@ import models._
 
 import scala.concurrent.Future
 
-sealed trait InstructionPointer {
-  def isScope: Boolean
-  def instruction: Option[Instruction]
-  def inc: Unit
-  def repeating: Boolean
-  def reset: InstructionPointer
-}
-
-// TODO these two classes look like they can be comobined
-case class Ip(routine: Routine, var line: Int) extends InstructionPointer {
-  val isScope = true
-  def instruction = if (line >= routine.length) None else Some(routine.instructions(line))
-  def inc = line = line+ 1
-  val repeating = false
-  def reset = throw new IllegalStateException(s"cannot reset ip")
-}
-
-case class BlockIp(block: Block, var line: Int = -1, repeating: Boolean = false) extends InstructionPointer {
-  val isScope = false
-  def instruction = if (line >= block.length) None else Some(block.instructions(line))
-  def inc = line = line+1
-  def reset = { line = 0; this }
+case class InstructionPointer(is: HasInstructions, var line: Int = -1, repeating: Boolean = false) {
+  val scope: Boolean = is.isInstanceOf[Routine]
+  def instruction: Option[Instruction] = if (line >= is.instructions.size) None else Some(is.instructions(line))
+  def inc: Unit = line = line+ 1
+  def reset: InstructionPointer = if (!repeating) {
+    throw new IllegalStateException(s"cannot reset ip")
+  } else {
+    line = 0; this
+  }
 }
 
 object Global {
@@ -147,7 +134,7 @@ class Context(val ip: InstructionPointer, val parent: Option[Context] = None) {
 }
 
 object Context {
-  def findScope(context: Context): Context = (context.ip.isScope, context.parent) match {
+  def findScope(context: Context): Context = (context.ip.scope, context.parent) match {
     case (true, _) => context
     case (false, Some(parent)) => findScope(parent)
     case _ => throw new IllegalArgumentException("no scope found")

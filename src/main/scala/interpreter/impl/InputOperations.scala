@@ -1,5 +1,5 @@
 package interpreter.impl
-import interpreter.{Context, Global, Ip}
+import interpreter.{Context, Global, InstructionPointer}
 import models._
 
 import scala.concurrent.{Await, TimeoutException}
@@ -31,7 +31,7 @@ object InputInterpreter extends BaseInterpreter {
         if (maybeRoutine.isDefined) {
           val routineName = maybeRoutine.get
           val Some(routine) = Global.loadRoutine(routineName)
-          val instructionPointer = Ip(routine, 0)
+          val instructionPointer = InstructionPointer(routine, 0)
           new Context(instructionPointer, Some(ctx))
         } else {
           ctx.push(StringValue(""))

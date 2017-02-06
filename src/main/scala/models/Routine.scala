@@ -13,7 +13,7 @@ case class Routine(
                     id: Id,
                     arguments: Seq[Argument] = Nil,
                     instructions: Seq[Instruction] = Nil
-                  ) extends HasId {
+                  ) extends HasId with HasInstructions {
 
   val length = instructions.length
 

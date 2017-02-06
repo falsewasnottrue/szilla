@@ -1,6 +1,6 @@
 package interpreter.impl
 
-import interpreter.{BlockIp, Global, Ip}
+import interpreter.{Global, InstructionPointer}
 import models.{Block, GlobalVariable, Instruction, IntValue}
 
 class CondInterpreterSpec extends BaseInterpreterSpec {
@@ -20,9 +20,9 @@ class CondInterpreterSpec extends BaseInterpreterSpec {
         |>""".stripMargin
     val c = run(ctx)(text)
 
-    ctx.ip should be(Ip(fakeRoutine, 0))
+    ctx.ip should be(InstructionPointer(fakeRoutine, 0))
     c.parent should be(Some(ctx))
-    c.ip should be(BlockIp(Block(Seq(Instruction.parser.parse("<SETG SIGNAL 3>"))), -1))
+    c.ip should be(InstructionPointer(Block(Seq(Instruction.parser.parse("<SETG SIGNAL 3>"))), -1))
   }
 
   it should "run default block if no condition is true" in new Env0 {
@@ -35,9 +35,9 @@ class CondInterpreterSpec extends BaseInterpreterSpec {
         |      (T        <SETG SIGNAL 5>)
         |>""".stripMargin
     val c = run(ctx)(text)
-    ctx.ip should be(Ip(fakeRoutine, 0))
+    ctx.ip should be(InstructionPointer(fakeRoutine, 0))
     c.parent should be(Some(ctx))
-    c.ip should be(BlockIp(Block(Seq(Instruction.parser.parse("<SETG SIGNAL 5>"))), -1))
+    c.ip should be(InstructionPointer(Block(Seq(Instruction.parser.parse("<SETG SIGNAL 5>"))), -1))
   }
 
   it should "run no block if no condition is true" in new Env0 {
@@ -49,7 +49,7 @@ class CondInterpreterSpec extends BaseInterpreterSpec {
         |      (<RFALSE> <SETG SIGNAL 4>)
         |>""".stripMargin
     val c = run(ctx)(text)
-    ctx.ip should be(Ip(fakeRoutine, 0))
+    ctx.ip should be(InstructionPointer(fakeRoutine, 0))
     c should be(ctx)
   }
 
@@ -64,8 +64,8 @@ class CondInterpreterSpec extends BaseInterpreterSpec {
         |>""".stripMargin
     val c = run(ctx)(text)
 
-    ctx.ip should be(Ip(fakeRoutine, 0))
+    ctx.ip should be(InstructionPointer(fakeRoutine, 0))
     c.parent should be(Some(ctx))
-    c.ip should be(BlockIp(Block(Seq(Instruction.parser.parse("<SETG SIGNAL 7>"), Instruction.parser.parse("<SETG SIGNAL 8>"))), -1))
+    c.ip should be(InstructionPointer(Block(Seq(Instruction.parser.parse("<SETG SIGNAL 7>"), Instruction.parser.parse("<SETG SIGNAL 8>"))), -1))
   }
 }

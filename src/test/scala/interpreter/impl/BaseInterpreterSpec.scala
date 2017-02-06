@@ -1,6 +1,6 @@
 package interpreter.impl
 
-import interpreter.{Context, Global, Interpreter, Ip}
+import interpreter.{Context, Global, InstructionPointer, Interpreter}
 import models._
 import org.scalatest.{FlatSpec, Matchers}
 
@@ -8,7 +8,7 @@ class BaseInterpreterSpec extends FlatSpec with Matchers {
 
   trait Env {
     val fakeRoutine = Routine("fake")
-    val ctx = new Context(Ip(fakeRoutine, 0))
+    val ctx = new Context(InstructionPointer(fakeRoutine, 0))
     Global.reset()
 
     def run(ctx: Context)(text: String): Context = {

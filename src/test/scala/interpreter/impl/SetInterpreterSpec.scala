@@ -1,6 +1,6 @@
 package interpreter.impl
 
-import interpreter.{BlockIp, Context}
+import interpreter.{Context, InstructionPointer}
 import models.{Block, IntValue, LocalVariable}
 
 class SetInterpreterSpec extends BaseInterpreterSpec {
@@ -11,9 +11,9 @@ class SetInterpreterSpec extends BaseInterpreterSpec {
   }
 
   it should "set the local variables in closest scope" in new Env {
-    ctx.ip.isScope should be(true)
-    val c = new Context(BlockIp(Block(Seq())), Some(ctx))
-    c.ip.isScope should be(false)
+    ctx.ip.scope should be(true)
+    val c = new Context(InstructionPointer(Block(Seq())), Some(ctx))
+    c.ip.scope should be(false)
 
     run(c)("<SET A 1>")
     c.get(LocalVariable("A")) should be(IntValue(1))

@@ -24,7 +24,7 @@ class RunSpec extends FlatSpec with Matchers {
 
     val go = Routine.parser.parse("<ROUTINE GO () <CALL INCREMENT-SCORE 23>>")
     Global.registerRoutine(go)
-    val startCtx = new Context(Ip(go, 0))
+    val startCtx = new Context(InstructionPointer(go, 0))
 
     val ctx = Interpreter.run(startCtx)
 
@@ -49,7 +49,7 @@ class RunSpec extends FlatSpec with Matchers {
 
     val go = Routine.parser.parse("<ROUTINE GO () <CALL RHYME>>")
     Global.registerRoutine(go)
-    val startCtx = new Context(Ip(go, 0))
+    val startCtx = new Context(InstructionPointer(go, 0))
     val mockedStartCtx = Mockito.spy(startCtx)
 
     val ctx = Interpreter.run(mockedStartCtx)
@@ -85,7 +85,7 @@ class RunSpec extends FlatSpec with Matchers {
 
     val go = Routine.parser.parse("<ROUTINE GO () <CALL FIND-FOOD>>")
     Global.registerRoutine(go)
-    val startCtx = new Context(Ip(go, 0))
+    val startCtx = new Context(InstructionPointer(go, 0))
 
     val ctx = Interpreter.run(startCtx)
     ctx.pop should be(Some(RefValue("CANDY-BAR")))
@@ -108,7 +108,7 @@ class RunSpec extends FlatSpec with Matchers {
 
     val go = Routine.parser.parse("<ROUTINE GO () <CALL ADDER>>")
     Global.registerRoutine(go)
-    val startCtx = new Context(Ip(go, 0))
+    val startCtx = new Context(InstructionPointer(go, 0))
 
     val ctx = Interpreter.run(startCtx)
     ctx.getGlobal(GlobalVariable("A")) should be(IntValue(10))
@@ -133,7 +133,7 @@ class RunSpec extends FlatSpec with Matchers {
 
     val go = Routine.parser.parse("<ROUTINE GO () <CALL FAC 10>>")
     Global.registerRoutine(go)
-    val startCtx = new Context(Ip(go, 0))
+    val startCtx = new Context(InstructionPointer(go, 0))
 
     val ctx = Interpreter.run(startCtx)
     ctx.pop should be(Some(IntValue(3628800)))

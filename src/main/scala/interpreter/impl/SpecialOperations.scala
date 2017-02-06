@@ -3,8 +3,6 @@ package interpreter.impl
 import interpreter._
 import models._
 
-import scala.concurrent.BlockContext
-
 object TellInterpreter extends BaseInterpreter {
   override def apply(ctx: Context)(instruction: Instruction): Context = {
     val args = arguments(ctx)(instruction, ValueTypes.arbitrary)
@@ -45,7 +43,7 @@ object CondInterpreter extends BaseInterpreter {
     val condMet = conditions.find { c => Interpreter.evaluate(ctx)(c.cond).pop.contains(BoolValue(true))}
 
     condMet match {
-      case Some(condition) => new Context(BlockIp(condition.block), Some(ctx))
+      case Some(condition) => new Context(InstructionPointer(condition.block), Some(ctx))
       case _ => ctx // no condition was met
     }
   }
@@ -55,7 +53,7 @@ object RepeatInterpreter extends BaseInterpreter {
   // repeats the inner block
   override def apply(ctx: Context)(i: Instruction): Context = {
     val block = new Block(i.operands.collect { case instruction: Instruction => instruction })
-    val inner = new Context(BlockIp(block, repeating = true), Some(ctx))
+    val inner = new Context(InstructionPointer(block, repeating = true), Some(ctx))
 
     inner
   }

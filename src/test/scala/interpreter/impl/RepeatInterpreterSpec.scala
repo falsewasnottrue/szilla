@@ -1,6 +1,6 @@
 package interpreter.impl
 
-import interpreter.{BlockIp, Global}
+import interpreter.{InstructionPointer, Global}
 import models.{Block, GlobalVariable, Instruction, IntValue}
 
 class RepeatInterpreterSpec extends BaseInterpreterSpec {
@@ -21,7 +21,7 @@ class RepeatInterpreterSpec extends BaseInterpreterSpec {
     val c = run(ctx)(text)
 
     c.parent should be(Some(ctx))
-    c.ip should be(BlockIp(Block(Seq(
+    c.ip should be(InstructionPointer(Block(Seq(
       Instruction.parser.parse("<SETG A 1>"),
       Instruction.parser.parse("<RETURN>"),
       Instruction.parser.parse("<SETG A 2>")

@@ -50,4 +50,8 @@ package object models {
   trait HasProperties {
     def properties: Properties
   }
+
+  trait HasInstructions {
+    def instructions: Seq[Instruction]
+  }
 }
