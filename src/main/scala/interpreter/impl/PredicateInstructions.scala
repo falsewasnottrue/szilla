@@ -78,7 +78,7 @@ object AndInterpreter extends BaseInterpreter {
 }
 
 object OrInterpreter extends BaseInterpreter {
-  // Calculates conjunction of values
+  // Calculates disjunction of values
   override def apply(ctx: Context)(i: Instruction): Context = {
     val args = arguments(ctx)(i, ValueTypes.continually(BoolType))
     val result = args.foldLeft(false) {
@@ -90,4 +90,10 @@ object OrInterpreter extends BaseInterpreter {
   }
 }
 
-// TODO NOT
+object NotInterpreter extends BaseInterpreter {
+  // Calculates negation
+  override def apply(ctx: Context)(i: Instruction): Context = {
+    val Seq(BoolValue(arg)) = arguments(ctx)(i, ValueTypes(BoolType))
+    ctx.push(BoolValue(!arg))
+  }
+}

@@ -20,6 +20,7 @@ object Interpreter {
     IN_Q -> InQInterpreter,
     AND -> AndInterpreter,
     OR -> OrInterpreter,
+    NOT -> NotInterpreter,
     MOVE -> MoveInterpreter,
     REMOVE -> RemoveInterpreter,
     LOC -> LocInterpreter,
