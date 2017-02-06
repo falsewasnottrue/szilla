@@ -95,7 +95,7 @@ object Interpreter {
 
   private def advance(ctx: Context, after: Instruction): Context = {
     after.opCode match {
-      case CALL => ctx
+      case CALL | COND => ctx
       case _ => {
         ctx.inc
         (ctx.ip.instruction, ctx.parent) match {

@@ -94,6 +94,7 @@ class Context(val ip: InstructionPointer, val parent: Option[Context] = None) {
   }
 
   def set(variable: LocalVariable, value: Value): Context = {
+    println(s"SET $variable to $value")
     val scope = Context.findScope(this)
     scope.localVariables.put(variable, value)
 
