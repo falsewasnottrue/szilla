@@ -63,3 +63,7 @@ object InQInterpreter extends BaseInterpreter {
     ctx.push(BoolValue(res))
   }
 }
+
+// TODO AND
+// TODO OR
+// TODO NOT

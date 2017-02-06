@@ -17,6 +17,9 @@ case object LESS_Q extends OpCode
 case object GRTR_Q extends OpCode
 case object FSET_Q extends OpCode
 case object IN_Q extends OpCode
+case object AND extends OpCode
+case object OR extends OpCode
+case object NOT extends OpCode
 
 // object operations
 case object MOVE extends OpCode
@@ -96,6 +99,9 @@ case object TABLE extends OpCode
 case object QUEUE extends OpCode
 case object AGAIN extends OpCode
 
+// parser operations
+case object VERBQ extends OpCode
+
 object OpCode {
   def unapply(a: Any): Option[OpCode] = a match {
     // arithmetic instructions
@@ -113,6 +119,9 @@ object OpCode {
     case "G?" | "GRTR?" => Some(GRTR_Q)
     case "FSET?" => Some(FSET_Q)
     case "IN?" => Some(IN_Q)
+    case "AND" => Some(AND)
+    case "OR" => Some(OR)
+    case "NOT" => Some(NOT)
 
     // object operations
     case "MOVE" => Some(MOVE)
@@ -191,6 +200,9 @@ object OpCode {
     case "TABLE" => Some(TABLE)
     case "QUEUE" => Some(QUEUE)
     case "AGAIN" => Some(AGAIN)
+
+    // parser operations
+    case "VERB?" => Some(VERBQ)
 
     case _ => None
   }
