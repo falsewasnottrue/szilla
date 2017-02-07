@@ -36,6 +36,7 @@ object Interpreter {
     CRLF -> CRLFInterpreter,
     CALL -> CallInterpreter,
     RETURN -> ReturnInterpreter,
+    AGAIN -> AgainInterpreter,
     RTRUE -> RTrueInterpreter,
     RFALSE -> RFalseInterpreter,
     TELL -> TellInterpreter,
@@ -103,7 +104,7 @@ object Interpreter {
         ctx.inc
         (ctx.ip.instruction, ctx.parent) match {
           case (Some(_), _) => ctx
-          case (None, _) if ctx.ip.repeating => ctx.reset
+          case (None, _) if ctx.ip.repeating => ctx.reset()
           case (None, Some(c)) => advance(c, after)
           case _ => ctx // ???
         }

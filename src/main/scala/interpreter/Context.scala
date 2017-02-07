@@ -8,10 +8,10 @@ case class InstructionPointer(is: HasInstructions, var line: Int = -1, repeating
   val scope: Boolean = is.isInstanceOf[Routine]
   def instruction: Option[Instruction] = if (line >= is.instructions.size) None else Some(is.instructions(line))
   def inc: Unit = line = line+ 1
-  def reset: InstructionPointer = if (!repeating) {
+  def reset(l: Int): InstructionPointer = if (!repeating) {
     throw new IllegalStateException(s"cannot reset ip")
   } else {
-    line = 0; this
+    line = l; this
   }
 }
 
@@ -114,8 +114,8 @@ class Context(val ip: InstructionPointer, val parent: Option[Context] = None) {
     this
   }
 
-  def reset: Context = {
-    ip.reset
+  def reset(line: Int = 0): Context = {
+    ip.reset(line)
     this
   }
 
@@ -138,5 +138,11 @@ object Context {
     case (true, _) => context
     case (false, Some(parent)) => findScope(parent)
     case _ => throw new IllegalArgumentException("no scope found")
+  }
+
+  def findRepeatable(context: Context): Context = (context.ip.repeating, context.parent) match {
+    case (true, _) => context
+    case (false, Some(parent)) => findRepeatable(parent)
+    case _ => throw new IllegalArgumentException("no repeating context found")
   }
 }

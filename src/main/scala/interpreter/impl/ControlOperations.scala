@@ -50,6 +50,13 @@ object ReturnInterpreter extends BaseInterpreter {
   }
 }
 
+object AgainInterpreter extends BaseInterpreter {
+  override def apply(ctx: Context)(i: Instruction): Context = {
+    val c = Context.findRepeatable(ctx)
+    c.reset(-1)
+  }
+}
+
 object RTrueInterpreter extends BaseInterpreter {
   override def apply(ctx: Context)(i: Instruction): Context = {
     arguments(ctx)(i, ValueTypes.empty)

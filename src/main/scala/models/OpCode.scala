@@ -76,6 +76,7 @@ case object SOUND extends OpCode
 // control operations
 case object CALL extends OpCode
 case object RETURN extends OpCode
+case object AGAIN extends OpCode
 case object RTRUE extends OpCode
 case object RFALSE extends OpCode
 
@@ -97,7 +98,6 @@ case object REPEAT extends OpCode
 case object CONSTANT extends OpCode
 case object TABLE extends OpCode
 case object QUEUE extends OpCode
-case object AGAIN extends OpCode
 
 // parser operations
 case object VERBQ extends OpCode

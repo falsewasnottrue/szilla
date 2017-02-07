@@ -114,6 +114,33 @@ class RunSpec extends FlatSpec with Matchers {
     ctx.getGlobal(GlobalVariable("A")) should be(IntValue(10))
   }
 
+  it should "jump back in repeat loops using again" in {
+    Global.reset()
+    Global.define(GlobalVariable("A"), IntValue(0))
+    Global.define(GlobalVariable("B"), IntValue(0))
+    val adder = Routine.parser.parse(
+      """
+        |<ROUTINE ADDER()
+        |<REPEAT ()
+        | <SETG A <+ ,A 1>>
+        | <COND (<L? ,A 10> <AGAIN>)>
+        | <SETG B <+ ,B 1>>
+        | <RETURN>
+        |>
+        |>
+      """.stripMargin
+    )
+    Global.registerRoutine(adder)
+
+    val go = Routine.parser.parse("<ROUTINE GO () <CALL ADDER>>")
+    Global.registerRoutine(go)
+    val startCtx = new Context(InstructionPointer(go, 0))
+
+    val ctx = Interpreter.run(startCtx)
+    ctx.getGlobal(GlobalVariable("A")) should be(IntValue(10))
+    ctx.getGlobal(GlobalVariable("B")) should be(IntValue(1))
+  }
+
   it should "calculate faculty" in {
     val fac =
       """<ROUTINE FAC (N "AUX" I RES)
