@@ -15,7 +15,6 @@ case class ZParser[T](init: PartialFunction[ParseTree,(T, Seq[ParseTree])])(clau
       map(parser => parser.apply((t, clause))).
       getOrElse(throw new IllegalArgumentException(s"no applicable parser found for clause $clause"))
 
-
     if (init.isDefinedAt(tree)) {
       val (start, clauses) = init(tree)
       clauses.foldLeft(start) {
@@ -28,6 +27,9 @@ case class ZParser[T](init: PartialFunction[ParseTree,(T, Seq[ParseTree])])(clau
 }
 
 object ZParser {
+
+  def zero0[T](keyword: String, make: => T): PartialFunction[ParseTree, (T, Seq[ParseTree])] =
+  { case Node(Leaf(`keyword`) :: clauses, _) => (make, clauses) }
 
   def zero[T](keyword: String, make: String => T): PartialFunction[ParseTree, (T, Seq[ParseTree])] =
     { case Node(Leaf(`keyword`) :: Leaf(id) :: clauses, _) => (make(id), clauses) }

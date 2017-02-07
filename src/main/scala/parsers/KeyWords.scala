@@ -20,4 +20,6 @@ object KeyWords {
 
   val TO = "TO"
   val PER = "PER"
+
+  val SYNTAX = "SYNTAX"
 }
