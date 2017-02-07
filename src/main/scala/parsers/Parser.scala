@@ -1,19 +1,11 @@
 package parsers
 
-sealed trait ParType
-case object Angle extends ParType
-case object Round extends ParType
-
-sealed trait Tree
-case class Leaf(value: String) extends Tree {}
-case class Node(nodes: Seq[Tree], parType: ParType = Angle) extends Tree
-
 object Parser {
-  def parse(tokens: Seq[String]): Tree = {
-    def notOpenAngle: Tree => Boolean = _ != Leaf("<")
-    def notOpenRound: Tree => Boolean = _ != Leaf("(")
+  def parse(tokens: Seq[String]): ParseTree = {
+    def notOpenAngle: ParseTree => Boolean = _ != Leaf("<")
+    def notOpenRound: ParseTree => Boolean = _ != Leaf("(")
 
-    val stack: Seq[Tree] = tokens.foldLeft(Seq[Tree]()) {
+    val stack: Seq[ParseTree] = tokens.foldLeft(Seq[ParseTree]()) {
       case (acc, token) => token match {
         case ">" =>
           // acc partitionieren l + "<" + r

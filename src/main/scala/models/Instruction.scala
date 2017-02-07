@@ -36,14 +36,14 @@ object Instruction {
   import parsers.ZParser
 
   def parser: ZParser[Instruction] = {
-    val init: PartialFunction[Tree,(Instruction, Seq[Tree])] =
+    val init: PartialFunction[ParseTree,(Instruction, Seq[ParseTree])] =
     {
       // TODO Routine CALL (-> Instruction)
       // TODO args
       case Node(Leaf("REPEAT") :: Node(args, Round) :: clauses, Angle) => (Instruction(REPEAT), clauses)
       case Node(Leaf(OpCode(opCode)) :: clauses, Angle) => (Instruction(opCode), clauses)
     }
-    val clauseParsers: Seq[PartialFunction[(Instruction, Tree), Instruction]] = Seq(
+    val clauseParsers: Seq[PartialFunction[(Instruction, ParseTree), Instruction]] = Seq(
       { case (i, Leaf(varName)) => i.withOperand(Variable(varName)) },
       { case (i, line @ Node(Leaf(OpCode(_)) :: _, Angle)) => i.withOperand(Instruction.parser.parse(line)) },
       // cond 1
