@@ -2,10 +2,9 @@ package models
 
 import parsers._
 
-// TODO Find a more sensible name
-sealed trait Operand
+sealed trait Evaluable
 
-sealed trait Var extends Operand
+sealed trait Var extends Evaluable
 case class LocalVariable(name: String) extends Var
 case class GlobalVariable(name: String) extends Var
 case class PropertyNameVariable(name: String) extends Var
@@ -19,15 +18,15 @@ object Variable {
     else Literal(varname)
 }
 
-case class Block(instructions: Seq[Instruction] = Nil) extends Operand with HasInstructions {
+case class Block(instructions: Seq[Instruction] = Nil) extends Evaluable with HasInstructions {
   def withInstruction(instruction: Instruction) = copy(instructions = instructions :+ instruction)
   val length = instructions.size
 }
 
-case class Condition(cond: Operand, block: Block) extends Operand
+case class Condition(cond: Evaluable, block: Block) extends Evaluable
 
-case class Instruction(opCode: OpCode, operands: Seq[Operand] = Nil) extends Operand {
-  def withOperand(operand: Operand) = copy(operands = operands :+ operand)
+case class Instruction(opCode: OpCode, operands: Seq[Evaluable] = Nil) extends Evaluable {
+  def withOperand(operand: Evaluable) = copy(operands = operands :+ operand)
 
   override def toString = opCode + "(" + operands.map(_.toString).mkString(",") + ")"
 }

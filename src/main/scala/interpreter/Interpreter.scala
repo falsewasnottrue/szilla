@@ -53,7 +53,7 @@ object Interpreter {
     REPEAT -> RepeatInterpreter
   )
 
-  def evaluate(ctx: Context)(op: Operand): Context = {
+  def evaluate(ctx: Context)(op: Evaluable): Context = {
 
     // println(s"$op")
     // println(s"$op in $ctx")
