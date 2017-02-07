@@ -19,4 +19,8 @@ class ObjectTokenSpec extends FlatSpec with Matchers {
   it should "parse object tokens with find token" in {
     ObjectToken.unapply("OBJECT (FIND TAKEBIT)") should be(Some(ObjectToken(Seq(FIND("TAKEBIT")))))
   }
+
+  it should "parse complex mixture" in {
+    ObjectToken.unapply("OBJECT (HAVE FIND BIT HELD)") should be(Some(ObjectToken(Seq(HAVE, FIND("BIT"), HELD))))
+  }
 }

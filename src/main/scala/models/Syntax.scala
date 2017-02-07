@@ -1,15 +1,20 @@
 package models
 
-case class Syntax() {
+
+case class Syntax(verbId: String, verb: String, obj1: Option[ObjectToken] = None, prep: Option[String] = None, obj2: Option[ObjectToken] = None) {
 
 }
 
 object Syntax {
-  import parsers.KeyWords._
-  import parsers.ZParser._
-  import parsers.ZParser
+  val SYNTAX = """<SYNTAX (\S+) (OBJECT)? = (\S+)>""".r
+  // val SYNTAX = """<SYNTAX (.+) (OBJECT (\(.*\))?)? (.+)? (OBJECT (\(.*\))?)? = (\S+)>""".r
 
-  val parser = ZParser[Syntax](zero0(SYNTAX, Syntax()))(Seq(
-    // TODO
-  ))
+  def unapply(str: String): Option[Syntax] = str match {
+    case SYNTAX(verb, null, verbId) => Some(Syntax(verbId, verb))
+    case SYNTAX(verb, obj1, verbId) =>
+      Some(Syntax(verbId, verb, ObjectToken.unapply(obj1)))
+
+    case _ => None
+  }
+
 }
