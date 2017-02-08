@@ -34,6 +34,9 @@ object ZParser {
   def zero[T](keyword: String, make: String => T): PartialFunction[ParseTree, (T, Seq[ParseTree])] =
     { case Node(Leaf(`keyword`) :: Leaf(id) :: clauses, _) => (make(id), clauses) }
 
+  def point0[T](step: (T, String) => T): PartialFunction[(T, ParseTree), T] =
+   { case (t, Leaf(value)) => step(t, value)}
+
   def point[T](keyword: String, step: (T, String) => T): PartialFunction[(T, ParseTree), T] =
     { case (t, Node(Seq(Leaf(`keyword`), Leaf(id)), _)) => step(t, id) }
 

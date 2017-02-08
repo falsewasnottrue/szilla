@@ -22,4 +22,7 @@ object KeyWords {
   val PER = "PER"
 
   val SYNTAX = "SYNTAX"
+  val VERB_SYNONYM = "VERB-SYNONYM"
+  val PREP_SYNONYM = "PREP-SYNONYM"
+  val ADJ_SYNONYM = "ADJ-SYNONYM"
 }
