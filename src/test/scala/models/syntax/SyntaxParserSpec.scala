@@ -1,6 +1,5 @@
-package parsers
+package models.syntax
 
-import models._
 import org.scalatest.{FlatSpec, Matchers}
 
 class SyntaxParserSpec extends FlatSpec with Matchers {

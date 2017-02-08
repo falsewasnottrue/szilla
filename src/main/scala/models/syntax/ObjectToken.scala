@@ -1,4 +1,4 @@
-package models
+package models.syntax
 
 case class ObjectToken(syntaxTokens: Seq[SyntaxToken]) {
   def withSyntaxToken(syntaxToken: SyntaxToken) = copy(syntaxTokens = syntaxTokens :+ syntaxToken)

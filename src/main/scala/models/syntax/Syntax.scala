@@ -1,4 +1,4 @@
-package models
+package models.syntax
 
 case class Syntax(verbId: String, verb: String,
                   preAction: Option[String] = None,

@@ -1,4 +1,4 @@
-package models
+package models.syntax
 
 sealed trait SyntaxToken
 case object HAVE extends SyntaxToken

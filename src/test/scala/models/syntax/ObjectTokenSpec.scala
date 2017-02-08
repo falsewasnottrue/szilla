@@ -1,4 +1,4 @@
-package models
+package models.syntax
 
 import org.scalatest.{FlatSpec, Matchers}
 
